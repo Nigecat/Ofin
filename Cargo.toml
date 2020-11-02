@@ -1,0 +1,11 @@
+[package]
+name = "hotkey"
+version = "0.1.0"
+authors = ["Nigecat"]
+edition = "2018"
+
+[dependencies]
+bitflags = "1.2.1"
+ansi_term = "0.12.1"
+lazy_static = "1.4.0"
+fancy-regex = "0.4.0"
