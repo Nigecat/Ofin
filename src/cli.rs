@@ -1,5 +1,5 @@
 pub struct CLI {
-    pub path: std::path::PathBuf,
+    pub path: String,
 }
 
 impl CLI {
@@ -9,8 +9,6 @@ impl CLI {
             None => Err(error!("no input file")),
         };
 
-        Ok(CLI {
-            path: std::path::PathBuf::from(path?),
-        })
+        Ok(CLI { path: path? })
     }
 }
