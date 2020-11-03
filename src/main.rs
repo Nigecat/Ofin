@@ -1,7 +1,4 @@
 #[macro_use]
-extern crate bitflags;
-mod flags;
-#[macro_use]
 mod error;
 mod cli;
 use std::fs;
