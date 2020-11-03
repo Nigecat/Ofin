@@ -7,12 +7,13 @@ fn _main() -> Result<(), error::Error> {
     let args = cli::CLI::parse()?;
 
     // Make sure the source file exists
-    if !fs::metadata(&args.path).is_ok() {
+    if fs::metadata(&args.path).is_err() {
         return Err(error!("{}: no such file or directory", args.path));
     }
 
     // Read the source file
     let source = fs::read_to_string(&args.path).unwrap();
+    println!("{}", source);
 
     Ok(())
 }
