@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate log;
 #[macro_use]
+extern crate enum_display_derive;
+#[macro_use]
 mod error;
 mod application;
 mod cli;
@@ -24,7 +26,7 @@ fn _main() -> Result<(), error::Error> {
     let source = fs::read_to_string(&args.path).unwrap();
 
     let application = Application::new();
-    let tokenstream = tokenizer::tokenize(&source, &application);
+    let tokenstream = tokenizer::tokenize(&source, &application)?;
     println!("{:#?}", tokenstream);
 
     Ok(())
