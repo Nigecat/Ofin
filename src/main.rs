@@ -1,6 +1,13 @@
 #[macro_use]
 mod error;
+mod application;
 mod cli;
+mod constant_table;
+mod symbol_table;
+mod symbols;
+mod tokenizer;
+mod tokens;
+use application::Application;
 use std::fs;
 
 fn _main() -> Result<(), error::Error> {
@@ -13,7 +20,10 @@ fn _main() -> Result<(), error::Error> {
 
     // Read the source file
     let source = fs::read_to_string(&args.path).unwrap();
-    println!("{}", source);
+
+    let application = Application::new();
+    let tokenstream = tokenizer::tokenize(&source, &application);
+    println!("{:#?}", tokenstream);
 
     Ok(())
 }
