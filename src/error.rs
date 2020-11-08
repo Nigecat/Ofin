@@ -1,4 +1,3 @@
-use ansi_term::Color::Red;
 use std::fmt;
 
 #[macro_export]
@@ -18,13 +17,7 @@ impl Error {
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{}: {} {}",
-            env!("CARGO_PKG_NAME"),
-            Red.paint("error:"),
-            self.message
-        )
+        write!(f, "{}", self.message)
     }
 }
 

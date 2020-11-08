@@ -31,16 +31,16 @@ fn _main() -> Result<(), error::Error> {
 }
 
 fn main() {
-    // Default our debug logging to `info`, since we are still in heavy developement
+    // Default our debug logging to `warn`
     env::set_var(
         "RUST_LOG",
-        env::var("RUST_LOG").unwrap_or_else(|_| "info".to_string()),
+        env::var("RUST_LOG").unwrap_or_else(|_| "warn".to_string()),
     );
     pretty_env_logger::init();
 
     // Handle all our errors by printing them
     let res = _main();
     if let Err(e) = res {
-        println!("{}", e);
+        log::error!("{}", e);
     }
 }

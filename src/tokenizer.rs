@@ -6,7 +6,7 @@ pub fn tokenize(input: &str, application: &Application) -> Vec<Token> {
     let tokenstream = Vec::new();
 
     for (i, c) in input.chars().enumerate() {
-        println!("{} | {}", c, i);
+        trace!("Processing character {} of input string: {}", i, c);
     }
 
     tokenstream
