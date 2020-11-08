@@ -26,3 +26,15 @@ impl fmt::Debug for Error {
         write!(f, "Error {{ message: {} }} ", self.message)
     }
 }
+
+impl From<&str> for Error {
+    fn from(s: &str) -> Self {
+        error!("{}", s)
+    }
+}
+
+impl From<String> for Error {
+    fn from(s: String) -> Self {
+        error!("{}", s)
+    }
+}

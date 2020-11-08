@@ -2,7 +2,7 @@ use crate::application::Application;
 use crate::tokens::Token;
 
 /// Tokenize an input string
-pub fn tokenize(input: &str, application: &Application) -> Result<Vec<Token>, crate::error::Error> {
+pub fn tokenize(input: &str, application: &mut Application) -> Result<Vec<Token>, crate::error::Error> {
     let mut tokenstream = Vec::new();
     let chars = input.chars();
 

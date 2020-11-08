@@ -25,8 +25,8 @@ fn _main() -> Result<(), error::Error> {
     // Read the source file
     let source = fs::read_to_string(&args.path).unwrap();
 
-    let application = Application::new();
-    let tokenstream = tokenizer::tokenize(&source, &application)?;
+    let mut application = Application::new();
+    let tokenstream = tokenizer::tokenize(&source, &mut application)?;
     println!("{:#?}", tokenstream);
 
     Ok(())
