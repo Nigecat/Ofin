@@ -1,7 +1,6 @@
 #[macro_use]
 mod error;
 mod cli;
-mod parser;
 use std::fs;
 
 fn _main() -> Result<(), error::Error> {
@@ -14,7 +13,7 @@ fn _main() -> Result<(), error::Error> {
 
     // Read the source file
     let source = fs::read_to_string(&args.path).unwrap();
-    parser::parse_source(&source);
+    println!("{}", source);
 
     Ok(())
 }
