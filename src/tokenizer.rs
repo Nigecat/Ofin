@@ -1,5 +1,5 @@
-use crate::tokens::Token;
 use crate::application::Application;
+use crate::tokens::Token;
 
 /// Tokenize an input string
 pub fn tokenize(input: &str, application: &Application) -> Vec<Token> {
@@ -8,7 +8,6 @@ pub fn tokenize(input: &str, application: &Application) -> Vec<Token> {
     for (i, c) in input.chars().enumerate() {
         println!("{} | {}", c, i);
     }
-
 
     tokenstream
 }

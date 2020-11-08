@@ -1,4 +1,6 @@
 #[macro_use]
+extern crate log;
+#[macro_use]
 mod error;
 mod application;
 mod cli;
@@ -8,7 +10,7 @@ mod symbols;
 mod tokenizer;
 mod tokens;
 use application::Application;
-use std::fs;
+use std::{env, fs};
 
 fn _main() -> Result<(), error::Error> {
     let args = cli::CLI::parse()?;
@@ -29,6 +31,13 @@ fn _main() -> Result<(), error::Error> {
 }
 
 fn main() {
+    // Default our debug logging to `info`, since we are still in heavy developement
+    env::set_var(
+        "RUST_LOG",
+        env::var("RUST_LOG").unwrap_or_else(|_| "info".to_string()),
+    );
+    pretty_env_logger::init();
+
     // Handle all our errors by printing them
     let res = _main();
     if let Err(e) = res {
