@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 #[allow(dead_code)]
-#[derive(Display, Debug, PartialEq, Eq)]
+#[derive(Display, Debug, PartialEq, Eq, Clone)]
 pub enum Token {
     /// An end of line ';'
     EOL,
