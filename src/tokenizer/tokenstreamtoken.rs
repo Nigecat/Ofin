@@ -1,3 +1,4 @@
+use crate::errors::TokenizerError;
 use crate::tokens::Token;
 use std::convert::TryFrom;
 
@@ -17,11 +18,11 @@ impl TokenStreamToken {
 }
 
 impl TryFrom<&TokenStreamToken> for Token {
-    type Error = crate::error::Error;
+    type Error = TokenizerError;
 
     fn try_from(t: &TokenStreamToken) -> Result<Self, Self::Error> {
         match t {
-            TokenStreamToken::Char(_) => Err(error!("Token parsing error")),
+            TokenStreamToken::Char(_) => Err(TokenizerError::new("Token parsing error")),
             TokenStreamToken::Token(token) => Ok(token.clone()),
         }
     }

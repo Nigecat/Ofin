@@ -2,11 +2,10 @@
 extern crate log;
 #[macro_use]
 extern crate enum_display_derive;
-#[macro_use]
-mod error;
 mod application;
 mod cli;
 mod constant_table;
+mod errors;
 mod symbol_table;
 mod symbols;
 mod tokenizer;
@@ -14,13 +13,8 @@ mod tokens;
 use application::Application;
 use std::{env, fs};
 
-fn _main() -> Result<(), error::Error> {
+fn _main() -> Result<(), Box<dyn std::error::Error>> {
     let args = cli::CLI::parse()?;
-
-    // Make sure the source file exists
-    if fs::metadata(&args.path).is_err() {
-        return Err(error!("{}: no such file or directory", args.path));
-    }
 
     // Read the source file
     let source = fs::read_to_string(&args.path).unwrap();

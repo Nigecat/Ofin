@@ -1,14 +1,27 @@
+use crate::errors::CliError;
+use std::fs;
+
 pub struct CLI {
     pub path: String,
 }
 
 impl CLI {
-    pub fn parse() -> Result<Self, crate::error::Error> {
+    pub fn parse() -> Result<Self, CliError> {
         let path = match std::env::args().nth(1) {
             Some(p) => Ok(p),
-            None => Err(error!("no input file")),
+            None => Err(CliError::new("no input file")),
         };
 
-        Ok(CLI { path: path? })
+        let path = path?;
+
+        // Make sure the source file exists
+        if fs::metadata(&path).is_err() {
+            return Err(CliError::new(format!(
+                "{}: no such file or directory",
+                path
+            )));
+        }
+
+        Ok(CLI { path })
     }
 }
