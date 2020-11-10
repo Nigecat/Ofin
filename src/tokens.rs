@@ -1,6 +1,6 @@
-use std::fmt::Display;
-use std::convert::TryFrom;
 use crate::errors::TokenizerError;
+use std::convert::TryFrom;
+use std::fmt::Display;
 
 #[derive(Display, Debug, PartialEq, Eq, Clone)]
 pub enum Token {

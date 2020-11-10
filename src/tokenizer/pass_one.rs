@@ -37,7 +37,7 @@ pub fn pass_one(input: &str) -> TokenStreamReturn {
                 '"' => {
                     in_quotes = true;
                     TokenStreamToken::Token(Token::DoubleQuote)
-                },
+                }
                 // Remove any control characters (by replacing them with a space)
                 '\n' => TokenStreamToken::Char(' '),
                 '\r' => TokenStreamToken::Char(' '),
@@ -48,7 +48,7 @@ pub fn pass_one(input: &str) -> TokenStreamReturn {
                     } else {
                         TokenStreamToken::Char(c)
                     }
-                },
+                }
             }
         })
         .collect();

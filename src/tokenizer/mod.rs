@@ -1,24 +1,46 @@
+mod line_types;
 mod pass_one;
-mod tokenstreamtoken;
+mod pass_two;
+mod tokenstream;
 use crate::application::Application;
 use crate::errors::TokenizerError;
 use crate::tokens::Token;
 use pass_one::pass_one;
+use pass_two::pass_two;
 use std::convert::TryFrom;
-use tokenstreamtoken::TokenStreamToken;
+use tokenstream::*;
+use tokenstream::{TokenStream, TokenStreamToken};
 
-type TokenStream = Vec<TokenStreamToken>;
-type TokenStreamReturn = Result<TokenStream, TokenizerError>;
+/// Take an array of tokens and remove any leading or trailing whitespace
+///
+/// If tokenstream is an array filled with only spaces it will return an empty array.
+/// NOTE: This modifies the original token stream
+fn clean(tokenstream: TokenStream) -> TokenStream {
+    let mut tokens = tokenstream.clone();
+    // Remove elements from the start until we either run out of elements or get to a character that isn't a space
+    while !tokens.is_empty() && tokens.first().unwrap() == &TokenStreamToken::Char(' ') {
+        tokens.remove(0);
+    }
+    // Same as above but for the end
+    while !tokens.is_empty() && tokens.last().unwrap() == &TokenStreamToken::Char(' ') {
+        tokens.remove(tokens.len() - 1);
+    }
+
+    tokens
+}
 
 /// Fully tokenize an input string
-pub fn tokenize(input: &str, application: &mut Application) -> Result<Vec<Token>, TokenizerError> {
+pub fn tokenize(
+    input: &str,
+    mut application: &mut Application,
+) -> Result<Vec<Token>, TokenizerError> {
     let mut tokenstream: Vec<TokenStreamToken>;
 
     // Pass 1: Process single character tokens (and ==)
     tokenstream = pass_one(&input)?;
 
-    // Pass 3: Allocate variables in the symbol table
-    // Pass 4: Tokenize everything else
+    // Pass 2: Allocate variables/constants in the symbol/constant table
+    tokenstream = pass_two(tokenstream, &mut application)?;
 
     println!("{:?}", tokenstream);
     println!("{:?}", application);
