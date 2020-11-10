@@ -16,11 +16,12 @@ pub fn tokenize(input: &str, application: &mut Application) -> Result<Vec<Token>
 
     // Pass 1: Process single character tokens (and ==)
     tokenstream = pass_one(&input)?;
-    print!("{:#?}", tokenstream);
 
     // Pass 3: Allocate variables in the symbol table
     // Pass 4: Tokenize everything else
 
+    println!("{:?}", tokenstream);
+    println!("{:?}", application);
     Ok(vec![])
     /*
     // If there are any characters left after processing, then we must have invalid syntax somewhere
