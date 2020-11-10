@@ -1,12 +1,9 @@
-use super::{clean, tokenstream_to_string, TokenStream, TokenStreamToken};
+use super::super::{clean, tokenstream_to_string, TokenStream, TokenStreamToken};
+use super::LineResult;
 use crate::application::Application;
 use crate::errors::TokenizerError;
 use crate::symbols::{self, Symbol};
 use crate::tokens::Token;
-
-// If this returns a tokenizererror then it means that this line is not a match
-// The bool is the status and if it is `false` then that indicates a syntax error in this line
-type LineResult = Result<bool, TokenizerError>;
 
 /// Handle variable declarations in the format `<type> <name> = <value>`
 pub fn declare_variable(line: &TokenStream, application: &mut Application) -> LineResult {
