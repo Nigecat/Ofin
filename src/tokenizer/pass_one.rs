@@ -12,46 +12,49 @@ pub fn pass_one(input: &str) -> TokenStreamReturn {
     // Whether the next character should be escaped
     let mut escaped = false;
 
-    let tokenstream: TokenStream = input
-        .chars()
-        .map(|c| {
-            if in_quotes {
-                if escaped {
-                    escaped = false;
-                    return TokenStreamToken::Char(c);
-                }
+    let mut tokenstream: TokenStream = Vec::new();
 
-                if c == '\\' {
-                    escaped = true;
-                    return TokenStreamToken::Char('\\');
-                }
-
-                if c == '"' {
-                    in_quotes = false;
-                    return TokenStreamToken::Token(Token::DoubleQuote);
-                }
-                return TokenStreamToken::Char(c);
+    for c in input.chars() {
+        if in_quotes {
+            if escaped {
+                escaped = false;
+                tokenstream.push(TokenStreamToken::Char(c));
+                continue;
             }
 
-            match c {
-                '"' => {
-                    in_quotes = true;
-                    TokenStreamToken::Token(Token::DoubleQuote)
-                }
-                // Remove any control characters (by replacing them with a space)
-                '\n' => TokenStreamToken::Char(' '),
-                '\r' => TokenStreamToken::Char(' '),
-                '\t' => TokenStreamToken::Char(' '),
-                _ => {
-                    if let Ok(t) = Token::try_from(c) {
-                        TokenStreamToken::Token(t)
-                    } else {
-                        TokenStreamToken::Char(c)
-                    }
+            if c == '\\' {
+                escaped = true;
+                continue;
+            }
+
+            if c == '"' {
+                in_quotes = false;
+                tokenstream.push(TokenStreamToken::Token(Token::DoubleQuote));
+                continue;
+            }
+
+            tokenstream.push(TokenStreamToken::Char(c));
+            continue;
+        }
+
+        tokenstream.push(match c {
+            '"' => {
+                in_quotes = true;
+                TokenStreamToken::Token(Token::DoubleQuote)
+            }
+            // Remove any control characters (by replacing them with a space)
+            '\n' => TokenStreamToken::Char(' '),
+            '\r' => TokenStreamToken::Char(' '),
+            '\t' => TokenStreamToken::Char(' '),
+            _ => {
+                if let Ok(t) = Token::try_from(c) {
+                    TokenStreamToken::Token(t)
+                } else {
+                    TokenStreamToken::Char(c)
                 }
             }
-        })
-        .collect();
+        });
+    }
 
     Ok(tokenstream)
 }
