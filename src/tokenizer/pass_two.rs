@@ -36,10 +36,10 @@ pub fn pass_two(tokenstream: TokenStream, mut application: &mut Application) -> 
     debug!(" - Detected {} lines", lines.len());
 
     // Now we can process things line by line
-    for (i, l) in lines.iter().enumerate() {
+    for (i, line) in lines.iter().enumerate() {
         trace!("Processing line {}", i + 1);
 
-        if declare_variable(&l, &mut application)? == false {
+        if declare_variable(&line, &mut application)? == false {
             return Err(TokenizerError::new(format!(
                 "Invalid syntax in variable declaration on line {}",
                 i + 1

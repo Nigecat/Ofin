@@ -68,7 +68,9 @@ pub fn declare_variable(line: &TokenStream, application: &mut Application) -> Li
                 value.remove(0);
                 value.remove(value.len() - 1);
             } else {
-                return Err(TokenizerError::new("String assignment must start and end with double quotes"));
+                return Err(TokenizerError::new(
+                    "String assignment must start and end with double quotes",
+                ));
             }
             let value = tokenstream_to_string(&value)?;
 
