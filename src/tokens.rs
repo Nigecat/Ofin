@@ -29,8 +29,8 @@ pub enum Token {
     Plus,
     /// *
     Times,
-    /// / (NOTE: This is the division character and the newline character)
-    ForwardSlash,
+    /// / 
+    Divide,
     /// !
     Exclamation,
     /// "
@@ -58,7 +58,7 @@ impl TryFrom<char> for Token {
             '-' => Token::Minus,
             '+' => Token::Plus,
             '*' => Token::Times,
-            '/' => Token::ForwardSlash,
+            '/' => Token::Divide,
             '!' => Token::Exclamation,
             _ => Token::Infallible,
         };

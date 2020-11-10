@@ -12,9 +12,42 @@ pub fn pass_one(input: &str) -> TokenStreamReturn {
     // Whether the next character should be escaped
     let mut escaped = false;
 
+    // Whether we are currently inside a single line comment (// )
+    let mut in_comment = false;
+
+    // Whether we are current;y inside a block comment (/* */)
+    let mut in_block_comment = false;
+
     let mut tokenstream: TokenStream = Vec::new();
 
-    for c in input.chars() {
+    for (i, c) in input.chars().enumerate() {
+        // If this is the end of a multi line comment
+        if in_block_comment && in_block_comment && input.chars().nth(i - 1).unwrap_or(' ') == '*' && c == '/'{
+            in_block_comment = false;
+            continue;
+        }
+
+        if in_comment && c == '\n' {
+            in_comment = false;
+            continue;
+        }
+
+        // If this is the start of a single line comment
+        if c == '/' && input.chars().nth(i + 1).unwrap_or(' ') == '/' {
+            in_comment = true;
+            continue;
+        }
+
+        // If this is the start of a multi line comment
+        if c == '/' && input.chars().nth(i + 1).unwrap_or(' ') == '*' {
+            in_block_comment = true;
+            continue;
+        }
+
+        if in_comment || in_block_comment {
+            continue;
+        }
+
         if in_quotes {
             if escaped {
                 escaped = false;
