@@ -28,10 +28,8 @@ fn _main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() {
     // Default our debug logging to `warn`
-    env::set_var(
-        "RUST_LOG",
-        env::var("RUST_LOG").unwrap_or_else(|_| "warn".to_string()),
-    );
+    let loglevel = env::var("RUST_LOG").unwrap_or_else(|_| "warn".to_string());
+    env::set_var("RUST_LOG", &loglevel);
     pretty_env_logger::init();
 
     // Handle all our errors by printing them

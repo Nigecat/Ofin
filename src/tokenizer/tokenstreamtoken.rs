@@ -2,7 +2,7 @@ use crate::errors::TokenizerError;
 use crate::tokens::Token;
 use std::convert::TryFrom;
 
-#[derive(Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum TokenStreamToken {
     Token(Token),
     Char(char),
