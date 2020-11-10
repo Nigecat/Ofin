@@ -1,24 +1,26 @@
 use super::{TokenStream, TokenStreamReturn, TokenStreamToken};
 use crate::tokens::Token;
+use std::convert::TryFrom;
 
+/// Process single character tokens (and ==)
 pub fn pass_one(input: &str) -> TokenStreamReturn {
     debug!("Running pass 1 of tokenizer");
 
     // Whether we are currently inside quotes, this only affects double quotes
     let mut in_quotes = false;
 
-    // Whether the next character should be escape
+    // Whether the next character should be escaped
     let mut escaped = false;
 
     let tokenstream: TokenStream = input
         .chars()
         .map(|c| {
-            if escaped {
-                escaped = false;
-                return TokenStreamToken::Char(c);
-            }
-
             if in_quotes {
+                if escaped {
+                    escaped = false;
+                    return TokenStreamToken::Char(c);
+                }
+
                 if c == '\\' {
                     escaped = true;
                     return TokenStreamToken::Char('\\');
@@ -32,14 +34,17 @@ pub fn pass_one(input: &str) -> TokenStreamReturn {
             }
 
             match c {
-                ';' => TokenStreamToken::Token(Token::EOL),
-                '{' => TokenStreamToken::Token(Token::LCurly),
-                '}' => TokenStreamToken::Token(Token::RCurly),
                 '"' => {
                     in_quotes = true;
                     TokenStreamToken::Token(Token::DoubleQuote)
                 }
-                _ => TokenStreamToken::Char(c),
+                _ => {
+                    if let Ok(t) = Token::try_from(c) {
+                        TokenStreamToken::Token(t)
+                    } else {
+                        TokenStreamToken::Char(c)
+                    }
+                },
             }
         })
         .collect();

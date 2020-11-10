@@ -14,11 +14,10 @@ type TokenStreamReturn = Result<TokenStream, TokenizerError>;
 pub fn tokenize(input: &str, application: &mut Application) -> Result<Vec<Token>, TokenizerError> {
     let mut tokenstream: Vec<TokenStreamToken>;
 
-    // TODO: Actual tokenizing
-    // Pass 1: Process line endings + curly braces + double quotes and convert incoming string to a token stream
+    // Pass 1: Process single character tokens (and ==)
     tokenstream = pass_one(&input)?;
+    print!("{:#?}", tokenstream);
 
-    // Pass 2: Tokenize single character tokens
     // Pass 3: Allocate variables in the symbol table
     // Pass 4: Tokenize everything else
 
