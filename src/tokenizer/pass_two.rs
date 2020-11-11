@@ -1,5 +1,5 @@
 use super::line_types::*;
-use super::{TokenStream, TokenStreamReturn, TokenStreamToken};
+use super::{TokenStream, TokenStreamReturn, TokenStreamToken, tokenstream_display};
 use crate::application::Application;
 use crate::errors::TokenizerError;
 use crate::tokens::Token;
@@ -14,7 +14,13 @@ pub fn pass_two(tokenstream: TokenStream, mut application: &mut Application) -> 
 
     // Iterate over the tokens and add a new element to the array every newline
     for t in tokenstream {
-        if t == TokenStreamToken::Token(Token::EOL) {
+        // Put curly brackets in their own lines
+        if &t == Token::LCurly || &t == Token::RCurly {
+            lines.push(Vec::new());
+            lines.last_mut().unwrap().push(t);
+            lines.push(Vec::new());
+        }
+        else if t == TokenStreamToken::Token(Token::EOL) {
             lines.push(Vec::new());
         } else {
             // Take out any leading spaces
@@ -38,14 +44,13 @@ pub fn pass_two(tokenstream: TokenStream, mut application: &mut Application) -> 
     // Now we can process things line by line
     for (i, line) in lines.iter().enumerate() {
         trace!("Processing line {}", i + 1);
-        super::print_tokenstream(&line);
 
         if declare_variable(&line, &mut application)? {
             continue;
         }
         // If we couldn't match this line then we know that it is a syntax error
         else {
-            return Err(TokenizerError::new(format!("Invalid syntax on line {} (this count excludes blank lines)", i)));
+            return Err(TokenizerError::new(format!("Invalid syntax on line {}: {}", i + 1, tokenstream_display(&line))));
         }
     }
 

@@ -35,6 +35,8 @@ pub enum Token {
     Exclamation,
     /// "
     DoubleQuote,
+    /// An expression
+    Expression(Vec<Token>),
     /// A symbol, this should store the name of the symbol, and should match up to the symbol table
     Symbol(String),
     /// A constant, this should store the index of the constant in the constant table

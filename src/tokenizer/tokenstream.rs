@@ -89,10 +89,7 @@ pub fn tokenstream_to_string(tokenstream: &TokenStream) -> Result<String, Tokeni
     Ok(chars.iter().cloned().collect())
 }
 
-/// Print a TokenStream
-pub fn print_tokenstream(tokenstream: &TokenStream) {
-    for t in tokenstream {
-        print!("{}", t);
-    }
-    println!();
+/// Convert a TokenStream to a displayable string
+pub fn tokenstream_display(tokenstream: &TokenStream) -> String {
+    tokenstream.iter().fold("".to_string(), |acc, t| format!("{}{}", acc, t))
 }
