@@ -1,11 +1,13 @@
 mod line_types;
 mod pass_one;
+mod pass_three;
 mod pass_two;
 mod tokenstream;
 use crate::application::Application;
 use crate::errors::TokenizerError;
 use crate::tokens::Token;
 use pass_one::pass_one;
+use pass_three::pass_three;
 use pass_two::pass_two;
 use tokenstream::*;
 
@@ -32,11 +34,14 @@ pub fn tokenize(
     input: &str,
     mut application: &mut Application,
 ) -> Result<Vec<Token>, TokenizerError> {
-    // Pass 1: Process single character tokens (and ==)
+    // Pass 1: Process single character tokens
     let tokenstream = pass_one(&input)?;
 
-    // Pass 2: Tokenize everything else
+    // Pass 2: Tokenize expressions
     let tokenstream = pass_two(tokenstream, &mut application)?;
+
+    // Pass 3: Tokenize everything else
+    let tokenstream = pass_three(tokenstream, &mut application)?;
 
     println!("{:?}", tokenstream);
     println!("{:?}", application);

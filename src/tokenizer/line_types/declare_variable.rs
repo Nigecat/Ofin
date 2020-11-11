@@ -19,10 +19,9 @@ pub fn declare_variable(line: &[TokenStreamToken], application: &mut Application
             // Extract the value of the variable
             let value = tokenstream_to_string(&clean(line[eq_pos + 1..].to_vec()))?;
             trace!("Declaring variable '{}' with value: {}", name, value);
-            let symbol = symbols::SInt::new(&value).ok_or_else(|| TokenizerError::new(format!(
-                "'{}' is not a valid integer",
-                value
-            )))?;
+            let symbol = symbols::SInt::new(&value).ok_or_else(|| {
+                TokenizerError::new(format!("'{}' is not a valid integer", value))
+            })?;
 
             application.symbols.set(&name, Box::new(symbol));
 

@@ -3,6 +3,15 @@ use std::convert::TryFrom;
 use std::fmt;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
+pub struct Expression(Vec<Token>);
+
+impl Expression {
+    fn new(tokens: Vec<Token>) -> Self {
+        Expression(tokens)
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Token {
     /// This token should never be found in the token stream, it is used as an impossible value token
     #[allow(dead_code)]
@@ -37,12 +46,14 @@ pub enum Token {
     Exclamation,
     /// "
     DoubleQuote,
-    /// An expression
-    Expression(Vec<Token>),
+    /// An if statement and the expression that follows it
+    If(Expression),
+    /// A while loop and the expression that follows it
+    //While(Expression),
     /// A symbol, this should store the name of the symbol, and should match up to the symbol table
     Symbol(String),
     /// A constant, this should store the index of the constant in the constant table
-    Constant(u32),
+    Constant(usize),
 }
 
 impl TryFrom<char> for Token {
