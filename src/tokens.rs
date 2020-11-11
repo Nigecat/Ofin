@@ -6,8 +6,12 @@ use std::fmt;
 pub struct Expression(Vec<Token>);
 
 impl Expression {
-    fn new(tokens: Vec<Token>) -> Self {
+    pub fn new(tokens: Vec<Token>) -> Self {
         Expression(tokens)
+    }
+
+    pub fn evaluate(&self) -> usize {
+        unimplemented!()
     }
 }
 
@@ -46,6 +50,8 @@ pub enum Token {
     Exclamation,
     /// "
     DoubleQuote,
+    /// An expression
+    Expression(Expression),
     /// An if statement and the expression that follows it
     If(Expression),
     /// A while loop and the expression that follows it

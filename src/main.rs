@@ -8,6 +8,7 @@ mod symbol_table;
 mod symbols;
 mod tokenizer;
 mod tokens;
+mod util;
 use application::Application;
 use std::{env, fs};
 
