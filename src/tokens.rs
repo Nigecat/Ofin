@@ -31,6 +31,8 @@ pub enum Token {
     Times,
     /// /
     Divide,
+    /// ,
+    Comma,
     /// !
     Exclamation,
     /// "
@@ -62,6 +64,7 @@ impl TryFrom<char> for Token {
             '*' => Token::Times,
             '/' => Token::Divide,
             '!' => Token::Exclamation,
+            ',' => Token::Comma,
             _ => Token::Infallible,
         };
 
@@ -92,6 +95,7 @@ impl TryFrom<&Token> for char {
             Token::Times => '*',
             Token::Divide => '/',
             Token::Exclamation => '!',
+            Token::Comma => ',',
             _ => ' ',
         };
 
