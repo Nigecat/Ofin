@@ -52,7 +52,7 @@ pub fn pass_three(
         }
         // If we couldn't match this line then we know that it is a syntax error
         else {
-           // print!("{:?}", line);
+            // print!("{:?}", line);
             return Err(TokenizerError::new(format!(
                 "Invalid syntax on line {}: {}",
                 i + 1,
