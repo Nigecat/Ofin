@@ -1,7 +1,5 @@
 #[macro_use]
 extern crate log;
-#[macro_use]
-extern crate enum_display_derive;
 mod application;
 mod cli;
 mod constant_table;

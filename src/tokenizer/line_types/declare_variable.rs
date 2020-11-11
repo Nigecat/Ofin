@@ -1,4 +1,4 @@
-use super::super::{clean, tokenstream_to_string, TokenStream, TokenStreamToken};
+use super::super::{clean, tokenstream_to_string, TokenStream};
 use super::LineResult;
 use crate::application::Application;
 use crate::errors::TokenizerError;

@@ -38,12 +38,14 @@ pub fn pass_two(tokenstream: TokenStream, mut application: &mut Application) -> 
     // Now we can process things line by line
     for (i, line) in lines.iter().enumerate() {
         trace!("Processing line {}", i + 1);
+        super::print_tokenstream(&line);
 
-        if declare_variable(&line, &mut application)? == false {
-            return Err(TokenizerError::new(format!(
-                "Invalid syntax in variable declaration on line {}",
-                i + 1
-            )));
+        if declare_variable(&line, &mut application)? {
+            continue;
+        }
+        // If we couldn't match this line then we know that it is a syntax error
+        else {
+            return Err(TokenizerError::new(format!("Invalid syntax on line {} (this count excludes blank lines)", i)));
         }
     }
 

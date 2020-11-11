@@ -1,5 +1,6 @@
 use crate::errors::TokenizerError;
 use crate::tokens::Token;
+use std::fmt;
 use std::convert::TryFrom;
 
 pub type TokenStream = Vec<TokenStreamToken>;
@@ -16,6 +17,15 @@ impl TokenStreamToken {
         match self {
             TokenStreamToken::Char(_) => true,
             _ => false,
+        }
+    }
+}
+
+impl fmt::Display for TokenStreamToken {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            TokenStreamToken::Char(c) => write!(f, "{}", c),
+            TokenStreamToken::Token(t) => write!(f, "{}", t),
         }
     }
 }
@@ -69,6 +79,7 @@ impl TryFrom<&TokenStreamToken> for Token {
     }
 }
 
+/// Attempt to convert a TokenStream to a string, if any tokens appear that aren't characters it will return an error
 pub fn tokenstream_to_string(tokenstream: &TokenStream) -> Result<String, TokenizerError> {
     let mut chars: Vec<char> = Vec::new();
     for t in tokenstream {
@@ -76,4 +87,12 @@ pub fn tokenstream_to_string(tokenstream: &TokenStream) -> Result<String, Tokeni
     }
 
     Ok(chars.iter().cloned().collect())
+}
+
+/// Print a TokenStream
+pub fn print_tokenstream(tokenstream: &TokenStream) {
+    for t in tokenstream {
+        print!("{}", t);
+    }
+    println!();
 }
