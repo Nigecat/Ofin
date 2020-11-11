@@ -55,7 +55,7 @@ pub enum Token {
     /// An if statement and the expression that follows it
     If(Expression),
     /// A while loop and the expression that follows it
-    //While(Expression),
+    While(Expression),
     /// A symbol, this should store the name of the symbol, and should match up to the symbol table
     Symbol(String),
     /// A constant, this should store the index of the constant in the constant table

@@ -1,12 +1,15 @@
 use super::super::{clean, tokenstream_to_string, TokenStreamToken};
-use super::LineResult;
+use super::{LineResult, LineResultType};
 use crate::application::Application;
 use crate::errors::TokenizerError;
 use crate::symbols::{self, Symbol};
 use crate::tokens::Token;
 
 /// Handle variable declarations in the format `<type> <name> = <value>`
-pub fn declare_variable(line: &[TokenStreamToken], application: &mut Application) -> LineResult {
+pub fn declare_variable(
+    line: &[TokenStreamToken],
+    application: &mut Application,
+) -> LineResultType {
     // Int
     if line.len() > 3 && line[0] == 'i' && line[1] == 'n' && line[2] == 't' {
         trace!("Detected int declaration");
@@ -25,7 +28,7 @@ pub fn declare_variable(line: &[TokenStreamToken], application: &mut Application
 
             application.symbols.set(&name, Box::new(symbol));
 
-            return Ok(true);
+            return Ok(LineResult::new(true, None));
         }
     }
 
@@ -69,9 +72,9 @@ pub fn declare_variable(line: &[TokenStreamToken], application: &mut Application
             let symbol = symbols::SString::new(&value).unwrap();
             application.symbols.set(&name, Box::new(symbol));
 
-            return Ok(true);
+            return Ok(LineResult::new(true, None));
         }
     }
 
-    Ok(false)
+    Ok(LineResult::new(false, None))
 }

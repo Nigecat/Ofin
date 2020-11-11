@@ -43,23 +43,39 @@ pub fn pass_three(
 
     debug!(" - Detected {} lines", lines.len());
 
-    // Now we can process things line by line
-    for (i, line) in lines.iter().enumerate() {
+    let mut tokens: Vec<Token> = Vec::new();
+
+    // Now we can process things line by line (and skip any empty lines)
+    for (i, line) in lines.iter().filter(|l| !l.is_empty()).enumerate() {
         trace!("Processing line {}", i + 1);
 
-        if declare_variable(&line, &mut application)? {
+        if declare_variable(&line, &mut application)?.status {
             continue;
         }
-        // If we couldn't match this line then we know that it is a syntax error
-        else {
-            // print!("{:?}", line);
-            return Err(TokenizerError::new(format!(
-                "Invalid syntax on line {}: {}",
-                i + 1,
-                tokenstream_display(&line)
-            )));
+
+        let r = curly_bracket(&line)?;
+        if r.status {
+            if let Some(mut c) = r.content {
+                tokens.append(&mut c);
+            }
+            continue;
         }
+
+        let r = control_flow(&line)?;
+        if r.status {
+            if let Some(mut c) = r.content {
+                tokens.append(&mut c);
+            }
+            continue;
+        }
+
+        // If we couldn't match this line then we know that it is a syntax error
+        return Err(TokenizerError::new(format!(
+            "Invalid syntax on line {}: {}",
+            i + 1,
+            tokenstream_display(&line)
+        )));
     }
 
-    Ok(vec![])
+    Ok(tokens)
 }

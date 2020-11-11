@@ -43,8 +43,5 @@ pub fn tokenize(
     // Pass 3: Tokenize everything else
     let tokenstream = pass_three(tokenstream, &mut application)?;
 
-    println!("{:?}", tokenstream);
-    println!("{:?}", application);
-
     Ok(tokenstream)
 }

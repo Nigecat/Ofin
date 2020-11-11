@@ -2,7 +2,7 @@ use super::{tokenstream_to_string, TokenStream, TokenStreamToken};
 use crate::application::Application;
 use crate::errors::TokenizerError;
 use crate::symbols::*;
-use crate::tokens::{Token, Expression};
+use crate::tokens::{Expression, Token};
 use crate::util::is_digit;
 use std::convert::TryFrom;
 

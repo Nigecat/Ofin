@@ -20,7 +20,8 @@ fn _main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut application = Application::new();
     let tokenstream = tokenizer::tokenize(&source.trim(), &mut application)?;
-    println!("{:#?}", tokenstream);
+    println!("{:?}", tokenstream);
+    println!("{:?}", application);
 
     Ok(())
 }
