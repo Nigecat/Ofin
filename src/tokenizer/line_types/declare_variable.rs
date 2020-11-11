@@ -1,4 +1,4 @@
-use super::super::{clean, tokenstream_to_string, TokenStream};
+use super::super::{clean, tokenstream_to_string, TokenStreamToken};
 use super::LineResult;
 use crate::application::Application;
 use crate::errors::TokenizerError;
@@ -6,7 +6,7 @@ use crate::symbols::{self, Symbol};
 use crate::tokens::Token;
 
 /// Handle variable declarations in the format `<type> <name> = <value>`
-pub fn declare_variable(line: &TokenStream, application: &mut Application) -> LineResult {
+pub fn declare_variable(line: &[TokenStreamToken], application: &mut Application) -> LineResult {
     // Int
     if line.len() > 3 && line[0] == 'i' && line[1] == 'n' && line[2] == 't' {
         trace!("Detected int declaration");
@@ -19,7 +19,7 @@ pub fn declare_variable(line: &TokenStream, application: &mut Application) -> Li
             // Extract the value of the variable
             let value = tokenstream_to_string(&clean(line[eq_pos + 1..].to_vec()))?;
             trace!("Declaring variable '{}' with value: {}", name, value);
-            let symbol = symbols::SInt::new(&value).ok_or(TokenizerError::new(format!(
+            let symbol = symbols::SInt::new(&value).ok_or_else(|| TokenizerError::new(format!(
                 "'{}' is not a valid integer",
                 value
             )))?;

@@ -7,16 +7,14 @@ use crate::errors::TokenizerError;
 use crate::tokens::Token;
 use pass_one::pass_one;
 use pass_two::pass_two;
-use std::convert::TryFrom;
 use tokenstream::*;
-use tokenstream::{TokenStream, TokenStreamToken};
 
 /// Take an array of tokens and remove any leading or trailing whitespace
 ///
 /// If tokenstream is an array filled with only spaces it will return an empty array.
 /// NOTE: This modifies the original token stream
 fn clean(tokenstream: TokenStream) -> TokenStream {
-    let mut tokens = tokenstream.clone();
+    let mut tokens = tokenstream;
     // Remove elements from the start until we either run out of elements or get to a character that isn't a space
     while !tokens.is_empty() && tokens.first().unwrap() == &TokenStreamToken::Char(' ') {
         tokens.remove(0);
@@ -34,27 +32,14 @@ pub fn tokenize(
     input: &str,
     mut application: &mut Application,
 ) -> Result<Vec<Token>, TokenizerError> {
-    let mut tokenstream: Vec<TokenStreamToken>;
-
     // Pass 1: Process single character tokens (and ==)
-    tokenstream = pass_one(&input)?;
+    let tokenstream = pass_one(&input)?;
 
-    // Pass 2: Allocate variables/constants in the symbol/constant table
-    tokenstream = pass_two(tokenstream, &mut application)?;
+    // Pass 2: Tokenize everything else
+    let tokenstream = pass_two(tokenstream, &mut application)?;
 
     println!("{:?}", tokenstream);
     println!("{:?}", application);
-    Ok(vec![])
-    /*
-    // If there are any characters left after processing, then we must have invalid syntax somewhere
-    if tokenstream.iter().any(|t| t.is_char()) {
-        return Err(TokenizerError::new("Syntax error"));
-    }
 
-    // There should be no character in the token stream now, so we should be able to safetly unwrap each value into a token
-    Ok(tokenstream
-        .iter()
-        .map(|t| Token::try_from(t).unwrap())
-        .collect())
-    */
+    Ok(tokenstream)
 }

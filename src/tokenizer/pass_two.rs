@@ -1,11 +1,14 @@
 use super::line_types::*;
-use super::{TokenStream, TokenStreamReturn, TokenStreamToken, tokenstream_display};
+use super::{tokenstream_display, TokenStream, TokenStreamToken};
 use crate::application::Application;
 use crate::errors::TokenizerError;
 use crate::tokens::Token;
 
 /// Allocate variables/constants in the symbol/constant table
-pub fn pass_two(tokenstream: TokenStream, mut application: &mut Application) -> TokenStreamReturn {
+pub fn pass_two(
+    tokenstream: TokenStream,
+    mut application: &mut Application,
+) -> Result<Vec<Token>, TokenizerError> {
     debug!("Running pass 2 of tokenizer");
 
     let mut lines: Vec<TokenStream> = Vec::new();
@@ -19,8 +22,7 @@ pub fn pass_two(tokenstream: TokenStream, mut application: &mut Application) -> 
             lines.push(Vec::new());
             lines.last_mut().unwrap().push(t);
             lines.push(Vec::new());
-        }
-        else if t == TokenStreamToken::Token(Token::EOL) {
+        } else if t == TokenStreamToken::Token(Token::EOL) {
             lines.push(Vec::new());
         } else {
             // Take out any leading spaces
@@ -50,7 +52,11 @@ pub fn pass_two(tokenstream: TokenStream, mut application: &mut Application) -> 
         }
         // If we couldn't match this line then we know that it is a syntax error
         else {
-            return Err(TokenizerError::new(format!("Invalid syntax on line {}: {}", i + 1, tokenstream_display(&line))));
+            return Err(TokenizerError::new(format!(
+                "Invalid syntax on line {}: {}",
+                i + 1,
+                tokenstream_display(&line)
+            )));
         }
     }
 

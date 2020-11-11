@@ -1,9 +1,10 @@
-use super::{TokenStream, TokenStreamReturn, TokenStreamToken};
+use super::{TokenStream, TokenStreamToken};
 use crate::tokens::Token;
+use crate::errors::TokenizerError;
 use std::convert::TryFrom;
 
 /// Process single character tokens (and ==)
-pub fn pass_one(input: &str) -> TokenStreamReturn {
+pub fn pass_one(input: &str) -> Result<Vec<TokenStreamToken>, TokenizerError> {
     debug!("Running pass 1 of tokenizer");
 
     // Whether we are currently inside quotes, this only affects double quotes
@@ -23,7 +24,6 @@ pub fn pass_one(input: &str) -> TokenStreamReturn {
     for (i, c) in input.chars().enumerate() {
         // If this is the end of a multi line comment
         if in_block_comment
-            && in_block_comment
             && input.chars().nth(i - 1).unwrap_or(' ') == '*'
             && c == '/'
         {
