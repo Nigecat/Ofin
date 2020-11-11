@@ -22,7 +22,11 @@ pub fn pass_one(input: &str) -> TokenStreamReturn {
 
     for (i, c) in input.chars().enumerate() {
         // If this is the end of a multi line comment
-        if in_block_comment && in_block_comment && input.chars().nth(i - 1).unwrap_or(' ') == '*' && c == '/'{
+        if in_block_comment
+            && in_block_comment
+            && input.chars().nth(i - 1).unwrap_or(' ') == '*'
+            && c == '/'
+        {
             in_block_comment = false;
             continue;
         }

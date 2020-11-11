@@ -29,7 +29,7 @@ pub enum Token {
     Plus,
     /// *
     Times,
-    /// / 
+    /// /
     Divide,
     /// !
     Exclamation,

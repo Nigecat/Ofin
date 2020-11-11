@@ -8,16 +8,10 @@ use crate::tokens::Token;
 /// Handle variable declarations in the format `<type> <name> = <value>`
 pub fn declare_variable(line: &TokenStream, application: &mut Application) -> LineResult {
     // Int
-    if line.len() > 3
-        && line[0] == TokenStreamToken::Char('i')
-        && line[1] == TokenStreamToken::Char('n')
-        && line[2] == TokenStreamToken::Char('t')
-    {
+    if line.len() > 3 && line[0] == 'i' && line[1] == 'n' && line[2] == 't' {
         trace!("Detected int declaration");
         // Get the position of the equals sign
-        let eq_pos = line
-            .iter()
-            .position(|c| c == &TokenStreamToken::Token(Token::Equals));
+        let eq_pos = line.iter().position(|c| c == Token::Equals);
         // If there is an equals sign
         if let Some(eq_pos) = eq_pos {
             // Extract the name of the variable
@@ -38,18 +32,16 @@ pub fn declare_variable(line: &TokenStream, application: &mut Application) -> Li
 
     // String
     if line.len() > 6
-        && line[0] == TokenStreamToken::Char('s')
-        && line[1] == TokenStreamToken::Char('t')
-        && line[2] == TokenStreamToken::Char('r')
-        && line[3] == TokenStreamToken::Char('i')
-        && line[4] == TokenStreamToken::Char('n')
-        && line[5] == TokenStreamToken::Char('g')
+        && line[0] == 's'
+        && line[1] == 't'
+        && line[2] == 'r'
+        && line[3] == 'i'
+        && line[4] == 'n'
+        && line[5] == 'g'
     {
         trace!("Detected string declaration");
         // Get the position of the equals sign
-        let eq_pos = line
-            .iter()
-            .position(|c| c == &TokenStreamToken::Token(Token::Equals));
+        let eq_pos = line.iter().position(|c| c == Token::Equals);
 
         // If there is an equals sign
         if let Some(eq_pos) = eq_pos {
@@ -61,8 +53,8 @@ pub fn declare_variable(line: &TokenStream, application: &mut Application) -> Li
             if value.len() < 2 {
                 return Err(TokenizerError::new("Invalid string assignment"));
             }
-            if value.first().unwrap() == &TokenStreamToken::Token(Token::DoubleQuote)
-                && value.last().unwrap() == &TokenStreamToken::Token(Token::DoubleQuote)
+            if value.first().unwrap() == Token::DoubleQuote
+                && value.last().unwrap() == Token::DoubleQuote
             {
                 // Remove the quotes
                 value.remove(0);

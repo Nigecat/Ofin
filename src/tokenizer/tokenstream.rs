@@ -20,6 +20,33 @@ impl TokenStreamToken {
     }
 }
 
+impl PartialEq<Token> for &TokenStreamToken {
+    fn eq(&self, other: &Token) -> bool {
+        match self {
+            TokenStreamToken::Char(_) => false,
+            TokenStreamToken::Token(t) => t == other,
+        }
+    }
+}
+
+impl PartialEq<char> for TokenStreamToken {
+    fn eq(&self, other: &char) -> bool {
+        self == &TokenStreamToken::from(other)
+    }
+}
+
+impl From<Token> for TokenStreamToken {
+    fn from(t: Token) -> Self {
+        TokenStreamToken::Token(t)
+    }
+}
+
+impl From<&char> for TokenStreamToken {
+    fn from(c: &char) -> Self {
+        TokenStreamToken::Char(*c)
+    }
+}
+
 impl TryFrom<&TokenStreamToken> for char {
     type Error = TokenizerError;
 
