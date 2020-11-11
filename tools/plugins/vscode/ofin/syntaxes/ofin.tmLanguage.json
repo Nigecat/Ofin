@@ -1,0 +1,58 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Ofin",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#storage_types"
+		},
+		{	
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.ofin",
+				"match": "\\b(if|while|for|return)\\b"
+			}]
+		},
+		"storage_types": {
+			"patterns": [{
+				"name": "storage.type.ofin",
+				"match": "(?-mix:\\b(int|string)\\b)"	
+			}]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.double-slash.ofin",
+					"begin": "(\\/\\/)",
+					"end": "(?:\\n|$)"
+				},
+				{
+					"name": "comment.block.ofin",
+					"begin": "(\\/\\*)",
+					"end": "(\\*\\/)"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.ofin",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.ofin",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.ofin"
+}
