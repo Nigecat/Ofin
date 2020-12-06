@@ -1,6 +1,10 @@
-use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::fs;
+use crate::util::path_exists;
+use std::fs::{self, File};
+use std::io::Write;
+use std::path::{Path, PathBuf};
+
+/// The relative directory to store cache artifacts in
+static CACHE_DIR: &str = "cache";
 
 /// An md5 hash
 type Hash = String;
@@ -11,36 +15,37 @@ fn calculate_hash<T: AsRef<[u8]>>(data: T) -> Hash {
     format!("{:x}", digest)
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Cache {
-    inner: HashMap<Hash, String>,
-}
+pub struct Cache {}
 
 impl Cache {
-    /// Create a new cache or load it from disk
+    /// Init the cache, this should be called before attempting to access anything
+    pub fn init() -> Self {
+        fs::create_dir_all("cache").unwrap();
+        Cache {}
+    }
+
+    /// Check if some data is in the cache
+    pub fn has<T: AsRef<[u8]>>(data: T) -> bool {
+        path_exists(&Cache::get(data))
+    }
+
+    /// Get the file path to some cached data.
     ///
-    /// This will automatically write all changes to `cache.bin`.
-    pub fn new() -> Self {
-        // Check if cache.bin exists
-        if fs::metadata("cache.bin").is_ok() {
-            fs::read("cache.bin").unwrap().into()
-        } else {
-            fs::File::create("cache.bin").unwrap();
-            Cache {
-                inner: HashMap::new(),
-            }
-        }
+    /// This **does not** guarantee that the path exists,
+    /// that should be checked prior using the [get](#method.get) method.
+    pub fn get<T: AsRef<[u8]>>(data: T) -> PathBuf {
+        Path::new(CACHE_DIR).join(calculate_hash(data))
     }
-}
 
-impl From<Cache> for Vec<u8> {
-    fn from(cache: Cache) -> Self {
-        bincode::serialize(&cache).unwrap()
-    }
-}
+    /// Cache some data.
+    ///
+    /// Returns a path to the cached data.
+    pub fn cache<T: AsRef<[u8]>>(data: T) -> PathBuf {
+        let hash = calculate_hash(&data);
+        let path = Cache::get(hash);
+        let mut file = File::create(&path).unwrap();
+        file.write_all(data.as_ref()).unwrap();
 
-impl From<Vec<u8>> for Cache {
-    fn from(data: Vec<u8>) -> Self {
-        bincode::deserialize(&data[..]).unwrap()
+        path
     }
 }
