@@ -5,3 +5,10 @@ authors = ["Nigecat"]
 edition = "2018"
 
 [dependencies]
+ofin-std-common = { path = "ofin-std-common" }
+
+[target.'cfg(windows)'.dependencies]
+ofin-std-windows = { path = "ofin-std-windows" }
+
+[target.'cfg(unix)'.dependencies]
+ofin-std-unix = { path = "ofin-std-unix" }

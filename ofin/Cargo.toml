@@ -1,0 +1,8 @@
+[package]
+name = "ofin"
+version = "0.0.1"
+authors = ["Nigecat"]
+edition = "2018"
+
+[dependencies]
+ofin-std = { path = "../ofin-std" }

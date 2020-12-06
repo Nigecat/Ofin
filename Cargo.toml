@@ -1,4 +1,5 @@
 [workspace]
 members = [
-    "ofin-std"
+    "ofin-std",
+    "ofin"
 ]
