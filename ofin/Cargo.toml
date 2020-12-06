@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 log = "0.4.11"
+which = "4.0.2"
 thiserror = "1.0.22"
 fancy-regex = "0.4.1"
 pretty_env_logger = "0.4.0"
