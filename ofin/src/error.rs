@@ -1,6 +1,4 @@
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-pub enum OfinError {
-    
-}
+pub enum OfinError {}

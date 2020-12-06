@@ -1,4 +1,4 @@
-use std::{fs, env, process};
+use std::{env, fs, process};
 
 #[rustfmt::skip]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
