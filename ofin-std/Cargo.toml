@@ -5,6 +5,7 @@ authors = ["Nigecat"]
 edition = "2018"
 
 [dependencies]
+ofin-types = { path = "ofin-types" }
 ofin-std-common = { path = "ofin-std-common" }
 
 [target.'cfg(windows)'.dependencies]

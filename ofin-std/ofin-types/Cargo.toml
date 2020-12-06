@@ -1,8 +1,7 @@
 [package]
-name = "ofin-std-common"
+name = "ofin-types"
 version = "0.0.1"
 authors = ["Nigecat"]
 edition = "2018"
 
 [dependencies]
-ofin-types = { path = "../ofin-types" }

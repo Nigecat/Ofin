@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use std::fs;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::fs;
 
 /// An md5 hash
 type Hash = String;
@@ -18,7 +18,7 @@ pub struct Cache {
 
 impl Cache {
     /// Create a new cache or load it from disk
-    /// 
+    ///
     /// This will automatically write all changes to `cache.bin`.
     pub fn new() -> Self {
         // Check if cache.bin exists

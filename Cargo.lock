@@ -129,11 +129,15 @@ dependencies = [
  "ofin-std-common",
  "ofin-std-unix",
  "ofin-std-windows",
+ "ofin-types",
 ]
 
 [[package]]
 name = "ofin-std-common"
 version = "0.0.1"
+dependencies = [
+ "ofin-types",
+]
 
 [[package]]
 name = "ofin-std-unix"
@@ -141,6 +145,10 @@ version = "0.0.1"
 
 [[package]]
 name = "ofin-std-windows"
+version = "0.0.1"
+
+[[package]]
+name = "ofin-types"
 version = "0.0.1"
 
 [[package]]
