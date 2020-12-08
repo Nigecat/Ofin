@@ -1,6 +1,5 @@
 use crate::util::path_exists;
-use std::fs::{self, File};
-use std::io::Write;
+use std::fs;
 use std::path::{Path, PathBuf};
 
 /// The relative directory to store cache artifacts in
@@ -37,6 +36,7 @@ impl Cache {
         Path::new(CACHE_DIR).join(calculate_hash(data))
     }
 
+    /*
     /// Cache some data.
     ///
     /// Returns a path to the cached data.
@@ -48,4 +48,5 @@ impl Cache {
 
         path
     }
+    */
 }

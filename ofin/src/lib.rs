@@ -3,10 +3,10 @@ extern crate log;
 #[macro_use]
 extern crate lazy_static;
 mod error;
-mod pattern;
+pub mod pattern;
 mod transpiler;
 pub use error::OfinError;
-pub mod cache;
+mod cache;
 pub mod util;
 use cache::Cache;
 use std::env::current_dir;

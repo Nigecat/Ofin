@@ -1,7 +1,7 @@
 use super::pattern::TranspilePattern;
 
 lazy_static! {
-    static ref TRANSPILE_PATTERNS: [TranspilePattern<'static>; 0] = [];
+    static ref TRANSPILE_PATTERNS: [TranspilePattern; 0] = [];
 }
 
 /// Transpile a script into rust code
