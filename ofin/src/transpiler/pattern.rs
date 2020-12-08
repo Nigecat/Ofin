@@ -5,9 +5,7 @@ use std::fmt;
 ///
 /// # Examples
 ///
-/// ```
-/// use ofin::pattern::TranspilePattern;
-///
+/// ```ignore
 /// let pattern = TranspilePattern::new("b", "c", None);
 /// assert_eq!(pattern.replace("abc"), "acc");
 /// ```
@@ -16,9 +14,7 @@ use std::fmt;
 /// Using a backreference:
 /// This takes the replace string `a`, finds it in the source text, then replaces it with the pattern `$1`.
 /// Which is then pulled from the **1**st extractor, `b` which matches the string literal 'b' and uses it as the replacement.
-/// ```
-/// use ofin::pattern::TranspilePattern;
-///
+/// ```ignore
 /// let pattern = TranspilePattern::new("a", "$1", Some(&["b"]));
 /// assert_eq!(pattern.replace("abc"), "bbc");
 /// ```

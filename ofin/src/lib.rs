@@ -2,12 +2,11 @@
 extern crate log;
 #[macro_use]
 extern crate lazy_static;
+mod cache;
 mod error;
-pub mod pattern;
 mod transpiler;
 pub use error::OfinError;
-mod cache;
-pub mod util;
+mod util;
 use cache::Cache;
 use std::io::Write;
 use std::process::{Command, Stdio};
@@ -22,7 +21,7 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
     info!("Transpiling source script...");
 
     // Convert our ofin script into rust code
-    script = transpiler::transpile(script);
+    script = transpiler::transpile(script)?;
 
     // Check if this script is not in the cache
     if !Cache::has(&script) {
