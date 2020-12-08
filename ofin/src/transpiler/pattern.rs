@@ -75,26 +75,6 @@ impl<'t> TranspilePattern {
         }
 
         mut_text
-
-        /*
-        for (i, extractor) in self.extractors.iter().enumerate() {
-            let sign = format!("${}", i + 1);
-
-            if let Some(capture) = &extractor.captures(&text.as_ref()) {
-                if i < self.mutators.len() {
-                    capture[0] = self.mutators[i](&capture[0]);
-                }
-
-                with = with.replace(&sign, &capture[0]);
-            } else {
-                return text.as_ref().to_string();
-            }
-        }
-
-        self.replace
-            .replace_all(&text.as_ref(), with.as_str())
-            .to_string()
-        */
     }
 }
 
