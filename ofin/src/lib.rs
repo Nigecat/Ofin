@@ -18,11 +18,6 @@ use tempfile::NamedTempFile;
 pub fn execute(mut script: String) -> Result<(), OfinError> {
     Cache::init();
 
-    // Make sure we have the rust compiler installed
-    if !util::in_path("rustc") {
-        return Err(OfinError::RustCNotFound);
-    }
-
     info!("Transpiling source script...");
 
     // Convert our ofin script into rust code

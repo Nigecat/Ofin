@@ -1,9 +1,11 @@
-use crate::util::path_exists;
+use crate::util::{executable_dir, path_exists};
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
-/// The relative directory to store cache artifacts in
-static CACHE_DIR: &str = "cache";
+lazy_static! {
+    /// The relative directory to store cache artifacts in
+    static ref CACHE_DIR: PathBuf = executable_dir().join("cache");
+}
 
 /// An md5 hash
 type Hash = String;
@@ -19,7 +21,7 @@ pub struct Cache {}
 impl Cache {
     /// Init the cache, this should be called before attempting to access anything
     pub fn init() -> Self {
-        fs::create_dir_all("cache").unwrap();
+        fs::create_dir_all(CACHE_DIR.to_str().unwrap()).unwrap();
         Cache {}
     }
 
@@ -33,7 +35,7 @@ impl Cache {
     /// This **does not** guarantee that the path exists,
     /// that should be checked prior using the [get](#method.get) method.
     pub fn get<T: AsRef<[u8]>>(data: T) -> PathBuf {
-        Path::new(CACHE_DIR).join(calculate_hash(data))
+        CACHE_DIR.join(calculate_hash(data))
     }
 
     /*
