@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 /// A string
 pub struct OfinString {
     inner: String,
@@ -53,5 +55,13 @@ impl<S: AsRef<str>> From<S> for OfinString {
 impl From<OfinString> for String {
     fn from(string: OfinString) -> String {
         string.inner
+    }
+}
+
+impl Deref for OfinString {
+    type Target = String;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
     }
 }
