@@ -5,3 +5,4 @@ authors = ["Nigecat"]
 edition = "2018"
 
 [dependencies]
+winapi = "0.3.9"
