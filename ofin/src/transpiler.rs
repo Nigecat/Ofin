@@ -1,9 +1,8 @@
 use super::pattern::TranspilePattern;
 
 lazy_static! {
-    static ref TRANSPILE_PATTERNS: [TranspilePattern<'static>; 1] = [
-        TranspilePattern::new(r#"(^|\s)print\("#, "println!("),
-    ];
+    static ref TRANSPILE_PATTERNS: [TranspilePattern<'static>; 1] =
+        [TranspilePattern::new(r#"(^|\s)print\("#, "println!("),];
 }
 
 /// Transpile a script into rust code
