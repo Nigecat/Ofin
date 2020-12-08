@@ -30,12 +30,17 @@ impl OfinString {
 
     /// Convert this string to uppercase
     pub fn toUpper(&self) -> OfinString {
-        OfinString::new(self.inner.to_uppercase())
+        self.inner.to_uppercase().into()
     }
 
     /// Convert this string to lowercase
     pub fn toLower(&self) -> OfinString {
-        OfinString::new(self.inner.to_lowercase())
+        self.inner.to_lowercase().into()
+    }
+
+    /// Remove leading and trailing whitespace from this string
+    pub fn time(&self) -> OfinString {
+        self.inner.trim().into()
     }
 }
 

@@ -8,6 +8,9 @@ pub use error::OfinError;
 pub mod cache;
 pub mod util;
 use cache::Cache;
+use std::io::Write;
+use std::process::{Command, Stdio};
+use tempfile::NamedTempFile;
 
 /// Execute a script
 pub fn execute(mut script: String) -> Result<(), OfinError> {
@@ -23,13 +26,39 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
     // Convert our ofin script into rust code
     script = transpiler::transpile(script);
 
-    // Check if this script is in the cache
-    if Cache::has(&script) {
-        let _path = Cache::get(script);
-    // TODO: Execute script from path
-    } else {
-        // TODO: Build script and cache it
+    // Check if this script is not in the cache
+    if !Cache::has(&script) {
+        // Write the transpiled script to a temporary location so we can pass it to rustc
+        let mut file = NamedTempFile::new().unwrap();
+        write!(file, "{}", &script).unwrap();
+
+        let command = Command::new("rustc")
+            .args(&[
+                &file.path().to_str().unwrap(),
+                "-o",
+                &Cache::get(&script).to_str().unwrap(),
+                "--crate-name",
+                "ofin",
+            ])
+            .output()
+            .expect("failed to invoke rustc");
+        let err = std::str::from_utf8(&command.stderr).unwrap().trim();
+        if !err.is_empty() {
+            error!("{}", err);
+        }
     }
+
+    let path = Cache::get(script);
+    debug!("Running executable: {:?}", path);
+
+    /*
+    Command::new(path)
+        .stdin(Stdio::null())
+        .stdout(Stdio::inherit())
+        .env_clear()
+        .spawn()
+        .expect("unable to start program");
+    */
 
     Ok(())
 }
