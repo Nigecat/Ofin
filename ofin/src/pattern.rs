@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::fmt;
 
 /// A transpile pattern.
 ///
@@ -67,5 +68,15 @@ impl<'t> TranspilePattern {
         self.replace
             .replace_all(&text.as_ref(), with.as_str())
             .to_string()
+    }
+}
+
+impl fmt::Debug for TranspilePattern {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{:?} -> {:?} -> {:?}",
+            self.extractors, self.replace, self.with,
+        )
     }
 }

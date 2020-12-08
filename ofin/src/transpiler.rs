@@ -7,6 +7,7 @@ lazy_static! {
 /// Transpile a script into rust code
 pub fn transpile(mut script: String) -> String {
     TRANSPILE_PATTERNS.iter().for_each(|p| {
+        trace!("Running pattern: {:?}", p);
         script = p.replace(&script);
     });
 
