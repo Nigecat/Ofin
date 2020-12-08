@@ -1,23 +1,15 @@
-use regex::Regex;
-
-macro_rules! regex {
-    ($pattern:expr) => {
-        Regex::new($pattern).unwrap()
-    };
-}
+use super::pattern::TranspilePattern;
 
 lazy_static! {
-    static ref REGEX_PATTERNS: [(Regex, &'static str); 1] =
-        [(regex!(r#"(^|\s)print\("#), "println!("),];
+    static ref TRANSPILE_PATTERNS: [TranspilePattern<'static>; 1] = [
+        TranspilePattern::new(r#"(^|\s)print\("#, "println!("),
+    ];
 }
 
 /// Transpile a script into rust code
 pub fn transpile(mut script: String) -> String {
-    REGEX_PATTERNS.iter().for_each(|r| {
-        let regex: &Regex = &r.0;
-        let replace: &'static str = r.1;
-        trace!("Running regex: {:?} -> {}", regex, replace);
-        script = regex.replace_all(&script, replace).to_string();
+    TRANSPILE_PATTERNS.iter().for_each(|p| {
+        script = p.replace(&script);
     });
 
     // Wrap the script in a rust main function
