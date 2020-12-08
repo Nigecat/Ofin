@@ -9,7 +9,6 @@ pub use error::OfinError;
 mod cache;
 pub mod util;
 use cache::Cache;
-use std::env::current_dir;
 use std::io::Write;
 use std::process::{Command, Stdio};
 use tempfile::NamedTempFile;
@@ -17,6 +16,8 @@ use tempfile::NamedTempFile;
 /// Execute a script
 pub fn execute(mut script: String) -> Result<(), OfinError> {
     Cache::init();
+
+    let current_dir = util::executable_dir();
 
     info!("Transpiling source script...");
 
@@ -36,6 +37,8 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
                 &Cache::get(&script).to_str().unwrap(),
                 "--crate-name",
                 "ofin",
+                "-L",
+                current_dir.to_str().unwrap(),
             ])
             .output()
             .expect("failed to invoke rustc");
@@ -48,7 +51,7 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
     let path = Cache::get(script);
     debug!("Running executable: {:?}", path);
 
-    Command::new(current_dir().unwrap().join(path))
+    Command::new(current_dir.join(path))
         .stdin(Stdio::null())
         .stdout(Stdio::inherit())
         .spawn()

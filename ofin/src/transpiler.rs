@@ -10,8 +10,17 @@ pub fn transpile(mut script: String) -> String {
         script = p.replace(&script);
     });
 
-    // Wrap the script in a rust main function
-    script = format!("fn main() {{ {} }}", script);
+    // Wrap the script in a rust main function, link our standard library, and include the prelude
+    script = format!(
+        "
+        extern crate ofin_std; 
+        #[allow(unused_imports)]
+        use ofin_std::prelude::*; 
+        
+        fn main() {{ {} }}
+    ",
+        script
+    );
 
     trace!("Finished transpiling with code:\n{}", script);
 
