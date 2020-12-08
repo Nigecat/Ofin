@@ -48,6 +48,6 @@ impl BlockRule {
 
 impl fmt::Debug for BlockRule {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}: {}", self.matcher, self.error,)
+        write!(f, "{:?} -> {}", self.matcher, self.error,)
     }
 }

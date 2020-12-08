@@ -12,7 +12,7 @@ use std::fmt;
 ///
 ///
 /// Using a backreference:
-/// This takes the replace string `a`, finds it in the source text, then replaces it with the pattern `$$`.
+/// This takes the replace string `a`, finds it in the source text, then replaces it with the pattern `$1`.
 /// Which is then pulled from the  extractor, `b` which matches the string literal 'b' and uses it as the replacement.
 /// ```ignore
 /// let pattern = TranspilePattern::new("a", "$1", Some("b"), None);

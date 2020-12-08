@@ -1,5 +1,6 @@
 use std::io::prelude::*;
 use std::{env, fs, process};
+#[allow(dead_code)]
 mod util;
 
 #[rustfmt::skip]

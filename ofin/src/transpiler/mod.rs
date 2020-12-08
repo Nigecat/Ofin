@@ -8,10 +8,13 @@ use rule::BlockRule;
 lazy_static! {
     static ref TRANSPILE_PATTERNS: [TranspilePattern; 1] = [
         // Convert `import <std/a/b>` to `use ofin_std::a::b`
-        TranspilePattern::new(r#"import\s*<.*>"#, "use $1", Some("<.*>"), Some(|s| format!("ofin_{}", util::remove_last(util::remove_first(&s.replace("/", "::")).unwrap()).unwrap()) ))
+        TranspilePattern::new(r#"import\s*<.*>"#, "use $1", Some("<.*>"), Some(|s| format!("ofin_{}", util::remove_last(util::remove_first(&s.replace("/", "::")).unwrap()).unwrap()) )),
+        // Convert `"abc"` to `OfinString::new("abc")` to allow the compiler to convert the str into our type
+        //TranspilePattern::new(r#"(")((?:(?!")[^\\]|(?:\\\\)*\\[^\\])*)(")"#, "OfinString::new($1)", Some(r#"(")((?:(?!")[^\\]|(?:\\\\)*\\[^\\])*)(")"#), None),
     ];
-    static ref BLOCK_RULES: [BlockRule; 0] = [
-       // BlockRule::new("::", OfinError::SyntaxError),
+    static ref BLOCK_RULES: [BlockRule; 1] = [
+        // Disallow the rust namespace identifier
+        BlockRule::new("::", OfinError::SyntaxError),
     ];
 }
 
