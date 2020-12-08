@@ -1,24 +1,30 @@
 mod pattern;
 mod rule;
 use super::OfinError;
+use crate::util;
 use pattern::TranspilePattern;
 use rule::BlockRule;
 
 lazy_static! {
-    static ref TRANSPILE_PATTERNS: [TranspilePattern; 0] = [];
-    static ref BLOCK_RULES: [BlockRule; 0] = [];
+    static ref TRANSPILE_PATTERNS: [TranspilePattern; 1] = [
+        // Convert `import <std/a/b>` to `use ofin_std::a::b`
+        TranspilePattern::new(r#"import\s*<.*>"#, "use $1", Some("<.*>"), Some(|s| format!("ofin_{}", util::remove_last(util::remove_first(&s.replace("/", "::")).unwrap()).unwrap()) ))
+    ];
+    static ref BLOCK_RULES: [BlockRule; 0] = [
+       // BlockRule::new("::", OfinError::SyntaxError),
+    ];
 }
 
 /// Transpile a script into rust code
 pub fn transpile(mut script: String) -> Result<String, OfinError> {
-    for pattern in TRANSPILE_PATTERNS.iter() {
-        trace!("Running pattern: {:?}", pattern);
-        script = pattern.replace(&script);
-    }
-
     for rule in BLOCK_RULES.iter() {
         trace!("Checking rule: {:?}", rule);
         rule.matches(&script)?;
+    }
+
+    for pattern in TRANSPILE_PATTERNS.iter() {
+        trace!("Running pattern: {:?}", pattern);
+        script = pattern.replace(&script);
     }
 
     // Wrap the script in a rust main function, link our standard library, and include the prelude
@@ -28,7 +34,9 @@ pub fn transpile(mut script: String) -> Result<String, OfinError> {
         #[allow(unused_imports)]
         use ofin_std::prelude::*; 
         
-        fn main() {{ {} }}
+        fn main() {{
+            {}
+        }}
     ",
         script
     );

@@ -31,7 +31,7 @@ impl BlockRule {
 
     /// Check if some text matches this rule
     ///
-    /// This will return `Ok()` if the text matches,
+    /// This will return `Ok()` if the text does not match,
     /// otherwise it will return an `Err()` with the supplied error variant.
     ///
     /// # Arguments
@@ -39,9 +39,9 @@ impl BlockRule {
     /// * `text` - The text to check
     pub fn matches<S: AsRef<str>>(&self, text: S) -> Result<(), OfinError> {
         if self.matcher.is_match(&text.as_ref()) {
-            Ok(())
-        } else {
             Err(self.error)
+        } else {
+            Ok(())
         }
     }
 }

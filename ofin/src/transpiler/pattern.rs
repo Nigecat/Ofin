@@ -6,22 +6,23 @@ use std::fmt;
 /// # Examples
 ///
 /// ```ignore
-/// let pattern = TranspilePattern::new("b", "c", None);
+/// let pattern = TranspilePattern::new("b", "c", None, None);
 /// assert_eq!(pattern.replace("abc"), "acc");
 /// ```
 ///
 ///
 /// Using a backreference:
-/// This takes the replace string `a`, finds it in the source text, then replaces it with the pattern `$1`.
-/// Which is then pulled from the **1**st extractor, `b` which matches the string literal 'b' and uses it as the replacement.
+/// This takes the replace string `a`, finds it in the source text, then replaces it with the pattern `$$`.
+/// Which is then pulled from the  extractor, `b` which matches the string literal 'b' and uses it as the replacement.
 /// ```ignore
-/// let pattern = TranspilePattern::new("a", "$1", Some(&["b"]));
+/// let pattern = TranspilePattern::new("a", "$1", Some("b"), None);
 /// assert_eq!(pattern.replace("abc"), "bbc");
 /// ```
 pub struct TranspilePattern {
     replace: Regex,
     with: String,
-    extractors: Vec<Regex>,
+    extractor: Option<Regex>,
+    mutator: Option<fn(&str) -> String>,
 }
 
 impl<'t> TranspilePattern {
@@ -31,20 +32,19 @@ impl<'t> TranspilePattern {
     ///
     /// * `replace` - The target text to replace
     /// * `with` - The text to replace the target with
-    /// * `extractors` - An array of extractors to use for backreferencing
+    /// * `extractor` - An extractor to use for backreferencing
+    /// * `mutator` - An (optional) closure to mutate extractor values
     pub fn new<S: AsRef<str>>(
         replace: &'t str,
         with: S,
-        extractors: Option<&'t [&'t str]>,
+        extractor: Option<&'t str>,
+        mutator: Option<fn(&str) -> String>,
     ) -> Self {
         TranspilePattern {
             replace: Regex::new(replace).unwrap(),
             with: with.as_ref().to_string(),
-            extractors: extractors
-                .unwrap_or(&[])
-                .iter()
-                .map(|e| Regex::new(e).unwrap())
-                .collect(),
+            extractor: extractor.and_then(|e| Some(Regex::new(e).unwrap())),
+            mutator,
         }
     }
 
@@ -54,16 +54,47 @@ impl<'t> TranspilePattern {
     ///
     /// * `text` - The text to run the replace on
     pub fn replace<S: AsRef<str>>(&self, text: S) -> String {
+        let text = text.as_ref().to_string();
+        let mut mut_text = text.clone();
         let mut with = self.with.clone();
 
+        for capture in self.replace.find_iter(&text) {
+            let capture = &text[capture.start()..capture.end()];
+
+            if let Some(extractor) = &self.extractor {
+                if let Some(value) = extractor.captures(&text) {
+                    let mut replace = value.get(0).unwrap().as_str().to_string();
+                    if let Some(mutator) = &self.mutator {
+                        replace = mutator(&replace);
+                    }
+                    with = with.replace("$1", &replace);
+                }
+            }
+
+            mut_text = mut_text.replace(capture, &with);
+        }
+
+        mut_text
+
+        /*
         for (i, extractor) in self.extractors.iter().enumerate() {
             let sign = format!("${}", i + 1);
-            with = with.replace(&sign, &extractor.captures(&text.as_ref()).unwrap()[0]);
+
+            if let Some(capture) = &extractor.captures(&text.as_ref()) {
+                if i < self.mutators.len() {
+                    capture[0] = self.mutators[i](&capture[0]);
+                }
+
+                with = with.replace(&sign, &capture[0]);
+            } else {
+                return text.as_ref().to_string();
+            }
         }
 
         self.replace
             .replace_all(&text.as_ref(), with.as_str())
             .to_string()
+        */
     }
 }
 
@@ -72,7 +103,7 @@ impl fmt::Debug for TranspilePattern {
         write!(
             f,
             "{:?} -> {:?} -> {:?}",
-            self.extractors, self.replace, self.with,
+            self.extractor, self.replace, self.with,
         )
     }
 }

@@ -12,3 +12,15 @@ pub fn executable_dir() -> PathBuf {
     self_dir.pop();
     self_dir
 }
+
+/// Remove the first character of a string
+pub fn remove_first(s: &str) -> Option<&str> {
+    s.chars().next().map(|c| &s[c.len_utf8()..])
+}
+
+/// Remove the last character of a string
+pub fn remove_last(s: &str) -> Option<String> {
+    let mut s = s.to_string();
+    s.pop();
+    Some(s)
+}
