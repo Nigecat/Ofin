@@ -8,7 +8,7 @@ use std::fmt;
 ///
 /// ```ignore
 /// let rule = BlockRule::new("b");
-/// assert_eq!(rule.matches("abc").is_err(), true);
+/// assert_eq!(rule.matches("abc").is_ok(), true);
 /// ```
 pub struct BlockRule {
     matcher: Regex,
