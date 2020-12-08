@@ -8,6 +8,7 @@ pub use error::OfinError;
 pub mod cache;
 pub mod util;
 use cache::Cache;
+use std::env::current_dir;
 use std::io::Write;
 use std::process::{Command, Stdio};
 use tempfile::NamedTempFile;
@@ -51,14 +52,11 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
     let path = Cache::get(script);
     debug!("Running executable: {:?}", path);
 
-    /*
-    Command::new(path)
+    Command::new(current_dir().unwrap().join(path))
         .stdin(Stdio::null())
         .stdout(Stdio::inherit())
-        .env_clear()
         .spawn()
         .expect("unable to start program");
-    */
 
     Ok(())
 }
