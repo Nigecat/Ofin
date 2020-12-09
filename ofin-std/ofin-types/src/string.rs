@@ -41,7 +41,7 @@ impl OfinString {
     }
 
     /// Remove leading and trailing whitespace from this string
-    pub fn time(&self) -> OfinString {
+    pub fn trim(&self) -> OfinString {
         self.inner.trim().into()
     }
 }
