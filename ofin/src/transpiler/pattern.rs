@@ -1,5 +1,5 @@
-use regex::Regex;
-use std::fmt;
+use pcre2::bytes::Regex;
+use std::{fmt, str};
 
 /// A transpile pattern.
 ///
@@ -58,12 +58,15 @@ impl<'t> TranspilePattern {
         let mut mut_text = text.clone();
         let mut with = self.with.clone();
 
-        for capture in self.replace.find_iter(&text) {
+        for capture in self.replace.find_iter(&text.as_bytes()) {
+            let capture = capture.unwrap();
             let capture = &text[capture.start()..capture.end()];
 
             if let Some(extractor) = &self.extractor {
-                if let Some(value) = extractor.captures(&text) {
-                    let mut replace = value.get(0).unwrap().as_str().to_string();
+                if let Some(value) = extractor.captures(&text.as_bytes()).unwrap() {
+                    let mut replace = str::from_utf8(value.get(0).unwrap().as_bytes())
+                        .unwrap()
+                        .to_string();
                     if let Some(mutator) = &self.mutator {
                         replace = mutator(&replace);
                     }

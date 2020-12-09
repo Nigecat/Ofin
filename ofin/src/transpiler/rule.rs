@@ -1,5 +1,5 @@
 use super::OfinError;
-use regex::Regex;
+use pcre2::bytes::Regex;
 use std::fmt;
 
 /// A block rule.
@@ -38,7 +38,7 @@ impl BlockRule {
     ///
     /// * `text` - The text to check
     pub fn matches<S: AsRef<str>>(&self, text: S) -> Result<(), OfinError> {
-        if self.matcher.is_match(&text.as_ref()) {
+        if self.matcher.is_match(&text.as_ref().as_bytes()).unwrap() {
             Err(self.error)
         } else {
             Ok(())
