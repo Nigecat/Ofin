@@ -5,7 +5,6 @@ pub struct OfinString {
     inner: String,
 }
 
-#[allow(non_snake_case)]
 impl OfinString {
     /// Create a new string from a rust string
     pub fn new<S: AsRef<str>>(string: S) -> Self {
