@@ -19,10 +19,8 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
 
     let current_dir = util::executable_dir();
 
-    info!("Transpiling source script...");
-
     let tokens = lexer::lex(&script)?;
-    debug!("Got tokens: {:?}", tokens);
+    trace!("Got tokens: {:?}", tokens);
 
     // Convert our ofin script into rust code
     script = transpiler::transpile(tokens)?;
