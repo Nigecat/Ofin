@@ -13,6 +13,7 @@ thiserror = "1.0.22"
 lazy_static = "1.4.0"
 pretty_env_logger = "0.4.0"
 ofin-std = { path = "../ofin-std" }
+ofin-derive = { path = "../ofin-derive" }
 
 [build-dependencies]
 which = "4.0.2"

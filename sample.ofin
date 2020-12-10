@@ -1,3 +1,1 @@
-//import <std/io/print>;
-
-print("Hello, World");
+"this is a string literal";

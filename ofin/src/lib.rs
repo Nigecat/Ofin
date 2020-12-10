@@ -4,6 +4,7 @@ extern crate log;
 extern crate lazy_static;
 mod cache;
 mod error;
+mod lexer;
 mod transpiler;
 pub use error::OfinError;
 mod util;
@@ -20,8 +21,11 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
 
     info!("Transpiling source script...");
 
+    let tokens = lexer::lex(&script)?;
+    debug!("Got tokens: {:#?}", tokens);
+
     // Convert our ofin script into rust code
-    script = transpiler::transpile(script)?;
+    script = transpiler::transpile(tokens)?;
 
     // Check if this script is not in the cache
     if !Cache::has(&script) {

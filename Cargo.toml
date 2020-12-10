@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "ofin-derive",
     "ofin-std",
     "ofin"
 ]
