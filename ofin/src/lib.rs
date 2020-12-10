@@ -33,16 +33,19 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
         let mut file = NamedTempFile::new().unwrap();
         write!(file, "{}", &script).unwrap();
 
+        let path = Cache::get(&script);
+        let args = &[
+            &file.path().to_str().unwrap(),
+            "-o",
+            &path.to_str().unwrap(),
+            "--crate-name",
+            "ofin",
+            "-L",
+            current_dir.to_str().unwrap(),
+        ];
+        debug!("Invoking `rustc {}`", args.join(" "));
         let command = Command::new("rustc")
-            .args(&[
-                &file.path().to_str().unwrap(),
-                "-o",
-                &Cache::get(&script).to_str().unwrap(),
-                "--crate-name",
-                "ofin",
-                "-L",
-                current_dir.to_str().unwrap(),
-            ])
+            .args(args)
             .output()
             .expect("failed to invoke rustc");
         let err = std::str::from_utf8(&command.stderr).unwrap().trim();
