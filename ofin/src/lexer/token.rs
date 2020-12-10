@@ -1,6 +1,6 @@
 use ofin_derive::VariantCount;
 use pcre2::bytes::Regex;
-use std::str;
+use std::{fmt, str};
 
 #[derive(Clone, Copy, VariantCount, PartialEq, Debug)]
 pub enum TokenType {
@@ -12,7 +12,6 @@ pub enum TokenType {
     EOL,
 }
 
-#[derive(Debug)]
 pub struct Token {
     token: TokenType,
     length: usize,
@@ -74,5 +73,20 @@ impl Token {
 
     pub fn literal(&self) -> &str {
         &self.literal
+    }
+}
+
+impl From<Token> for String {
+    fn from(token: Token) -> Self {
+        match token.token {
+            TokenType::StringLiteral => format!("OfinString::new({})", token.literal()),
+            _ => token.literal().to_string(),
+        }
+    }
+}
+
+impl fmt::Debug for Token {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}: {}", self.token, self.literal)
     }
 }

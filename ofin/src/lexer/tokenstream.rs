@@ -1,6 +1,6 @@
 use super::Token;
+use std::fmt;
 
-#[derive(Debug)]
 pub struct TokenStream {
     inner: Vec<Token>,
 }
@@ -18,5 +18,20 @@ impl TokenStream {
     /// * `token` - The token to append
     pub fn push(&mut self, token: Token) {
         self.inner.push(token);
+    }
+}
+
+impl IntoIterator for TokenStream {
+    type Item = Token;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.inner.into_iter()
+    }
+}
+
+impl fmt::Debug for TokenStream {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:#?}", self.inner)
     }
 }

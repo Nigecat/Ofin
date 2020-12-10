@@ -22,7 +22,7 @@ pub fn execute(mut script: String) -> Result<(), OfinError> {
     info!("Transpiling source script...");
 
     let tokens = lexer::lex(&script)?;
-    debug!("Got tokens: {:#?}", tokens);
+    debug!("Got tokens: {:?}", tokens);
 
     // Convert our ofin script into rust code
     script = transpiler::transpile(tokens)?;
