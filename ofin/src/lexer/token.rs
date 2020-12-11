@@ -9,7 +9,7 @@ pub struct TokenMatcher {
     matcher: Regex,
     replace_with: String,
     extractor: Option<Regex>,
-    mutator: Option<fn(&str) -> &str>,
+    mutator: Option<fn(&str) -> String>,
 }
 
 impl TokenMatcher {
@@ -27,7 +27,7 @@ impl TokenMatcher {
         matcher: String,
         replace_with: String,
         extractor: Option<String>,
-        mutator: Option<fn(&str) -> &str>,
+        mutator: Option<fn(&str) -> String>,
     ) -> Self {
         TokenMatcher {
             name,
@@ -97,13 +97,13 @@ impl From<Token<'_>> for String {
             if let Ok(extracted) = extractor.captures(token.literal.as_bytes()) {
                 if let Some(extracted) = &extracted {
                     let extracted = &extracted[0];
-                    let mut extracted = str::from_utf8(&extracted).unwrap();
+                    let mut extracted = str::from_utf8(&extracted).unwrap().to_string();
 
                     if let Some(mutator) = token.matcher.mutator {
-                        extracted = mutator(extracted);
+                        extracted = mutator(&extracted);
                     }
 
-                    text = text.replace("$1", extracted);
+                    text = text.replace("$1", &extracted);
                 }
             }
         }

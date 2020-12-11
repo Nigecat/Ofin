@@ -14,8 +14,9 @@ pub fn transpile(tokens: TokenStream) -> Result<String, OfinError> {
     // Wrap the script in a rust main function, link our standard library, and include the prelude
     script = format!(
         "
+        #![allow(unused_imports)]
+
         extern crate ofin_std; 
-        #[allow(unused_imports)]
         use ofin_std::prelude::*; 
         
         fn main() {{
