@@ -21,6 +21,10 @@ matcher = "string\\s+.+\\s*="
 replace_with = "let $1: OfinString ="
 extractor = "\\s+.+(?==)"
 
+[Token.FunctionCall]
+matcher = ".+\\((.|\\n)*\\)"
+replace_with = "self"
+
 # This token should remain at the end of the syntax list to ensure that it has the lowest priority
 [Token.Space]
 matcher = "\\s+"
