@@ -7,8 +7,8 @@ matcher = "\r?\n"
 [Token.StringLiteral]
 matcher = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
 replace_with = "OfinString::new($1)"
-extractor = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
+extractor = "copy"
 
 [Token.EOL]
 matcher = ";"
-replace_with = ";"
+replace_with = "self"
