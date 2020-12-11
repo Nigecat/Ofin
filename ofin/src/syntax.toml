@@ -12,3 +12,6 @@ extractor = "copy"
 [Token.EOL]
 matcher = ";"
 replace_with = "self"
+
+[Token.Comment]
+matcher = "((\\/\\*((.|\\n)*)\\*\\/)|\\/\\/.*$)"
