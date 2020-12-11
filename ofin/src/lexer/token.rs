@@ -1,40 +1,39 @@
-use super::TokenType;
 use pcre2::bytes::Regex;
 use std::{fmt, str};
 
 /// A token matcher.
-/// 
+///
 /// This struct is used for matching strings to tokens.
 pub struct TokenMatcher {
-    token: TokenType,
+    name: String,
     matcher: Regex,
-    replace_with: &'static str,
+    replace_with: String,
     extractor: Option<Regex>,
     mutator: Option<fn(&str) -> &str>,
 }
 
 impl TokenMatcher {
     /// Create a new token matcher
-    /// 
+    ///
     /// # Arguments
-    /// 
-    /// * `token` - The type of token this matcher matches
+    ///
+    /// * `name` - The name of this token
     /// * `matcher` - A regex string to use for matching
     /// * `replace_with` - The text to replace the match with when converting back into a string
     /// * `extrator` - An (optional) regex string that will be matched against the result of the `matcher` regex then interpolated into a `$1` string inside the `replace_with` text
     /// * `mutator` - An (optional) closure to mutate the value returned from the extractor before interpolation
     pub fn new(
-        token: TokenType,
-        matcher: &'static str,
-        replace_with: &'static str,
-        extractor: Option<&'static str>,
+        name: String,
+        matcher: String,
+        replace_with: String,
+        extractor: Option<String>,
         mutator: Option<fn(&str) -> &str>,
     ) -> Self {
         TokenMatcher {
-            token,
-            matcher: Regex::new(matcher).unwrap(),
+            name,
+            matcher: Regex::new(&matcher).unwrap(),
             replace_with,
-            extractor: extractor.map(|e| Regex::new(e).unwrap()),
+            extractor: extractor.map(|e| Regex::new(&e).unwrap()),
             mutator,
         }
     }
@@ -52,7 +51,7 @@ impl TokenMatcher {
                 if text == &string[..text.len()] {
                     return Some(Token {
                         matcher: self,
-                        token: self.token,
+                        token: &self.name,
                         length: text.len(),
                         literal: text.to_string(),
                     });
@@ -67,14 +66,14 @@ impl TokenMatcher {
 /// A token
 pub struct Token<'t> {
     matcher: &'t TokenMatcher,
-    token: TokenType,
+    token: &'t str,
     length: usize,
     literal: String,
 }
 
 impl Token<'_> {
-    /// Get the type of this token
-    pub fn token(&self) -> TokenType {
+    /// Get the type (name) of this token
+    pub fn token(&self) -> &str {
         self.token
     }
 

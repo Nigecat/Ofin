@@ -1,11 +1,14 @@
+mod syntax;
 mod token;
 mod tokenstream;
-mod tokentype;
 use crate::OfinError;
 use std::str;
 use token::{Token, TokenMatcher};
 pub use tokenstream::TokenStream;
-use tokentype::TokenType;
+
+lazy_static! {
+    static ref TOKEN_MATCHERS: Vec<TokenMatcher> = syntax::syntax();
+}
 
 /// Lex a string
 ///
@@ -28,7 +31,9 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
         trace!("Running lexer on row {}, column {}", row, column);
 
         // Check if any of the token matchers pass
-        let token = TokenType::iterator().find(|m| m.try_from_str_start(&source).is_some());
+        let token = TOKEN_MATCHERS
+            .iter()
+            .find(|m| m.try_from_str_start(&source).is_some());
 
         if token.is_none() {
             return Err(OfinError::SyntaxError {
@@ -52,11 +57,15 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
 
         // It is now safe to unwrap
         let token = token.unwrap().try_from_str_start(&source).unwrap();
-        trace!("Detected token {:?} with length {}", token.token(), token.length());
+        trace!(
+            "Detected token {:?} with length {}",
+            token.token(),
+            token.length()
+        );
 
         // Check if this is a newline token,
         // this is not the same as an end of line token (;) and is not included in the token output
-        if token.token() == TokenType::Newline {
+        if token.token() == "Newline" {
             row += 1;
             column = 1;
         } else {

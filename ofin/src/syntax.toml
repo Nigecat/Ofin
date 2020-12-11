@@ -1,0 +1,14 @@
+# Syntax definitions for Ofin
+
+# IMPORTANT: Do not change the name of this token without updating the relevant code in lexer::mod.rs
+[Token.NewLine]
+matcher = "\r?\n"
+
+[Token.StringLiteral]
+matcher = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
+replace_with = "OfinString::new($1)"
+extractor = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
+
+[Token.EOL]
+matcher = ";"
+replace_with = ";"
