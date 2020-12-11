@@ -1,16 +1,18 @@
 mod token;
 mod tokenstream;
+mod tokentype;
 use crate::OfinError;
 use std::str;
-pub use token::{Token, TokenType};
+use token::{Token, TokenMatcher};
 pub use tokenstream::TokenStream;
+use tokentype::TokenType;
 
 /// Lex a string
 ///
 /// # Arguments
 ///
 /// * `source` - The string to convert into tokens
-pub fn lex<S: AsRef<str>>(source: S) -> Result<TokenStream, OfinError> {
+pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
     let mut source = source.as_ref().to_string();
     let mut tokens = TokenStream::new();
 
@@ -25,9 +27,9 @@ pub fn lex<S: AsRef<str>>(source: S) -> Result<TokenStream, OfinError> {
     while !source.is_empty() {
         trace!("Running lexer on row {}, column {}", row, column);
 
-        // Attempt to convert the start of the source string into a token
-        // If it fails then report the line and column number
-        let token = Token::try_from_str_start(&source);
+        // Check if any of the token matchers pass
+        let token = TokenType::iterator().find(|m| m.try_from_str_start(&source).is_some());
+
         if token.is_none() {
             return Err(OfinError::SyntaxError {
                 column,
@@ -49,11 +51,12 @@ pub fn lex<S: AsRef<str>>(source: S) -> Result<TokenStream, OfinError> {
         }
 
         // It is now safe to unwrap
-        let token = token.unwrap();
+        let token = token.unwrap().try_from_str_start(&source).unwrap();
+        trace!("Detected token {:?} with length {}", token.token(), token.length());
 
         // Check if this is a newline token,
         // this is not the same as an end of line token (;) and is not included in the token output
-        if token.token() == TokenType::NewLine {
+        if token.token() == TokenType::Newline {
             row += 1;
             column = 1;
         } else {

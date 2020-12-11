@@ -1,92 +1,114 @@
-use ofin_derive::VariantCount;
+use super::TokenType;
 use pcre2::bytes::Regex;
 use std::{fmt, str};
 
-#[derive(Clone, Copy, VariantCount, PartialEq, Debug)]
-pub enum TokenType {
-    /// "A String Literal"
-    StringLiteral,
-    /// \r?\n
-    NewLine,
-    /// ;
-    EOL,
+/// A token matcher.
+/// 
+/// This struct is used for matching strings to tokens.
+pub struct TokenMatcher {
+    token: TokenType,
+    matcher: Regex,
+    replace_with: &'static str,
+    extractor: Option<Regex>,
+    mutator: Option<fn(&str) -> &str>,
 }
 
-pub struct Token {
+impl TokenMatcher {
+    /// Create a new token matcher
+    /// 
+    /// # Arguments
+    /// 
+    /// * `token` - The type of token this matcher matches
+    /// * `matcher` - A regex string to use for matching
+    /// * `replace_with` - The text to replace the match with when converting back into a string
+    /// * `extrator` - An (optional) regex string that will be matched against the result of the `matcher` regex then interpolated into a `$1` string inside the `replace_with` text
+    /// * `mutator` - An (optional) closure to mutate the value returned from the extractor before interpolation
+    pub fn new(
+        token: TokenType,
+        matcher: &'static str,
+        replace_with: &'static str,
+        extractor: Option<&'static str>,
+        mutator: Option<fn(&str) -> &str>,
+    ) -> Self {
+        TokenMatcher {
+            token,
+            matcher: Regex::new(matcher).unwrap(),
+            replace_with,
+            extractor: extractor.map(|e| Regex::new(e).unwrap()),
+            mutator,
+        }
+    }
+
+    /// Attempt to convert the start of a string into a token
+    pub fn try_from_str_start<S: AsRef<str>>(&self, string: S) -> Option<Token> {
+        let string = string.as_ref();
+
+        if let Ok(captures) = self.matcher.captures(string.as_bytes()) {
+            if let Some(captures) = &captures {
+                let text = &captures[0];
+                let text = str::from_utf8(&text).unwrap();
+
+                // Check if the left-most match is the same as the start of the string
+                if text == &string[..text.len()] {
+                    return Some(Token {
+                        matcher: self,
+                        token: self.token,
+                        length: text.len(),
+                        literal: text.to_string(),
+                    });
+                }
+            }
+        }
+
+        None
+    }
+}
+
+/// A token
+pub struct Token<'t> {
+    matcher: &'t TokenMatcher,
     token: TokenType,
     length: usize,
     literal: String,
 }
 
-/// Create a new regex
-macro_rules! regex {
-    ($regex:expr) => {
-        Regex::new($regex).unwrap()
-    };
-}
-
-lazy_static! {
-    /// A static array with instructions on how to match each type of token
-    static ref TOKEN_MATCHERS: [(Regex, TokenType); TokenType::VARIANT_COUNT] = [
-        (regex!(r#"(")((?:(?!")[^\\]|(?:\\\\)*\\[^\\])*)(")"#), TokenType::StringLiteral),
-        (regex!(r#"\r?\n"#), TokenType::NewLine),
-        (regex!(r#";"#), TokenType::EOL),
-    ];
-}
-
-impl Token {
-    /// Attempt to convert the start of a string into a token
-    pub fn try_from_str_start(string: &str) -> Option<Self> {
-        for (matcher, token) in TOKEN_MATCHERS.iter() {
-            trace!("Checking matcher for {:?}: {:?}", token, matcher);
-
-            if let Ok(captures) = matcher.captures(string.as_bytes()) {
-                if let Some(captures) = &captures {
-                    let text = &captures[0];
-                    let text = str::from_utf8(&text).unwrap();
-                    // Check if the left-most match is the same as the start of the string
-                    if text == &string[..text.len()] {
-                        trace!("Detected token: {:?}", token);
-                        return Some(Token {
-                            token: *token,
-                            literal: text.to_string(),
-                            length: text.len(),
-                        });
-                    }
-                }
-            }
-        }
-
-        // If an early return wasn't trigger by the matchers,
-        // we can safetly assume this string does not start with a valid token
-        trace!("Unable to match token");
-        None
-    }
-
+impl Token<'_> {
+    /// Get the type of this token
     pub fn token(&self) -> TokenType {
         self.token
     }
 
+    /// Get the character length of this token
     pub fn length(&self) -> usize {
         self.length
     }
-
-    pub fn literal(&self) -> &str {
-        &self.literal
-    }
 }
 
-impl From<Token> for String {
-    fn from(token: Token) -> Self {
-        match token.token {
-            TokenType::StringLiteral => format!("OfinString::new({})", token.literal()),
-            _ => token.literal().to_string(),
-        }
-    }
-}
-
-impl fmt::Debug for Token {
+impl fmt::Debug for Token<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}: {}", self.token, self.literal)
+    }
+}
+
+impl From<Token<'_>> for String {
+    fn from(token: Token) -> Self {
+        let mut text = token.matcher.replace_with.to_string();
+
+        if let Some(extractor) = &token.matcher.extractor {
+            if let Ok(extracted) = extractor.captures(token.literal.as_bytes()) {
+                if let Some(extracted) = &extracted {
+                    let extracted = &extracted[0];
+                    let mut extracted = str::from_utf8(&extracted).unwrap();
+
+                    if let Some(mutator) = token.matcher.mutator {
+                        extracted = mutator(extracted);
+                    }
+
+                    text = text.replace("$1", extracted);
+                }
+            }
+        }
+
+        text
     }
 }
