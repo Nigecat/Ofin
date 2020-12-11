@@ -1,7 +1,7 @@
 # Syntax definitions for Ofin
 
 # IMPORTANT: Do not change the name of this token without updating the relevant code in lexer::mod.rs
-[Token.NewLine]
+[Token.Newline]
 matcher = "\r?\n"
 
 [Token.StringLiteral]
