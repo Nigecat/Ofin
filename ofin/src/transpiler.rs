@@ -15,6 +15,7 @@ pub fn transpile(tokens: TokenStream) -> Result<String, OfinError> {
     script = format!(
         "
         #![allow(unused_imports)]
+        #![allow(unused_variables)]
 
         extern crate ofin_std; 
         use ofin_std::prelude::*; 

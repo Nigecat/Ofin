@@ -15,3 +15,12 @@ replace_with = "self"
 
 [Token.Comment]
 matcher = "((\\/\\*((.|\\n)*)\\*\\/)|\\/\\/.*$)"
+
+[Token.StringDeclaration]
+matcher = "string\\s+.+\\s*="
+replace_with = "let $1: OfinString ="
+extractor = "\\s+.+(?==)"
+
+# This token should remain at the end of the syntax list to ensure that it has the lowest priority
+[Token.Space]
+matcher = "\\s+"

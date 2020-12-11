@@ -1,1 +1,1 @@
-"this is a string literal";
+string a = "this is a string";
