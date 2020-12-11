@@ -7,7 +7,7 @@ pub fn transpile(tokens: TokenStream) -> Result<String, OfinError> {
 
     for token in tokens {
         let literal: String = token.into();
-        trace!("Converted token into string {:?}", &literal);
+        debug!("Converted token into string {:?}", &literal);
         script.push_str(&literal);
     }
 
@@ -26,7 +26,7 @@ pub fn transpile(tokens: TokenStream) -> Result<String, OfinError> {
         script
     );
 
-    trace!("Finished transpiling with code:\n{}", script);
+    debug!("Finished transpiling with code:\n{}", script);
 
     Ok(script)
 }

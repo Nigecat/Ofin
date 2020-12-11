@@ -37,7 +37,7 @@ pub fn syntax() -> Vec<TokenMatcher> {
         let data = toml::to_string(data).unwrap();
         let mut data: OfinSyntaxData = toml::from_str(&data).unwrap();
 
-        trace!("Parsed syntax for token {:?} with data {:?}", name, data);
+        debug!("Parsed syntax for token {:?} with data {:?}", name, data);
 
         let mut mutator: Option<fn(&str) -> String> = None;
 
@@ -60,6 +60,6 @@ pub fn syntax() -> Vec<TokenMatcher> {
         ));
     }
 
-    trace!("Finished parsing syntax...\n");
+    debug!("Finished parsing syntax...\n");
     matchers
 }

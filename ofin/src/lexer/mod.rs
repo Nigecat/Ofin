@@ -28,7 +28,7 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
 
     // While there are still characters left
     while !source.is_empty() {
-        trace!("Running lexer on row {}, column {}", row, column);
+        debug!("Running lexer on row {}, column {}", row, column);
 
         // Check if any of the token matchers pass
         let token = TOKEN_MATCHERS
@@ -57,7 +57,7 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
 
         // It is now safe to unwrap
         let token = token.unwrap().try_from_str_start(&source).unwrap();
-        trace!(
+        debug!(
             "Detected token {:?} with length {}",
             token.token(),
             token.length()
