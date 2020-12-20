@@ -14,22 +14,22 @@ use std::process::{Command, Stdio};
 use tempfile::NamedTempFile;
 
 /// Execute a script
-pub fn execute(mut script: String) -> Result<(), OfinError> {
+pub fn execute(script: String) -> Result<(), OfinError> {
     Cache::init();
 
     let current_dir = util::executable_dir();
 
-    let tokens = lexer::lex(&script)?;
-    debug!("Got tokens: {:?}", tokens);
-
-    // Convert our ofin script into rust code
-    script = transpiler::transpile(tokens)?;
-
     // Check if this script is not in the cache
     if !Cache::has(&script) {
+        let tokens = lexer::lex(&script)?;
+        debug!("Got tokens: {:?}", tokens);
+
+        // Convert our ofin script into rust code
+        let rc = transpiler::transpile(tokens)?;
+
         // Write the transpiled script to a temporary location so we can pass it to rustc
         let mut file = NamedTempFile::new().unwrap();
-        write!(file, "{}", &script).unwrap();
+        write!(file, "{}", &rc).unwrap();
 
         let path = Cache::get(&script);
         let args = &[
