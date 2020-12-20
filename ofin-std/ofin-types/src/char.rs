@@ -1,5 +1,5 @@
-use std::ops::Deref;
 use std::fmt;
+use std::ops::Deref;
 
 /// A single character
 pub struct OfinChar {
@@ -7,11 +7,9 @@ pub struct OfinChar {
 }
 
 impl OfinChar {
-    /// Create a new char from a rust string
+    /// Create a new char from a rust char
     pub fn new(ch: char) -> Self {
-        OfinChar {
-            inner: ch,
-        }
+        OfinChar { inner: ch }
     }
 }
 

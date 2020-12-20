@@ -1,6 +1,6 @@
 use std::convert::TryFrom;
-use std::ops::Deref;
 use std::fmt;
+use std::ops::Deref;
 
 /// An int
 pub struct OfinInt {

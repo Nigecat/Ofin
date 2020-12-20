@@ -1,5 +1,5 @@
-use std::ops::Deref;
 use std::fmt;
+use std::ops::Deref;
 
 /// A string
 pub struct OfinString {

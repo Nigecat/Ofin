@@ -1,4 +1,7 @@
 import <std/time>;
+import <std/keyboard>;
 
-int a = 5000;
-time::sleep(a);
+int b = 2500;
+time::sleep(b);
+char a = 'a';
+keyboard::click(a);
