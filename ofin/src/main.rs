@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Get the directory that this binary is contained in
     let dir = util::executable_dir();
-    // Extract the rust compiler, our stdlib, and our dependencies
+    // Extract the rust compiler and our stdlib
     if !util::path_exists(dir.join("rustc.exe")) {
         let mut file = fs::File::create(dir.join("rustc.exe")).unwrap();
         file.write_all(RUSTC).unwrap();
