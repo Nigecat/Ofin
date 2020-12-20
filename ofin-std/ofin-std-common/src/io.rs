@@ -1,4 +1,4 @@
-///! Common io functionality
+//! Common io functionality
 
 /// Print to the standard output with a newline
 ///

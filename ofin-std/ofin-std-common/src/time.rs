@@ -1,4 +1,4 @@
-///! Common time-related functionality
+//! Common time-related functionality
 use ofin_types::OfinInt;
 
 /// Put the program to sleep for the specified time duration
