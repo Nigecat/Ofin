@@ -3,6 +3,9 @@ use std::{env, fs, process};
 #[allow(dead_code)]
 mod util;
 
+static RUSTC: &[u8] = include_bytes!(env!("RUSTC_LOCATION"));
+static STDLIB: &[u8] = include_bytes!(env!("STDLIB_LOCATION"));
+
 #[rustfmt::skip]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Init our logger
@@ -10,16 +13,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Get the directory that this binary is contained in
     let dir = util::executable_dir();
-    // Extract the rust compiler and our stdlib
+    // Extract the rust compiler, our stdlib, and our dependencies
     if !util::path_exists(dir.join("rustc.exe")) {
-        let rustc = include_bytes!(env!("RUSTC_LOCATION"));
         let mut file = fs::File::create(dir.join("rustc.exe")).unwrap();
-        file.write_all(rustc).unwrap();
+        file.write_all(RUSTC).unwrap();
     }
     if !util::path_exists(dir.join("stdlib.rlib")) {
-        let stdlib = include_bytes!(env!("STDLIB_LOCATION"));
         let mut file = fs::File::create(dir.join("stdlib.rlib")).unwrap();
-        file.write_all(stdlib).unwrap();
+        file.write_all(STDLIB).unwrap();
     }
 
     if let Some(script_path) = env::args().nth(1) {
