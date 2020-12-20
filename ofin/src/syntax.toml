@@ -23,12 +23,12 @@ matcher = "((\\/\\*((.|\\n)*)\\*\\/)|\\/\\/.*$)"
 
 [Token.StringDeclaration]
 matcher = "string\\s+.+\\s*="
-replace_with = "let $1: OfinString ="
+replace_with = "let mut $1: OfinString ="
 extractor = "\\s+.+(?==)"
 
 [Token.IntDeclaration]
 matcher = "int\\s+.+\\s*="
-replace_with = "let $1: OfinInt ="
+replace_with = "let mut $1: OfinInt ="
 extractor = "\\s+.+(?==)"
 
 [Token.FunctionCall]

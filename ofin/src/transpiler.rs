@@ -14,6 +14,9 @@ pub fn transpile(tokens: TokenStream) -> Result<String, OfinError> {
     // Wrap the script in a rust main function, link our standard library, and include the prelude
     script = format!(
         "
+        #![no_implicit_prelude]
+        #![allow(dead_code)]
+        #![allow(unused_mut)]
         #![allow(unused_imports)]
         #![allow(unused_variables)]
 

@@ -59,6 +59,8 @@ pub fn execute(script: String) -> Result<(), OfinError> {
         .stdin(Stdio::null())
         .stdout(Stdio::inherit())
         .spawn()
+        .expect("unable to start program")
+        .wait()
         .expect("unable to start program");
 
     Ok(())
