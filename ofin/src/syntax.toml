@@ -9,6 +9,11 @@ matcher = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
 replace_with = "OfinString::new($1)"
 extractor = "copy"
 
+[Token.IntLiteral]
+matcher = "-?\\d+"
+replace_with = "OfinInt::new($1)"
+extractor = "copy"
+
 [Token.EOL]
 matcher = ";"
 replace_with = "self"
@@ -19,6 +24,11 @@ matcher = "((\\/\\*((.|\\n)*)\\*\\/)|\\/\\/.*$)"
 [Token.StringDeclaration]
 matcher = "string\\s+.+\\s*="
 replace_with = "let $1: OfinString ="
+extractor = "\\s+.+(?==)"
+
+[Token.IntDeclaration]
+matcher = "int\\s+.+\\s*="
+replace_with = "let $1: OfinInt ="
 extractor = "\\s+.+(?==)"
 
 [Token.FunctionCall]

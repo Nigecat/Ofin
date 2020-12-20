@@ -1,2 +1,4 @@
-string a = "this is a string";
-print(a);
+import <std/time>;
+
+int a = 5000;
+time::sleep(a);
