@@ -34,13 +34,14 @@ impl OfinError {
     /// # Arguments
     ///
     /// * `output` - The output from rustc
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// The (row, ctx) of each error
     pub fn from_rustc(output: &str) -> Vec<(usize, String)> {
         let mut errors = Vec::new();
-        let matcher = Regex::new(r#"error(?:\[.*?\]):(.*)\n[\S\s]*?\|\n(\d+)\s+\|\s+(.*)\n"#).unwrap();
+        let matcher =
+            Regex::new(r#"error(?:\[.*?\]):(.*)\n[\S\s]*?\|\n(\d+)\s+\|\s+(.*)\n"#).unwrap();
 
         for capture in matcher.captures_iter(output.as_bytes()) {
             let error = capture.unwrap();

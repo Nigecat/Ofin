@@ -5,8 +5,11 @@ mod cli;
 mod util;
 use cli::Cli;
 
-static RUSTC: &[u8] = include_bytes!(env!("RUSTC_LOCATION"));
-static STDLIB: &[u8] = include_bytes!(env!("STDLIB_LOCATION"));
+// Include our static data
+// This imports two variables:
+// * `RUSTC` - The binary data of the rust compiler this application was compiled with
+// * `STDLIB` - The binary data of our built standard library
+include!(env!("STATIC_LOCATION"));
 
 #[rustfmt::skip]
 fn main() -> Result<(), Box<dyn std::error::Error>> {

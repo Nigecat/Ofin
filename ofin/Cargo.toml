@@ -21,3 +21,4 @@ toml = { version = "0.5.7", features = ["preserve_order"] }
 
 [build-dependencies]
 which = "4.0.2"
+snailquote = "0.3.0"

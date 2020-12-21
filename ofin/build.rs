@@ -4,21 +4,40 @@ use which::which;
 
 fn main() {
     let profile = &env::var("PROFILE").unwrap();
+    let out_dir = &env::var("OUT_DIR").unwrap();
+    let out_dir = Path::new(out_dir);
 
-    // Get the location of rustc
-    let rustc = which("rustc").unwrap();
-    println!("cargo:rustc-env=RUSTC_LOCATION={}", rustc.to_str().unwrap());
-
-    // Get the standard library rlib location
-    if Path::new("libofin_std.rlib").exists() {
-        println!("cargo:rustc-env=STDLIB_LOCATION=libofin_std.rlib");
-    } else {
-        println!(
-            "cargo:rustc-env=STDLIB_LOCATION={}",
-            fs::canonicalize(format!("../target/{}/libofin_std.rlib", profile))
+    let rustc = format!(
+        "static RUSTC: &[u8] = include_bytes!({});",
+        snailquote::escape(
+            fs::canonicalize(which("rustc").unwrap())
                 .unwrap()
                 .to_str()
-                .unwrap(),
-        );
-    }
+                .unwrap()
+        ),
+    );
+
+    let stdlib = format!(
+        "static STDLIB: &[u8] = include_bytes!({});",
+        snailquote::escape(
+            fs::canonicalize(
+                env::current_dir()
+                    .unwrap()
+                    .join("..")
+                    .join("target")
+                    .join(profile)
+                    .join("libofin_std.rlib")
+            )
+            .unwrap()
+            .to_str()
+            .unwrap()
+        ),
+    );
+
+    let data = format!("{}\n{}", rustc, stdlib);
+    let path = out_dir.join("static.rs");
+
+    fs::write(&path, data).expect("unable to write static data to file");
+
+    println!("cargo:rustc-env=STATIC_LOCATION={}", path.to_str().unwrap());
 }
