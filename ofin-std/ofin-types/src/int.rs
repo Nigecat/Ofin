@@ -32,6 +32,12 @@ impl From<OfinInt> for usize {
     }
 }
 
+impl From<OfinInt> for u64 {
+    fn from(int: OfinInt) -> u64 {
+        u64::try_from(int.inner).expect("Expected positive integer, got negative integer")
+    }
+}
+
 impl Deref for OfinInt {
     type Target = isize;
 

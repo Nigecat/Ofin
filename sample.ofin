@@ -1,7 +1,9 @@
 import <std/time>;
 import <std/keyboard>;
 
-int b = 2500;
-time::sleep(b);
-char a = 'a';
-keyboard::click(a);
+time::sleep(2000);
+
+int s = 5000;
+keyboard::keyDown("control");
+time::sleep(s);
+keyboard::keyUp("control");
