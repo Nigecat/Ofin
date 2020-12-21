@@ -42,7 +42,16 @@ replace_with = "let mut $1: OfinChar ="
 extractor = "\\s+.+(?==)"
 
 [Token.FunctionCall]
-matcher = ".+\\((.|\\n)*?\\)"
+matcher = "\\(.*?\\)"
+replace_with = "self"
+
+[Token.NameSpace]
+matcher = "::"
+replace_with = "self"
+
+# This token should remain second last in the syntax list
+[Token.Ident]
+matcher = "[a-zA-Z_]+"
 replace_with = "self"
 
 # This token should remain at the end of the syntax list to ensure that it has the lowest priority
