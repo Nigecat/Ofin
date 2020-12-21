@@ -1,1 +1,5 @@
-print("Hello, World!");
+import <std/time>;
+import <std/keyboard>;
+
+time::sleep(3000);
+keyboard::send("Hello, World!");

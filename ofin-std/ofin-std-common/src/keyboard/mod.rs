@@ -21,6 +21,15 @@ pub fn click<S: Into<char>>(key: S) {
         .key_click(enigo::Key::Layout(key.into()));
 }
 
+/// Send some text (equivalent to calling [click] for every character in the text)
+/// 
+/// # Arguments
+/// 
+/// * `text` - The text to send
+pub fn send<S: Into<String>>(text: S) {
+    DRIVER.lock().unwrap().key_sequence(&text.into());
+}
+
 /// Hold down a control key, this is not let go of until [keyUp] is called
 ///
 /// # Arguments

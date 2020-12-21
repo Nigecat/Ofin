@@ -48,7 +48,7 @@ impl TokenMatcher {
                 let text = str::from_utf8(&text).unwrap();
 
                 // Check if the left-most match is the same as the start of the string
-                if text == &string[..text.len()] {
+                if string.starts_with(text) {
                     return Some(Token {
                         matcher: self,
                         token: &self.name,
