@@ -1,0 +1,25 @@
+{
+    "name": "ofin",
+    "displayName": "Ofin",
+    "description": "A hotkey scripting language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.51.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "ofin",
+            "aliases": ["Ofin", "ofin"],
+            "extensions": [".ofin"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "ofin",
+            "scopeName": "source.ofin",
+            "path": "./syntaxes/ofin.tmLanguage.json"
+        }]
+    }
+}
