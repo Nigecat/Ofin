@@ -54,11 +54,16 @@ pub fn execute(script: String) -> Result<(), OfinError> {
             let mut errors = error::ErrorStream::new();
 
             for error in &OfinError::from_rustc(err) {
-                errors.push(OfinError::SyntaxErrorV2 {
-                    row: error.0,
-                    ctx: error.1.clone(),
-                    code: script.split("\n").collect::<Vec<_>>()[error.0 - 1].to_string(),
-                });
+                if error.0 > 0 {
+                    errors.push(OfinError::SyntaxErrorV2 {
+                        row: error.0 as usize,
+                        ctx: error.1.clone(),
+                        code: script.split("\n").collect::<Vec<_>>()[error.0 as usize - 1].to_string(),
+                    });
+                } else {
+                    // This must be an internal error if we managed to get an underflow
+                    return Err(OfinError::InternalError(err.to_string()));
+                }
             }
 
             return Err(OfinError::Multi { errors });

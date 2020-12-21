@@ -4,8 +4,8 @@ use thiserror::Error;
 
 #[derive(PartialEq, Debug, Error)]
 pub enum OfinError {
-    #[error("This is an internal error and should not have occured")]
-    InternalError,
+    #[error("An internal error has occured, this should not have happened and is a bug: {0}")]
+    InternalError(String),
     #[error("A syntax error has occured at row {row}, column {column}:\n{ctx}")]
     SyntaxError {
         /// The column this error occured in
@@ -38,7 +38,7 @@ impl OfinError {
     /// # Returns
     ///
     /// The (row, ctx) of each error
-    pub fn from_rustc(output: &str) -> Vec<(usize, String)> {
+    pub fn from_rustc(output: &str) -> Vec<(isize, String)> {
         let mut errors = Vec::new();
         let matcher =
             Regex::new(r#"error(?:\[.*?\]):(.*)\n[\S\s]*?\|\n(\d+)\s+\|\s+(.*)\n"#).unwrap();
@@ -54,10 +54,10 @@ impl OfinError {
             let err_msg = &output[err_msg.start()..err_msg.end()];
             // This comes from the regex pattern `\d+` so it should be impossible for it to be an invalid number
             let err_line = &output[err_line.start()..err_line.end()]
-                .parse::<usize>()
+                .parse::<isize>()
                 .unwrap()
                 // Subtract the offset from the boilerplate code
-                - crate::transpiler::OFFSET;
+                - crate::transpiler::OFFSET as isize;
 
             errors.push((err_line, err_msg.to_string()));
         }

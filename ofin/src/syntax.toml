@@ -25,7 +25,7 @@ matcher = ";"
 replace_with = "self"
 
 [Token.Comment]
-matcher = "((\\/\\*((.|\\n)*)\\*\\/)|\\/\\/.*$)"
+matcher = "((\\/\\*((.|(\r?\n))*)\\*\\/)|\\/\\/.*(\r?\n))"
 
 [Token.StringDeclaration]
 matcher = "string\\s+.+\\s*="

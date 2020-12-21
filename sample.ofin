@@ -1,4 +1,4 @@
-import <std/time>;
-import <std/keyboard>;
+//import <std/time>;
+//import <std/keyboard>;
 
 print("Hello, World!");
