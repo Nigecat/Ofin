@@ -293,6 +293,7 @@ dependencies = [
  "ofin-std",
  "pcre2",
  "pretty_env_logger",
+ "regex",
  "serde",
  "tempfile",
  "thiserror",

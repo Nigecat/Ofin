@@ -1,6 +1,10 @@
 use super::OfinError;
 use crate::lexer::TokenStream;
 
+/// The line offset from the start of the file the source code is located in the transpiled code
+/// This should be kept up to date with the format string contained in this file
+pub static OFFSET: usize = 11;
+
 /// Transpile a script into rust code
 pub fn transpile(tokens: TokenStream) -> Result<String, OfinError> {
     let mut script = String::new();

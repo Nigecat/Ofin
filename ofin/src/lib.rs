@@ -40,7 +40,7 @@ pub fn execute(script: String) -> Result<(), OfinError> {
             "ofin",
             "-L",
             current_dir.to_str().unwrap(),
-            "-L",       // FIXME: Make this a proper dynamic link to the dependencies
+            "-L", // FIXME: Make this a proper dynamic link to the dependencies
             "target/deps",
         ];
         debug!("Invoking `rustc {}`", args.join(" "));
@@ -48,9 +48,20 @@ pub fn execute(script: String) -> Result<(), OfinError> {
             .args(args)
             .output()
             .expect("failed to invoke rustc");
+
         let err = std::str::from_utf8(&command.stderr).unwrap().trim();
         if !err.is_empty() {
-            error!("{}", err);
+            let mut errors = error::ErrorStream::new();
+
+            for error in &OfinError::from_rustc(err) {
+                errors.push(OfinError::SyntaxErrorV2 {
+                    row: error.0,
+                    ctx: error.1.clone(),
+                    code: script.split("\n").collect::<Vec<_>>()[error.0 - 1].to_string(),
+                });
+            }
+
+            return Err(OfinError::Multi { errors });
         }
     }
 

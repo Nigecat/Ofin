@@ -22,9 +22,9 @@ pub fn click<S: Into<char>>(key: S) {
 }
 
 /// Send some text (equivalent to calling [click] for every character in the text)
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `text` - The text to send
 pub fn send<S: Into<String>>(text: S) {
     DRIVER.lock().unwrap().key_sequence(&text.into());
