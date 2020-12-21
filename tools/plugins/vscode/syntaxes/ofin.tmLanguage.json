@@ -45,17 +45,6 @@
 							"match": "\\\\."
 						}
 					]
-				},
-				{
-					"name": "string.quoted.single",
-					"begin": "'",
-					"end": "'",
-					"patterns": [
-						{
-							"name": "constant.character.escape.ofin",
-							"match": "\\\\."
-						}
-					]
 				}
 			]
 		}

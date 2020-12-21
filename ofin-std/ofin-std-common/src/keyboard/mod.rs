@@ -9,19 +9,7 @@ lazy_static! {
     static ref DRIVER: Mutex<enigo::Enigo> = Mutex::new(enigo::Enigo::new());
 }
 
-/// Press a char on the keyboard
-///
-/// # Arguments
-///
-/// * `key` - The character to click
-pub fn click<S: Into<char>>(key: S) {
-    DRIVER
-        .lock()
-        .unwrap()
-        .key_click(enigo::Key::Layout(key.into()));
-}
-
-/// Send some text (equivalent to calling [click] for every character in the text)
+/// Send some text
 ///
 /// # Arguments
 ///
