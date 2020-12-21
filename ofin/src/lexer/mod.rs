@@ -67,15 +67,15 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
         source.drain(0..token.length());
 
         // Check if this is a newline token,
-        // this is not the same as an end of line token (;) and is not included in the token output
+        // this is not the same as an end of line token (;)
         if token.token() == "Newline" {
             row += 1;
             column = 1;
         } else {
             // Increase the column by the length of this token
             column += token.length();
-            tokens.push(token);
         }
+        tokens.push(token);
     }
 
     Ok(tokens)

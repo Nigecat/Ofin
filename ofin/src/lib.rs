@@ -40,6 +40,8 @@ pub fn execute(script: String) -> Result<(), OfinError> {
             "ofin",
             "-L",
             current_dir.to_str().unwrap(),
+            "-L",       // FIXME: Make this a proper dynamic link to the dependencies
+            "target/deps",
         ];
         debug!("Invoking `rustc {}`", args.join(" "));
         let command = Command::new("rustc")
