@@ -23,7 +23,7 @@ pub fn send<S: Into<String>>(text: S) {
 /// # Arguments
 ///
 /// * `key` - The control key to hold down, must be a valid [`Key`](trait.Key.html)
-pub fn keyDown<S: Into<String>>(key: S) {
+pub fn sendKeyDown<S: Into<String>>(key: S) {
     DRIVER.lock().unwrap().key_down(key.into().into_key());
 }
 
@@ -32,6 +32,6 @@ pub fn keyDown<S: Into<String>>(key: S) {
 /// # Arguments
 ///
 /// * `key` - The control key to let go of, must be a valid [`Key`](trait.Key.html)
-pub fn keyUp<S: Into<String>>(key: S) {
+pub fn sendKeyUp<S: Into<String>>(key: S) {
     DRIVER.lock().unwrap().key_up(key.into().into_key());
 }
