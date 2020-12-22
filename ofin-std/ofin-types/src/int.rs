@@ -1,10 +1,7 @@
 use std::convert::TryFrom;
 use std::fmt;
-use std::ops::Deref;
 
 /// An int
-///
-/// This is named `Int` as opposed to `OfinInt` to match the documentation on the string trait bindings
 pub struct Int {
     inner: isize,
 }
@@ -37,14 +34,6 @@ impl From<Int> for usize {
 impl From<Int> for u64 {
     fn from(int: Int) -> u64 {
         u64::try_from(int.inner).expect("Expected positive integer, got negative integer")
-    }
-}
-
-impl Deref for Int {
-    type Target = isize;
-
-    fn deref(&self) -> &Self::Target {
-        &self.inner
     }
 }
 

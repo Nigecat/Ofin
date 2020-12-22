@@ -19,6 +19,12 @@ impl From<Bool> for bool {
     }
 }
 
+impl From<bool> for Bool {
+    fn from(bl: bool) -> Bool {
+        Bool::new(bl)
+    }
+}
+
 impl Deref for Bool {
     type Target = bool;
 

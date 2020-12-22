@@ -1,11 +1,11 @@
 use std::fmt;
-use std::ops::Deref;
+
+type OfinString = super::String;
+type RustString = std::string::String;
 
 /// A string
-///
-/// This is named `OfinString` as opposed to `String` to not conflict with rust's internal string type
-pub struct OfinString {
-    inner: String,
+pub struct String {
+    inner: std::string::String,
 }
 
 impl OfinString {
@@ -21,7 +21,7 @@ impl OfinString {
     /// Returns `true` if the given pattern matches a prefix of this string slice.
     /// Returns `false` if it does not.
     pub fn startsWith(&self, pattern: OfinString) -> bool {
-        self.inner.starts_with(&String::from(pattern))
+        self.inner.starts_with(&RustString::from(pattern))
     }
 
     /// Check if this string ends with another string.
@@ -29,7 +29,7 @@ impl OfinString {
     /// Returns `true` if the given pattern matches a suffix of this string slice.
     /// Returns `false` if it does not.
     pub fn endsWith(&self, pattern: OfinString) -> bool {
-        self.inner.ends_with(&String::from(pattern))
+        self.inner.ends_with(&RustString::from(pattern))
     }
 
     /// Convert this string to uppercase
@@ -54,17 +54,9 @@ impl<S: AsRef<str>> From<S> for OfinString {
     }
 }
 
-impl From<OfinString> for String {
-    fn from(string: OfinString) -> String {
+impl From<OfinString> for RustString {
+    fn from(string: OfinString) -> RustString {
         string.inner
-    }
-}
-
-impl Deref for OfinString {
-    type Target = String;
-
-    fn deref(&self) -> &Self::Target {
-        &self.inner
     }
 }
 

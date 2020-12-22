@@ -1,2 +1,5 @@
-bool b = false;
-print(b);
+import <std/time>;
+import <std/keyboard>;
+
+time::sleep(5000);
+keyboard::send("Hello, World!");

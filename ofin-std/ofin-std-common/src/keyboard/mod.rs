@@ -4,6 +4,7 @@ use enigo::KeyboardControllable;
 pub use key::Key;
 use lazy_static::lazy_static;
 use std::sync::Mutex;
+use ofin_types::OfinString;
 
 lazy_static! {
     static ref DRIVER: Mutex<enigo::Enigo> = Mutex::new(enigo::Enigo::new());
@@ -14,8 +15,9 @@ lazy_static! {
 /// # Arguments
 ///
 /// * `text` - The text to send
-pub fn send<S: Into<String>>(text: S) {
-    DRIVER.lock().unwrap().key_sequence(&text.into());
+pub fn send(text: OfinString) {
+    let text: String = text.into();
+    DRIVER.lock().unwrap().key_sequence(&text);
 }
 
 /// Hold down a control key, this is not let go of until [keyUp](keyUp) is called
@@ -23,8 +25,9 @@ pub fn send<S: Into<String>>(text: S) {
 /// # Arguments
 ///
 /// * `key` - The control key to hold down, must be a valid [`Key`](trait.Key.html)
-pub fn sendKeyDown<S: Into<String>>(key: S) {
-    DRIVER.lock().unwrap().key_down(key.into().into_key());
+pub fn sendKeyDown(key: OfinString) {
+    let key: String = key.into();
+    DRIVER.lock().unwrap().key_down(key.into_key());
 }
 
 /// Let go of a control key, this will do nothing if [keyDown](keyDown) has not been called
@@ -32,6 +35,7 @@ pub fn sendKeyDown<S: Into<String>>(key: S) {
 /// # Arguments
 ///
 /// * `key` - The control key to let go of, must be a valid [`Key`](trait.Key.html)
-pub fn sendKeyUp<S: Into<String>>(key: S) {
-    DRIVER.lock().unwrap().key_up(key.into().into_key());
+pub fn sendKeyUp(key: OfinString) {
+    let key: String = key.into();
+    DRIVER.lock().unwrap().key_up(key.into_key());
 }

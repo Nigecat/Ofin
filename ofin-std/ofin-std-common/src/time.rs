@@ -6,7 +6,7 @@ use ofin_types::Int;
 /// # Arguments
 ///
 /// * `ms` - The number of milliseconds to sleep for
-pub fn sleep<I: Into<Int>>(ms: I) {
+pub fn sleep(ms: Int) {
     // Rely on our int type to handle the conversion from isize -> usize
-    std::thread::sleep(std::time::Duration::from_millis(ms.into().into()));
+    std::thread::sleep(std::time::Duration::from_millis(ms.into()));
 }
