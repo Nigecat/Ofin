@@ -15,9 +15,9 @@ matcher = "-?\\d+"
 replace_with = "Int::new($1)"
 extractor = "copy"
 
-[Token.CharLiteral]
-matcher = "'.'"
-replace_with = "OfinChar::new($1)"
+[Token.BoolLiteral]
+matcher = "(false|true)"
+replace_with = "Bool::new($1)"
 extractor = "copy"
 
 [Token.EOL]
@@ -37,9 +37,9 @@ matcher = "int\\s+.+\\s*="
 replace_with = "let mut $1: Int ="
 extractor = "\\s+.+(?==)"
 
-[Token.CharDeclaration]
-matcher = "char\\s+.+\\s*="
-replace_with = "let mut $1: OfinChar ="
+[Token.BoolDeclaration]
+matcher = "bool\\s+.+\\s*="
+replace_with = "let mut $1: Bool ="
 extractor = "\\s+.+(?==)"
 
 [Token.FunctionCall]

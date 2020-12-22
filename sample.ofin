@@ -1,11 +1,2 @@
-import <std/time>;
-import <std/keyboard>;
-
-14;
-int a = 4500;
-
-string  b = "Hello, World!";
-
-time::sleep(a);
-
+bool b = false;
 print(b);
