@@ -18,20 +18,20 @@ pub fn send<S: Into<String>>(text: S) {
     DRIVER.lock().unwrap().key_sequence(&text.into());
 }
 
-/// Hold down a control key, this is not let go of until [keyUp] is called
+/// Hold down a control key, this is not let go of until [keyUp](keyUp) is called
 ///
 /// # Arguments
 ///
-/// * `key` - The control key to hold down, must be a valid [Key]
+/// * `key` - The control key to hold down, must be a valid [`Key`](trait.Key.html)
 pub fn keyDown<S: Into<String>>(key: S) {
     DRIVER.lock().unwrap().key_down(key.into().into_key());
 }
 
-/// Let go of a control key, this will do nothing if [keyDown] has not been called
+/// Let go of a control key, this will do nothing if [keyDown](keyDown) has not been called
 ///
 /// # Arguments
 ///
-/// * `key` - The control key to let go of, must be a valid [Key]
+/// * `key` - The control key to let go of, must be a valid [`Key`](trait.Key.html)
 pub fn keyUp<S: Into<String>>(key: S) {
     DRIVER.lock().unwrap().key_up(key.into().into_key());
 }
