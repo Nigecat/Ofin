@@ -60,7 +60,7 @@ pub fn execute(script: String) -> Result<(), OfinError> {
                     errors.push(OfinError::SyntaxErrorV2 {
                         row: error.0 as usize,
                         ctx: error.1.clone(),
-                        code: script.split("\n").collect::<Vec<_>>()[error.0 as usize - 1]
+                        code: script.split('\n').collect::<Vec<_>>()[error.0 as usize - 1]
                             .to_string(),
                     });
                 } else {

@@ -47,13 +47,13 @@ impl OfinError {
             let error = capture.unwrap();
             let err_msg = error
                 .get(1)
-                .expect(&format!("unable to parse error message: {}", output));
+                .unwrap_or_else(|| panic!("unable to parse error message: {}", output));
             let err_line = error
                 .get(2)
-                .expect(&format!("unable to parse error message: {}", output));
+                .unwrap_or_else(|| panic!("unable to parse error message: {}", output));
             let err_msg = &output[err_msg.start()..err_msg.end()];
             // This comes from the regex pattern `\d+` so it should be impossible for it to be an invalid number
-            let err_line = &output[err_line.start()..err_line.end()]
+            let err_line = output[err_line.start()..err_line.end()]
                 .parse::<isize>()
                 .unwrap()
                 // Subtract the offset from the boilerplate code
@@ -70,6 +70,12 @@ impl OfinError {
 #[derive(PartialEq, Debug)]
 pub struct ErrorStream {
     inner: Vec<OfinError>,
+}
+
+impl Default for ErrorStream {
+    fn default() -> Self {
+        ErrorStream::new()
+    }
 }
 
 impl ErrorStream {
