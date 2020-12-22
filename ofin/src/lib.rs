@@ -51,6 +51,8 @@ pub fn execute(script: String) -> Result<(), OfinError> {
 
         let err = std::str::from_utf8(&command.stderr).unwrap().trim();
         if !err.is_empty() {
+            trace!("{}", err);
+
             let mut errors = error::ErrorStream::new();
 
             for error in &OfinError::from_rustc(err) {

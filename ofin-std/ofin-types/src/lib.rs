@@ -2,5 +2,5 @@
 
 mod int;
 mod string;
-pub use int::OfinInt;
+pub use int::Int;
 pub use string::OfinString;

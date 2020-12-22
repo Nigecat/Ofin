@@ -2,6 +2,8 @@ use std::fmt;
 use std::ops::Deref;
 
 /// A string
+///
+/// This is named `OfinString` as opposed to `String` to not conflict with rust's internal string type
 pub struct OfinString {
     inner: String,
 }

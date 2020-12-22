@@ -12,7 +12,7 @@ extractor = "copy"
 
 [Token.IntLiteral]
 matcher = "-?\\d+"
-replace_with = "OfinInt::new($1)"
+replace_with = "Int::new($1)"
 extractor = "copy"
 
 [Token.CharLiteral]
@@ -34,7 +34,7 @@ extractor = "\\s+.+(?==)"
 
 [Token.IntDeclaration]
 matcher = "int\\s+.+\\s*="
-replace_with = "let mut $1: OfinInt ="
+replace_with = "let mut $1: Int ="
 extractor = "\\s+.+(?==)"
 
 [Token.CharDeclaration]

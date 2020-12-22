@@ -41,7 +41,7 @@ impl OfinError {
     pub fn from_rustc(output: &str) -> Vec<(isize, String)> {
         let mut errors = Vec::new();
         let matcher =
-            Regex::new(r#"error(?:\[.*?\]):(.*)\n[\S\s]*?\|\n(\d+)\s+\|\s+(.*)\n"#).unwrap();
+            Regex::new(r#"error(?:\[.*?\])?:(.*)\n[\S\s]*?\|\n(\d+)\s+\|\s+(.*)\n"#).unwrap();
 
         for capture in matcher.captures_iter(output.as_bytes()) {
             let error = capture.unwrap();

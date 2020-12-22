@@ -3,42 +3,44 @@ use std::fmt;
 use std::ops::Deref;
 
 /// An int
-pub struct OfinInt {
+///
+/// This is named `Int` as opposed to `OfinInt` to match the documentation on the string trait bindings
+pub struct Int {
     inner: isize,
 }
 
-impl OfinInt {
+impl Int {
     /// Create a new int from a rust isize
     pub fn new(int: isize) -> Self {
-        OfinInt { inner: int }
+        Int { inner: int }
     }
 }
 
-impl From<isize> for OfinInt {
+impl From<isize> for Int {
     fn from(int: isize) -> Self {
-        OfinInt::new(int)
+        Int::new(int)
     }
 }
 
-impl From<OfinInt> for isize {
-    fn from(int: OfinInt) -> isize {
+impl From<Int> for isize {
+    fn from(int: Int) -> isize {
         int.inner
     }
 }
 
-impl From<OfinInt> for usize {
-    fn from(int: OfinInt) -> usize {
+impl From<Int> for usize {
+    fn from(int: Int) -> usize {
         usize::try_from(int.inner).expect("Expected positive integer, got negative integer")
     }
 }
 
-impl From<OfinInt> for u64 {
-    fn from(int: OfinInt) -> u64 {
+impl From<Int> for u64 {
+    fn from(int: Int) -> u64 {
         u64::try_from(int.inner).expect("Expected positive integer, got negative integer")
     }
 }
 
-impl Deref for OfinInt {
+impl Deref for Int {
     type Target = isize;
 
     fn deref(&self) -> &Self::Target {
@@ -46,7 +48,7 @@ impl Deref for OfinInt {
     }
 }
 
-impl fmt::Display for OfinInt {
+impl fmt::Display for Int {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.inner)
     }

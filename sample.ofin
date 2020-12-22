@@ -1,4 +1,11 @@
-//import <std/time>;
-//import <std/keyboard>;
+import <std/time>;
+import <std/keyboard>;
 
-print("Hello, World!");
+14;
+int a = 4500;
+
+string  b = "Hello, World!";
+
+time::sleep(a);
+
+print(b);
