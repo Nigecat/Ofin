@@ -3,6 +3,11 @@ name = "ofin"
 version = "0.0.1"
 authors = ["Nigecat"]
 edition = "2018"
+autobins = false
+
+[[bin]]
+name = "ofin"
+path = "src/bin/main.rs"
 
 [dependencies]
 md5 = "0.7.0"

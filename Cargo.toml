@@ -3,3 +3,4 @@ members = [
     "ofin-std",
     "ofin"
 ]
+default-members = ["ofin"]

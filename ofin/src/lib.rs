@@ -7,7 +7,7 @@ mod error;
 mod lexer;
 mod transpiler;
 pub use error::OfinError;
-mod util;
+pub mod util;
 use cache::Cache;
 use std::io::Write;
 use std::process::{Command, Stdio};

@@ -1,8 +1,7 @@
+use ofin::util;
 use std::io::prelude::*;
 use std::{env, fs, process};
 mod cli;
-#[allow(dead_code)]
-mod util;
 use cli::Cli;
 
 // Include our static data
