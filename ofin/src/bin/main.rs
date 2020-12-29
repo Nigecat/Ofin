@@ -5,9 +5,8 @@ mod cli;
 use cli::Cli;
 
 // Include our static data
-// This imports two variables:
+// This imports a single variable:
 // * `RUSTC` - The binary data of the rust compiler this application was compiled with
-// * `STDLIB` - The binary data of our built standard library
 include!(env!("STATIC_LOCATION"));
 
 #[rustfmt::skip]
@@ -20,14 +19,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Get the directory that this binary is contained in
     let dir = util::executable_dir();
-    // Extract the rust compiler and our stdlib
+    // Extract the rust compiler if needed
     if !util::path_exists(dir.join("rustc.exe")) {
         let mut file = fs::File::create(dir.join("rustc.exe"))?;
         file.write_all(RUSTC)?;
-    }
-    if !util::path_exists(dir.join("stdlib.rlib")) {
-        let mut file = fs::File::create(dir.join("stdlib.rlib"))?;
-        file.write_all(STDLIB)?;
     }
 
     let script = fs::read_to_string(&cli.script)?;
