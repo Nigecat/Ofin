@@ -1,9 +1,9 @@
 #![allow(non_snake_case)]
 
+mod bool;
 mod int;
 mod string;
-mod bool;
-pub use int::Int;
-pub use crate::string::String;
 pub use crate::bool::Bool;
+pub use crate::string::String;
+pub use int::Int;
 pub type OfinString = crate::string::String;

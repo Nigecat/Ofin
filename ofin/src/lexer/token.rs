@@ -8,6 +8,7 @@ pub struct TokenMatcher {
     name: String,
     matcher: Regex,
     replace_with: String,
+    preprocess: bool,
     extractor: Option<Regex>,
     mutator: Option<fn(&str) -> String>,
 }
@@ -20,12 +21,14 @@ impl TokenMatcher {
     /// * `name` - The name of this token
     /// * `matcher` - A regex string to use for matching
     /// * `replace_with` - The text to replace the match with when converting back into a string
+    /// * `preprocess` - Whether this matcher should be preprocessed before tokenizing
     /// * `extrator` - An (optional) regex string that will be matched against the result of the `matcher` regex then interpolated into a `$1` string inside the `replace_with` text
     /// * `mutator` - An (optional) closure to mutate the value returned from the extractor before interpolation
     pub fn new(
         name: String,
         matcher: String,
         replace_with: String,
+        preprocess: bool,
         extractor: Option<String>,
         mutator: Option<fn(&str) -> String>,
     ) -> Self {
@@ -33,9 +36,52 @@ impl TokenMatcher {
             name,
             matcher: Regex::new(&matcher).unwrap(),
             replace_with,
+            preprocess,
             extractor: extractor.map(|e| Regex::new(&e).unwrap()),
             mutator,
         }
+    }
+
+    /// Get the name of the token this matcher matches
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    /// Check if this matcher should be preprocessd
+    pub fn should_preprocess(&self) -> bool {
+        self.preprocess
+    }
+
+    /// Replace the matched contents of a string
+    pub fn replace_str(&self, mut string: String) -> String {
+        let source = string.clone();
+        // Reverse the order of the matches
+        // This is required since we get the byte range of the matched text in order from first-last
+        // If we just replace them in that order we mutate the string and the following matches become 
+        //      invalid as the length of the string changes
+        // However, since the iterator guarantees to be first to last, 
+        //      we can reverse the results to completely avoid that issue
+        //      as the indexes are based off the string start not end
+        let matches = self.matcher.find_iter(&source.as_bytes());
+        let matches: Vec<Result<pcre2::bytes::Match, pcre2::Error>> = matches.collect();
+        for result in matches.iter().rev() {
+            if let Ok(mat) = result {
+                let text = &string[mat.start()..mat.end()];
+
+                let token = Token {
+                    matcher: self,
+                    token: &self.name,
+                    length: text.len(),
+                    literal: text.to_string(),
+                };
+
+                let to: String = token.into();
+                error!("{} -> {}", text, to);
+                string = string.replace(text, &to);
+            }
+        }
+
+        string
     }
 
     /// Attempt to convert the start of a string into a token

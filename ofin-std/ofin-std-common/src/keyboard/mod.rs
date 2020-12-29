@@ -3,8 +3,8 @@ mod key;
 use enigo::KeyboardControllable;
 pub use key::Key;
 use lazy_static::lazy_static;
-use std::sync::Mutex;
 use ofin_types::OfinString;
+use std::sync::Mutex;
 
 lazy_static! {
     static ref DRIVER: Mutex<enigo::Enigo> = Mutex::new(enigo::Enigo::new());

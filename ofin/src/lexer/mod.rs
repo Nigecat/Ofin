@@ -26,6 +26,14 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
     // this is reset to 1 every newline
     let mut column = 1;
 
+    // Run preprocessed matchers
+    for matcher in TOKEN_MATCHERS.iter().filter(|m| m.should_preprocess()) {
+        debug!("Preprocessing: {}", matcher.name());
+        source = matcher.replace_str(source);
+    }
+
+    error!("{}", source);
+
     // While there are still characters left
     while !source.is_empty() {
         debug!("Running lexer on row {}, column {}", row, column);
@@ -33,6 +41,7 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
         // Check if any of the token matchers pass
         let token = TOKEN_MATCHERS
             .iter()
+            .filter(|m| !m.should_preprocess())
             .find(|m| m.try_from_str_start(&source).is_some());
 
         if token.is_none() {

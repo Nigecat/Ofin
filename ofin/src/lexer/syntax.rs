@@ -8,6 +8,7 @@ struct OfinSyntaxData {
     matcher: String,
     replace_with: Option<String>,
     extractor: Option<String>,
+    preprocess: Option<bool>,
 }
 
 pub fn syntax() -> Vec<TokenMatcher> {
@@ -17,6 +18,7 @@ pub fn syntax() -> Vec<TokenMatcher> {
         "ImportStatement".to_string(),
         r#"import\s*<.*>"#.to_string(),
         "use $1".to_string(),
+        false,
         Some("<.*>".to_string()),
         Some(|s| {
             format!(
@@ -55,6 +57,7 @@ pub fn syntax() -> Vec<TokenMatcher> {
             name.to_string(),
             data.matcher,
             data.replace_with.unwrap_or_else(|| "".to_string()),
+            data.preprocess.unwrap_or(false),
             data.extractor,
             mutator,
         ));

@@ -9,16 +9,19 @@ replace_with = "self"
 matcher = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
 replace_with = "OfinString::new($1)"
 extractor = "copy"
+preprocess = true
 
 [Token.IntLiteral]
 matcher = "-?\\d+"
 replace_with = "Int::new($1)"
 extractor = "copy"
+preprocess = true
 
 [Token.BoolLiteral]
 matcher = "(false|true)"
 replace_with = "Bool::new($1)"
 extractor = "copy"
+preprocess = true
 
 [Token.EOL]
 matcher = ";"
@@ -26,6 +29,8 @@ replace_with = "self"
 
 [Token.Comment]
 matcher = "((\\/\\*((.|(\r?\n))*)\\*\\/)|\\/\\/.*(\r?\n))"
+# FIXME: Put comment back in with only newlines (so it doesn't attempt to parse it)
+# To ensure debug lines don't get messed up
 
 [Token.StringDeclaration]
 matcher = "string\\s+.+\\s*="
@@ -43,7 +48,7 @@ replace_with = "let mut $1: Bool ="
 extractor = "\\s+.+(?==)"
 
 [Token.FunctionCall]
-matcher = "\\(.*?\\)"
+matcher = "\\(([^()]|(?R))*\\)"
 replace_with = "self"
 
 [Token.NameSpace]
