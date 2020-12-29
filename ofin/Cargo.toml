@@ -15,7 +15,6 @@ clap = "3.0.0-beta.2"
 lazy_static = "1.4.0"
 pretty_env_logger = "0.4.0"
 ofin-std = { path = "../ofin-std" }
-ofin-derive = { path = "../ofin-derive" }
 serde = { version = "1.0", features = ["derive"] }
 toml = { version = "0.5.7", features = ["preserve_order"] }
 

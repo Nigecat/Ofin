@@ -289,7 +289,6 @@ dependencies = [
  "lazy_static",
  "log",
  "md5",
- "ofin-derive",
  "ofin-std",
  "pcre2",
  "pretty_env_logger",
@@ -300,14 +299,6 @@ dependencies = [
  "thiserror",
  "toml",
  "which",
-]
-
-[[package]]
-name = "ofin-derive"
-version = "0.0.1"
-dependencies = [
- "quote",
- "syn",
 ]
 
 [[package]]
