@@ -21,7 +21,7 @@ impl Cli {
         }
 
         // Remove the cache if we need to
-        if cli.clear_cache && util::path_exists("cache") {
+        if cli.clear_cache && util::path_exists(util::executable_dir().join("cache")) {
             std::fs::remove_dir_all(util::executable_dir().join("cache"))
                 .expect("Unable to remove cache directory");
         }
