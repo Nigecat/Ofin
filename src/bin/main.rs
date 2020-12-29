@@ -11,7 +11,7 @@ use cli::Cli;
 include!(env!("STATIC_LOCATION"));
 
 // Include our dependencies for the standard library
-const DEPENDENCIES: Dir = include_dir!("../ofin-std/target/release/deps");
+const DEPENDENCIES: Dir = include_dir!("ofin-std/target/release/deps");
 
 #[rustfmt::skip]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
