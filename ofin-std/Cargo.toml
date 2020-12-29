@@ -10,9 +10,3 @@ crate-type = ["rlib"]
 [dependencies]
 ofin-types = { path = "ofin-types" }
 ofin-std-common = { path = "ofin-std-common" }
-
-[target.'cfg(windows)'.dependencies]
-ofin-std-windows = { path = "ofin-std-windows" }
-
-[target.'cfg(unix)'.dependencies]
-ofin-std-unix = { path = "ofin-std-unix" }

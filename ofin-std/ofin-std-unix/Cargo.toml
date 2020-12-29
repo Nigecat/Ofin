@@ -1,8 +1,0 @@
-[package]
-name = "ofin-std-unix"
-version = "0.0.1"
-authors = ["Nigecat"]
-edition = "2018"
-
-[dependencies]
-nix = "0.19.1"

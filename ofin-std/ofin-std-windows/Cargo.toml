@@ -1,8 +1,0 @@
-[package]
-name = "ofin-std-windows"
-version = "0.0.1"
-authors = ["Nigecat"]
-edition = "2018"
-
-[dependencies]
-winapi = "0.3.9"
