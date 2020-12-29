@@ -32,6 +32,7 @@ pub fn execute(script: String) -> Result<(), OfinError> {
         write!(file, "{}", &rc).unwrap();
 
         let path = Cache::get(&script);
+        let libs = current_dir.join("lib");
         let args = &[
             &file.path().to_str().unwrap(),
             "-o",
@@ -39,9 +40,7 @@ pub fn execute(script: String) -> Result<(), OfinError> {
             "--crate-name",
             "ofin",
             "-L",
-            current_dir.to_str().unwrap(),
-            "-L", // FIXME: Make this a proper dynamic link to the dependencies
-            "target/deps",
+            libs.to_str().unwrap(),
         ];
         debug!("Invoking `rustc {}`", args.join(" "));
         let command = Command::new("rustc")

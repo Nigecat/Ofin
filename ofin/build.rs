@@ -1,4 +1,5 @@
 use std::path::Path;
+use std::process::Command;
 use std::{env, fs};
 use which::which;
 
@@ -21,4 +22,10 @@ fn main() {
     fs::write(&path, data).expect("unable to write static data to file");
 
     println!("cargo:rustc-env=STATIC_LOCATION={}", path.to_str().unwrap());
+
+    // Build our dependencies so the include_dir crate can access them
+    env::set_current_dir("../ofin-std").unwrap();
+    let _ = Command::new("cargo")
+        .args(&["build", "--release", "--target-dir", "target"])
+        .output();
 }
