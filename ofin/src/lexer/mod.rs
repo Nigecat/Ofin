@@ -32,8 +32,6 @@ pub fn lex<'t, S: AsRef<str>>(source: S) -> Result<TokenStream<'t>, OfinError> {
         source = matcher.replace_str(source);
     }
 
-    error!("{}", source);
-
     // While there are still characters left
     while !source.is_empty() {
         debug!("Running lexer on row {}, column {}", row, column);

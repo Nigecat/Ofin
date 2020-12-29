@@ -76,7 +76,7 @@ impl TokenMatcher {
                 };
 
                 let to: String = token.into();
-                error!("{} -> {}", text, to);
+                debug!("{} -> {}", text, to);
                 string = string.replace(text, &to);
             }
         }
