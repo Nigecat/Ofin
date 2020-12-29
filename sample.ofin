@@ -1,5 +1,5 @@
 import <std/time>;
 import <std/keyboard>;
 
-time::sleep(5000);
-keyboard::send("Hello, World!");
+sleep(5000);
+send("Hello, World!");

@@ -22,7 +22,7 @@ pub fn syntax() -> Vec<TokenMatcher> {
         Some("<.*>".to_string()),
         Some(|s| {
             format!(
-                "ofin_{}",
+                "ofin_{}::*",
                 util::remove_last(util::remove_first(&s.replace("/", "::")).unwrap()).unwrap()
             )
         }),

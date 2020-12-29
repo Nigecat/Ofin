@@ -57,9 +57,9 @@ impl TokenMatcher {
         let source = string.clone();
         // Reverse the order of the matches
         // This is required since we get the byte range of the matched text in order from first-last
-        // If we just replace them in that order we mutate the string and the following matches become 
+        // If we just replace them in that order we mutate the string and the following matches become
         //      invalid as the length of the string changes
-        // However, since the iterator guarantees to be first to last, 
+        // However, since the iterator guarantees to be first to last,
         //      we can reverse the results to completely avoid that issue
         //      as the indexes are based off the string start not end
         let matches = self.matcher.find_iter(&source.as_bytes());

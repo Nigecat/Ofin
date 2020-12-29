@@ -7,21 +7,18 @@ replace_with = "self"
 
 [Token.StringLiteral]
 matcher = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
-replace_with = "OfinString::new($1)"
+replace_with = "__create_string($1)"
 extractor = "copy"
-preprocess = true
 
 [Token.IntLiteral]
 matcher = "-?\\d+"
-replace_with = "Int::new($1)"
+replace_with = "__create_int($1)"
 extractor = "copy"
-preprocess = true
 
 [Token.BoolLiteral]
 matcher = "(false|true)"
-replace_with = "Bool::new($1)"
+replace_with = "__create_bool($1)"
 extractor = "copy"
-preprocess = true
 
 [Token.EOL]
 matcher = ";"
@@ -34,25 +31,25 @@ matcher = "((\\/\\*((.|(\r?\n))*)\\*\\/)|\\/\\/.*(\r?\n))"
 
 [Token.StringDeclaration]
 matcher = "string\\s+.+\\s*="
-replace_with = "let mut $1: OfinString ="
+replace_with = "let mut $1: __string ="
 extractor = "\\s+.+(?==)"
 
 [Token.IntDeclaration]
 matcher = "int\\s+.+\\s*="
-replace_with = "let mut $1: Int ="
+replace_with = "let mut $1: __int ="
 extractor = "\\s+.+(?==)"
 
 [Token.BoolDeclaration]
 matcher = "bool\\s+.+\\s*="
-replace_with = "let mut $1: Bool ="
+replace_with = "let mut $1: __bool ="
 extractor = "\\s+.+(?==)"
 
-[Token.FunctionCall]
-matcher = "\\(([^()]|(?R))*\\)"
+[Token.LBracket]
+matcher = "\\("
 replace_with = "self"
 
-[Token.NameSpace]
-matcher = "::"
+[Token.RBracket]
+matcher = "\\)"
 replace_with = "self"
 
 # This token should remain second last in the syntax list
