@@ -6,3 +6,4 @@ extern crate lazy_static;
 pub mod io;
 pub mod keyboard;
 pub mod time;
+pub mod alerts;

@@ -52,6 +52,10 @@ replace_with = "self"
 matcher = "\\)"
 replace_with = "self"
 
+[Token.Comma]
+matcher = ","
+replace_with = "self"
+
 # This token should remain second last in the syntax list
 [Token.Ident]
 matcher = "[a-zA-Z_]+"

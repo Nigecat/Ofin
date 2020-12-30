@@ -11,9 +11,9 @@
 //! import <std/time>;
 //! ```
 //! This would bring all function inside that module into the current scope.
+//!
+//! All functions in the [`ofin prelude`](prelude/index.html) are automatically imported for all scripts.
 
 pub use ofin_std_common::*;
 pub use ofin_types::*;
-
-#[doc(hidden)]
 pub mod prelude;
