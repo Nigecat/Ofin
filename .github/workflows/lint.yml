@@ -9,6 +9,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Install dependencies
         run: sudo apt-get install libdbus-glib-1-dev libsdl-pango-dev libatk1.0-dev libgtk-3-dev
