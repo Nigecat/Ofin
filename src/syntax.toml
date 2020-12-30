@@ -7,17 +7,17 @@ replace_with = "self"
 
 [Token.StringLiteral]
 matcher = "(\")((?:(?!\")[^\\\\]|(?:\\\\\\\\)*\\\\[^\\\\])*)(\")"
-replace_with = "__create_string($1)"
+replace_with = "__new_string($1)"
 extractor = "copy"
 
 [Token.IntLiteral]
 matcher = "-?\\d+"
-replace_with = "__create_int($1)"
+replace_with = "__new_int($1)"
 extractor = "copy"
 
 [Token.BoolLiteral]
 matcher = "(false|true)"
-replace_with = "__create_bool($1)"
+replace_with = "__new_bool($1)"
 extractor = "copy"
 
 [Token.EOL]
