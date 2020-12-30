@@ -10,13 +10,16 @@
 		},
 		{	
 			"include": "#strings"
+		},
+		{
+			"include": "#keywords"
 		}
 	],
 	"repository": {
 		"storage_types": {
 			"patterns": [{
 				"name": "storage.type.ofin",
-				"match": "(?-mix:\\b(int|string|char)\\b)"	
+				"match": "(?-mix:\\b(int|string|bool)\\b)"	
 			}]
 		},
 		"comments": {
@@ -47,6 +50,12 @@
 					]
 				}
 			]
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.ofin",
+				"match": "\\b(import)\\b"
+			}]
 		}
 	},
 	"scopeName": "source.ofin"
