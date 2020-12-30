@@ -29,7 +29,7 @@ impl Cli {
                 .expect("Unable to remove cache directory");
         }
 
-        // Remove our standard library if we need to 
+        // Remove our standard library if we need to
         if cli.clear_lib && util::path_exists(util::executable_dir().join("lib")) {
             std::fs::remove_dir_all(util::executable_dir().join("lib"))
                 .expect("Unable to remove standard lbirary directory");

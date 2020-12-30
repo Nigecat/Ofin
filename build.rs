@@ -1,8 +1,8 @@
+use glob::glob;
 use std::path::Path;
 use std::process::Command;
 use std::{env, fs};
 use which::which;
-use glob::glob;
 
 fn main() {
     // Rerun if our standard library has been modified
@@ -12,11 +12,11 @@ fn main() {
         }
     }
 
-    // Build our standard library so the include_dir crate can access it
+    // [Re]build our standard library so the include_dir crate can access it
     env::set_current_dir("ofin-std").unwrap();
-    let _ = Command::new("cargo")
-        .args(&["build", "--release"])
-        .output();
+    fs::remove_dir_all("target/release/deps")
+        .expect("Unable to delete previous standard library build");
+    let _ = Command::new("cargo").args(&["build", "--release"]).output();
 
     // Bundle the rust compiler for linking our standard library
     let rustc = fs::canonicalize(which("rustc").unwrap()).unwrap();
