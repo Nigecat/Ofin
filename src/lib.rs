@@ -78,6 +78,7 @@ pub fn execute(script: String) -> Result<(), OfinError> {
 
         let path = Cache::get(&script);
         let args = &[
+            "-O",
             &file.path().to_str().unwrap(),
             "-o",
             &path.to_str().unwrap(),
