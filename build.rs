@@ -1,10 +1,13 @@
 use glob::glob;
-use std::path::Path;
 use std::process::Command;
 use std::{env, fs};
 use which::which;
 
 fn main() {
+    let rustc = which("rustc")
+        .expect("Unable to locate the rust compiler, please ensure rustc is on your PATH");
+    println!("cargo:rustc-env=RUSTC_LOCATION={}", rustc.to_str().unwrap());
+
     // Rerun if our standard library has been modified
     for entry in glob("ofin-std/**/*.rs").unwrap() {
         if let Ok(path) = entry {
@@ -12,29 +15,13 @@ fn main() {
         }
     }
 
-    // [Re]build our standard library so the include_dir crate can access it
+    // [Re]build our standard library so we can embed it
     env::set_current_dir("ofin-std").unwrap();
-    fs::remove_dir_all("target/release/deps")
-        .expect("Unable to delete previous standard library build");
+    let _ = fs::remove_dir_all("target/release/deps");
     Command::new("cargo")
         .args(&["build", "--release"])
         .output()
         .expect("stdlib build failed");
 
-    // Bundle the rust compiler for linking our standard library
-    let rustc = fs::canonicalize(which("rustc").unwrap()).unwrap();
-    let rustc = rustc.to_str().unwrap();
-    let rustc = format!(
-        "static RUSTC: &[u8] = include_bytes!({});",
-        snailquote::escape(rustc),
-    );
-
-    let data = format!("{}", rustc);
-
-    let out_dir = &env::var("OUT_DIR").unwrap();
-    let path = Path::new(out_dir).join("static.rs");
-
-    fs::write(&path, data).expect("unable to write static data to file");
-
-    println!("cargo:rustc-env=STATIC_LOCATION={}", path.to_str().unwrap());
+    println!("cargo:rustc-env=STDLIB_LOCATION=ofin-std/target/release/deps");
 }

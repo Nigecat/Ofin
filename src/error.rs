@@ -2,10 +2,12 @@ use pcre2::bytes::Regex;
 use std::fmt;
 use thiserror::Error;
 
-#[derive(PartialEq, Debug, Error)]
+#[derive(Debug, Error)]
 pub enum OfinError {
     #[error("An internal error has occured, this should not have happened and is a bug: {0}")]
     InternalError(String),
+    #[error("An unexpected io error has occured: {0:?}")]
+    IOError(#[from] std::io::Error),
     #[error("A syntax error has occured at row {row}, column {column}:\n{ctx}")]
     SyntaxError {
         /// The column this error occured in
@@ -67,7 +69,7 @@ impl OfinError {
 }
 
 /// A vector of errors
-#[derive(PartialEq, Debug)]
+#[derive(Debug)]
 pub struct ErrorStream {
     inner: Vec<OfinError>,
 }
