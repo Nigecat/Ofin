@@ -1,4 +1,4 @@
-name: Clippy check
+name: Lint
 
 on:
   push:
@@ -7,9 +7,11 @@ on:
     branches: [master]
 
 jobs:
-  clippy_check:
+  lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Install dbus
+        run: sudo apt-get install libdbus-glib-1-dev
       - uses: actions/checkout@v1
       - run: rustup component add clippy
       - uses: actions-rs/clippy-check@v1
