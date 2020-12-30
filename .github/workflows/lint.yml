@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
-        run: sudo apt-get install libdbus-glib-1-dev libpango
+        run: sudo apt-get install libdbus-glib-1-dev libsdl-pango-dev
       - uses: actions/checkout@v1
       - run: rustup component add clippy
       - uses: actions-rs/clippy-check@v1
