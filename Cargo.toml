@@ -4,10 +4,11 @@ version = "0.0.1"
 authors = ["Nigecat"]
 edition = "2018"
 autobins = false
+default-run = "ofin"
 
 [[bin]]
 name = "ofin"
-path = "src/bin/main.rs"
+path = "src/bin/ofin.rs"
 
 [dependencies]
 md5 = "0.7.0"

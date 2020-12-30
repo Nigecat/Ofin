@@ -1,9 +1,7 @@
-use ofin::util;
 use std::{fs, process};
-mod cli;
-use cli::Cli;
+mod interface;
+use interface::Cli;
 
-#[rustfmt::skip]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Init our logger
     pretty_env_logger::init();

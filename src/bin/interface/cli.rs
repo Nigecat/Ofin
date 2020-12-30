@@ -1,5 +1,5 @@
-use crate::util;
 use clap::{crate_authors, crate_version, Clap};
+use ofin::util;
 
 #[derive(Clap, Debug)]
 #[clap(version = crate_version!(), author = crate_authors!())]
