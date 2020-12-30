@@ -27,3 +27,4 @@ toml = { version = "0.5.7", features = ["preserve_order"] }
 glob = "0.3"
 which = "4.0.2"
 snailquote = "0.3"
+ofin-std = { path = "ofin-std" }

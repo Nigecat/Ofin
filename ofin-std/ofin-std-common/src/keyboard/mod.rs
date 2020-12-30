@@ -2,7 +2,6 @@
 mod key;
 use enigo::KeyboardControllable;
 pub use key::Key;
-use lazy_static::lazy_static;
 use ofin_types::OfinString;
 use std::sync::Mutex;
 

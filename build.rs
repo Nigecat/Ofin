@@ -16,7 +16,10 @@ fn main() {
     env::set_current_dir("ofin-std").unwrap();
     fs::remove_dir_all("target/release/deps")
         .expect("Unable to delete previous standard library build");
-    let _ = Command::new("cargo").args(&["build", "--release"]).output();
+    Command::new("cargo")
+        .args(&["build", "--release"])
+        .output()
+        .expect("stdlib build failed");
 
     // Bundle the rust compiler for linking our standard library
     let rustc = fs::canonicalize(which("rustc").unwrap()).unwrap();
