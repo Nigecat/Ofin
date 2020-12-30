@@ -1,5 +1,1 @@
-import <std/time>;
-import <std/keyboard>;
-
-sleep(5000);
-send("Hello, World!");
+print("Hello, World");
