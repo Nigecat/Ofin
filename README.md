@@ -8,7 +8,7 @@ This is currently a work in progress.
 The only method available as of now to install Ofin is from source.  
 Before installing, if you are running linux you will need some packages, these can be installed on ubuntu with:
 ```
-sudo apt-get install libdbus-glib-1-dev libsdl-pango-dev libatk1.0-dev libgtk-3-dev
+sudo apt-get install libdbus-glib-1-dev libsdl-pango-dev libatk1.0-dev libgtk-3-dev libxdo-dev
 ```
 Assuming you have [rust](https://www.rust-lang.org/) (and cargo) installed you should be able to simply run:  
 ```
