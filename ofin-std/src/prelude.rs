@@ -2,7 +2,7 @@
 //!
 //! These functions are automatically imported into all ofin scripts.
 
-pub use ofin_std_common::io::{print, input};
+pub use ofin_std_common::io::{print, printn, input};
 
 #[doc(hidden)]
 pub use ofin_types::prelude::*;
