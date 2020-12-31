@@ -1,3 +1,5 @@
 import <std/alerts>;
 
-toast("This is a toast notification!", "Body of notification");
+print("Toast notification title?");
+string title = input();
+toast(title, "Body of notification");

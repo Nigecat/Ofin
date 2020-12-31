@@ -121,7 +121,7 @@ pub fn execute(script: String) -> Result<(), OfinError> {
     debug!("Running executable: {:?}", path);
 
     Command::new(current_dir.join(path))
-        .stdin(Stdio::null())
+        .stdin(Stdio::inherit())
         .stdout(Stdio::inherit())
         .spawn()
         .expect("unable to start program")
