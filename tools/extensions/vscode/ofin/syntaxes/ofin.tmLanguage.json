@@ -13,6 +13,12 @@
 		},
 		{
 			"include": "#keywords"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#brackets"
 		}
 	],
 	"repository": {
@@ -56,6 +62,37 @@
 				"name": "keyword.ofin",
 				"match": "\\b(import)\\b"
 			}]
+		},
+		"functions": {
+			"patterns": [
+				{
+					"name": "support.function.ofin",
+					"match": "\\w+(?=\\(.*\\))"
+				}
+			]
+		},
+		"brackets": {
+			"patterns": [
+				{
+					"begin": "\\(",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.begin.bracket.round.ofin"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.end.bracket.round.ofin"
+						}
+					},
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				}
+			]
 		}
 	},
 	"scopeName": "source.ofin"
