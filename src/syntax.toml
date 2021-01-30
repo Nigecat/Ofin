@@ -25,9 +25,9 @@ matcher = ";"
 replace_with = "self"
 
 [Token.Comment]
-matcher = "((\\/\\*((.|(\r?\n))*)\\*\\/)|\\/\\/.*(\r?\n))"
-# FIXME: Put comment back in with only newlines (so it doesn't attempt to parse it)
-# To ensure debug lines don't get messed up
+matcher = "((\\/\\*((.|(\r?\n))*)\\*\\/)|\\/\\/.*(\r?\n?))"
+# Replace comments with a newline to ensure debug line results align
+replace_with = "\n"
 
 [Token.StringDeclaration]
 matcher = "string\\s+.+\\s*="

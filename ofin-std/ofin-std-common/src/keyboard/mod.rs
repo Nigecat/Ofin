@@ -16,10 +16,21 @@ lazy_static! {
 /// * `text` - The text to send
 pub fn send(text: OfinString) {
     let text: String = text.into();
+
+    // If the supplied text is a single alphanumeric letter send it via key_click
+    if text.chars().count() == 1 {
+        let c = text.chars().next().unwrap();
+        if c.is_alphanumeric() {
+            DRIVER.lock().unwrap().key_click(enigo::Key::Layout(c));
+            return;
+        }
+    }
+
+    // Otherwise use key_sequence
     DRIVER.lock().unwrap().key_sequence(&text);
 }
 
-/// Hold down a control key, this is not let go of until [keyUp](keyUp) is called
+/// Hold down a control key, this is not let go of until [sendKeyUp](sendKeyUp) is called
 ///
 /// # Arguments
 ///
@@ -29,7 +40,7 @@ pub fn sendKeyDown(key: OfinString) {
     DRIVER.lock().unwrap().key_down(key.into_key());
 }
 
-/// Let go of a control key, this will do nothing if [keyDown](keyDown) has not been called
+/// Let go of a control key, this will do nothing if [sendKeyDown](sendKeyDown) has not been called
 ///
 /// # Arguments
 ///

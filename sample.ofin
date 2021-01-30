@@ -1,5 +1,7 @@
-import <std/alerts>;
+import <std/time>;
+import <std/keyboard>;
 
-printn("Toast notification title: ");
-string title = input();
-toast(title, "Body of notification");
+// sleep(5000);
+sendKeyDown("control");
+send("v");
+sendKeyUp("control");
