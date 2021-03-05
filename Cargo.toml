@@ -1,0 +1,14 @@
+[package]
+name = "ofin"
+version = "0.0.1"
+description = "A hotkey scripting language"
+authors = ["Nigecat"]
+edition = "2018"
+autobins = false
+default-run = "ofin"
+
+[[bin]]
+name = "ofin"
+path = "src/bin/ofin.rs"
+
+[dependencies]
