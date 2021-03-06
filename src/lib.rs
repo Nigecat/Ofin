@@ -1,4 +1,8 @@
+pub mod build;
 mod error;
+mod scanner;
+mod token;
+pub use error::OfinError;
 
 #[macro_use]
 extern crate tracing;
