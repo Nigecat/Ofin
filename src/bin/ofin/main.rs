@@ -10,9 +10,8 @@ fn main() {
     let args = Cli::from_args();
 
     if let Ok(contents) = fs::read_to_string(&args.input) {
-        match ofin::run(contents) {
-            Ok(_) => (),
-            Err(e) => error!("{:?}", e),
+        if let Err(e) = ofin::run(contents) {
+            e.report();
         }
     } else {
         error!("file not found: {:?}", args.input);
