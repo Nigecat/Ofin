@@ -8,7 +8,7 @@ fn panic_handler(panic_info: &panic::PanicInfo) {
     let info = panic_info.payload().downcast_ref::<&str>().unwrap_or(&"");
     let location = panic_info
         .location()
-        .map(|location| format!("from {}:{}", location.line(), location.file()))
+        .map(|location| format!(" from {}:{}", location.file(), location.line()))
         .unwrap_or_default();
 
     let repo = env!("CARGO_PKG_REPOSITORY");

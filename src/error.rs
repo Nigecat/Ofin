@@ -1,7 +1,6 @@
 #[derive(Debug, thiserror::Error)]
 pub enum OfinError {
-    #[error("An unexpected internal error has occured, this is a bug.")]
-    Internal,
+
 }
 
 impl OfinError {
