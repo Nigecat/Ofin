@@ -50,9 +50,9 @@ fn panic_handler(panic_info: &panic::PanicInfo) {
 }
 
 fn main() {
-    tracing_subscriber::fmt::init();
-
     panic::set_hook(Box::new(panic_handler));
+
+    tracing_subscriber::fmt::init();
 
     let args = Cli::from_args();
 
