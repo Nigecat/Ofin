@@ -9,6 +9,7 @@ repository = "https://github.com/Nigecat/Ofin"
 [dependencies]
 structopt = "0.3.21"
 thiserror = "1.0.24"
+
 tracing-subscriber = "0.2.16"
 tracing = { version = "0.1.25", features = ["log"] }
 
