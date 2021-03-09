@@ -1,3 +1,4 @@
+mod build;
 mod cli;
 use cli::Cli;
 use std::{fs, panic};
@@ -13,10 +14,10 @@ fn panic_handler(panic_info: &panic::PanicInfo) {
 
     let repo = env!("CARGO_PKG_REPOSITORY");
     let version = env!("CARGO_PKG_VERSION");
-    let date = ofin::build::BUILT_TIME_UTC;
-    let hash = ofin::build::GIT_COMMIT_HASH.unwrap_or("");
-    let target = ofin::build::TARGET;
-    let rustc = ofin::build::RUSTC_VERSION;
+    let date = build::BUILT_TIME_UTC;
+    let hash = build::GIT_COMMIT_HASH.unwrap_or("");
+    let target = build::TARGET;
+    let rustc = build::RUSTC_VERSION;
 
     let msg = format!(
         "

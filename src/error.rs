@@ -1,7 +1,5 @@
 #[derive(Debug, thiserror::Error)]
-pub enum OfinError {
-
-}
+pub enum OfinError {}
 
 impl OfinError {
     /// Report this error
