@@ -3,7 +3,6 @@ mod cli;
 use cli::Cli;
 use std::panic;
 use structopt::StructOpt;
-use tracing::error;
 
 fn panic_handler(panic_info: &panic::PanicInfo) {
     let info = panic_info.payload().downcast_ref::<&str>().unwrap_or(&"");
@@ -44,7 +43,7 @@ fn panic_handler(panic_info: &panic::PanicInfo) {
     );
 
     if tracing::dispatcher::has_been_set() {
-        error!("{}", msg);
+        tracing::error!("{}", msg);
     } else {
         println!("error: {}", msg);
     }
@@ -57,7 +56,14 @@ fn main() {
 
     let args = Cli::from_args();
 
-    if let Err(e) = ofin::run(args.input) {
+    let program = ofin::Program::parse_from_file(args.input);
+
+    let result = match program {
+        Ok(mut program) => program.run(),
+        Err(e) => Err(e),
+    };
+
+    if let Err(e) = result {
         e.report();
     }
 }
