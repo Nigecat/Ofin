@@ -1,5 +1,10 @@
 #[derive(Debug, thiserror::Error)]
-pub enum OfinError {}
+pub enum OfinError {
+    #[error("file not found: {0}")]
+    FileNotFound(std::path::PathBuf),
+    #[error("an unexpected io error occured: {0}")]
+    IoError(#[from] std::io::Error),
+}
 
 impl OfinError {
     /// Report this error

@@ -1,8 +1,7 @@
 mod error;
-mod lexer;
-mod token;
 pub use error::OfinError;
-use token::Token;
+
+use std::path::PathBuf;
 
 #[macro_use]
 extern crate tracing;
@@ -10,10 +9,8 @@ extern crate tracing;
 extern crate lazy_static;
 
 /// Run a script
-pub fn run(script: String) -> Result<(), error::OfinError> {
-    debug!("Running script:\n{}", script);
-
-    let _tokens = lexer::lex(script)?;
-
+///
+///  * `script` - The file path of the script to run, this should ideally be passed through [fs::canonicalize](std::fs::canonicalize) beforehand
+pub fn run(script: PathBuf) -> Result<(), error::OfinError> {
     Ok(())
 }
