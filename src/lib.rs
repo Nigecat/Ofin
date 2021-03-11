@@ -1,5 +1,6 @@
 mod error;
 mod program;
+mod token;
 pub use error::OfinError;
 pub use program::Program;
 
