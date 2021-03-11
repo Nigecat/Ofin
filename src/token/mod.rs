@@ -1,9 +1,9 @@
 mod def;
 mod stream;
 pub use def::TokenType;
+use std::fmt;
 pub use stream::TokenStream;
 
-#[derive(Debug)]
 pub struct Token {
     /// The type of this token
     t: TokenType,
@@ -18,5 +18,11 @@ impl Token {
 
     pub fn value(&self) -> &str {
         &self.value
+    }
+}
+
+impl fmt::Debug for Token {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}: {}", self.t, self.value)
     }
 }
