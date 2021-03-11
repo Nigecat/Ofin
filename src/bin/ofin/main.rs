@@ -20,17 +20,19 @@ fn panic_handler(panic_info: &panic::PanicInfo) {
 
     let msg = format!(
         "
-        An internal panic has occured, this is a bug.
-        Please make a bug report at {repo} and include the following snippet:
+An internal panic has occured, this is a bug.
+Please make a bug report at {repo} and include the following snippet:
 
-        v{version}
-        built on {date}
-        with hash {hash}
-        for target {target}
-        using {rustc}.
+v{version}
+built on {date}
+with hash {hash}
+for target {target}
+using {rustc}.
 
-        trace{location}:
-            {info}
+{info}
+
+trace{location}:
+{trace}
     ",
         repo = repo,
         version = version,
@@ -39,6 +41,7 @@ fn panic_handler(panic_info: &panic::PanicInfo) {
         target = target,
         rustc = rustc,
         info = info,
+        trace = panic_info,
         location = location,
     );
 
