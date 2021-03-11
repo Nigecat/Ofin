@@ -10,7 +10,8 @@ impl Program {
     /// Parse an ofin program from a file
     pub fn parse_from_file(file: PathBuf) -> Result<Self, OfinError> {
         let source = fs::read_to_string(&file).map_err(|_| OfinError::FileNotFound(file))?;
-        let tokens = TokenStream::lex(source);
+        let tokens = TokenStream::lex(source)?;
+        debug!("{:?}", tokens);
 
         unimplemented!();
     }

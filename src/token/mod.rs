@@ -1,12 +1,22 @@
-mod matcher;
+mod def;
 mod stream;
-pub use matcher::TokenMatcher;
+pub use def::TokenType;
 pub use stream::TokenStream;
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub enum TokenType {}
-
+#[derive(Debug)]
 pub struct Token {
+    /// The type of this token
     t: TokenType,
+    /// The value of this token
     value: String,
+}
+
+impl Token {
+    pub fn t(&self) -> TokenType {
+        self.t
+    }
+
+    pub fn value(&self) -> &str {
+        &self.value
+    }
 }
