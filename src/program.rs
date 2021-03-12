@@ -13,10 +13,14 @@ impl Program {
     pub fn parse_from_file(file: PathBuf) -> Result<Self, OfinError> {
         let source = fs::read_to_string(&file).map_err(|_| OfinError::FileNotFound(file))?;
         let mut tokens = TokenStream::lex(source)?;
+
         // Remove any control characters and spaces from the tokens
-        tokens.filter(TokenType::Control);
-        tokens.filter(TokenType::Space);
-        debug!("{:#?}", tokens);
+        tokens.filter(&[TokenType::Control, TokenType::Space]);
+
+        // Resolve any file imports
+        while let Some(pos) = tokens.iter().position(|t| *t == TokenType::Import) {
+            trace!("{}", pos);
+        }
 
         Ok(Program {})
     }

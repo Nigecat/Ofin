@@ -1,6 +1,7 @@
 use super::def::TOKEN_MATCHERS;
 use super::{Token, TokenType};
 use crate::OfinError;
+use std::ops::Deref;
 
 #[derive(Debug)]
 pub struct TokenStream {
@@ -42,16 +43,15 @@ impl TokenStream {
 
     /// Remove any tokens of type `t` from the stream
     #[trace::trace]
-    pub fn filter(&mut self, t: TokenType) {
-        self.tokens.retain(|token| *token != t);
+    pub fn filter(&mut self, t: &[TokenType]) {
+        self.tokens.retain(|token| !t.contains(&token.t()));
     }
 }
 
-impl IntoIterator for TokenStream {
-    type Item = Token;
-    type IntoIter = std::vec::IntoIter<Self::Item>;
+impl Deref for TokenStream {
+    type Target = Vec<Token>;
 
-    fn into_iter(self) -> Self::IntoIter {
-        self.tokens.into_iter()
+    fn deref(&self) -> &Self::Target {
+        &self.tokens
     }
 }

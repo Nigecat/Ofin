@@ -12,12 +12,10 @@ pub struct Token {
 }
 
 impl Token {
-    #[trace::trace]
     pub fn t(&self) -> TokenType {
         self.t
     }
 
-    #[trace::trace]
     pub fn value(&self) -> &str {
         &self.value
     }
