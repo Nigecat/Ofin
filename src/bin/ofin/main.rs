@@ -2,7 +2,6 @@ mod build;
 mod cli;
 use cli::Cli;
 use std::panic;
-use structopt::StructOpt;
 
 fn panic_handler(panic_info: &panic::PanicInfo) {
     let info = panic_info.payload().downcast_ref::<&str>().unwrap_or(&"");
@@ -61,12 +60,13 @@ fn main() {
 
     let program = ofin::Program::parse_from_file(args.input);
 
-    let result = match program {
-        Ok(mut program) => program.run(),
-        Err(e) => Err(e),
-    };
+    // let result = match program {
+    //     Ok(mut program) => program.run(),
+    //     Err(e) => Err(e),
+    // };
 
-    if let Err(e) = result {
+    // if let Err(e) = result {
+    if let Err(e) = program {
         e.report();
     }
 }

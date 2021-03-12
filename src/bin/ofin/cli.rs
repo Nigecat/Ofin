@@ -12,3 +12,10 @@ pub struct Cli {
     #[structopt(parse(from_os_str))]
     pub input: PathBuf,
 }
+
+impl Cli {
+    #[trace::trace]
+    pub fn from_args() -> Self {
+        StructOpt::from_args()
+    }
+}

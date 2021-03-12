@@ -12,17 +12,25 @@ pub struct Token {
 }
 
 impl Token {
+    #[trace::trace]
     pub fn t(&self) -> TokenType {
         self.t
     }
 
+    #[trace::trace]
     pub fn value(&self) -> &str {
         &self.value
     }
 }
 
+impl PartialEq<TokenType> for Token {
+    fn eq(&self, t: &TokenType) -> bool {
+        self.t == *t
+    }
+}
+
 impl fmt::Debug for Token {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}: {}", self.t, self.value)
+        write!(f, "{:?}: {:?}", self.t, self.value)
     }
 }

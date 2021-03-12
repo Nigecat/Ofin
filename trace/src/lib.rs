@@ -18,7 +18,7 @@ pub fn trace(_args: TokenStream, input: TokenStream) -> TokenStream {
         #(#attrs)*
         #[::tracing::instrument]
         #vis #sig {
-            ::tracing::trace!("->");
+            // ::tracing::trace!("->");
             let __trace_result = { #(#body)* };
             ::tracing::trace!("<- {:?}", __trace_result);
             __trace_result

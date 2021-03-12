@@ -1,5 +1,5 @@
 use super::def::TOKEN_MATCHERS;
-use super::Token;
+use super::{Token, TokenType};
 use crate::OfinError;
 
 #[derive(Debug)]
@@ -9,6 +9,7 @@ pub struct TokenStream {
 
 impl TokenStream {
     #[allow(mutable_borrow_reservation_conflict)] // TODO: Refactor in a way that avoids this
+    #[trace::trace]
     pub fn lex(mut source: String) -> Result<Self, OfinError> {
         let mut tokens = Vec::new();
 
@@ -37,6 +38,12 @@ impl TokenStream {
         }
 
         Ok(TokenStream { tokens })
+    }
+
+    /// Remove any tokens of type `t` from the stream
+    #[trace::trace]
+    pub fn filter(&mut self, t: TokenType) {
+        self.tokens.retain(|token| *token != t);
     }
 }
 
