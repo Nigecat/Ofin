@@ -12,14 +12,14 @@ pub enum TokenType {
 
 /// This automatically makes the regex only match the start of the line
 macro_rules! regex {
-    ($re: literal, $t: expr) => {
+    ($t: expr, $re: literal) => {
         (Regex::new(&format!(r#"^{}"#, $re)).unwrap(), $t)
     };
 }
 
 lazy_static! {
     pub static ref TOKEN_MATCHERS: Vec<(Regex, TokenType)> = vec![
-        regex!(";", TokenType::Eol),
-        regex!("\r?\n", TokenType::Newline),
+        regex!(TokenType::Eol, ";"),
+        regex!(TokenType::Newline, "\r?\n"),
     ];
 }
