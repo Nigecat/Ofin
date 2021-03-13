@@ -1,7 +1,7 @@
 mod error;
 mod program;
 mod token;
-pub use error::OfinError;
+pub use error::Error;
 pub use program::Program;
 
 #[macro_use]

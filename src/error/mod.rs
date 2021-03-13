@@ -1,5 +1,5 @@
 #[derive(Debug, thiserror::Error)]
-pub enum OfinError {
+pub enum Error {
     #[error("file not found: {0}")]
     FileNotFound(std::path::PathBuf),
     #[error("an unexpected io error occured: {0}")]
@@ -8,7 +8,7 @@ pub enum OfinError {
     SynaxError(String),
 }
 
-impl OfinError {
+impl Error {
     /// Report this error
     pub fn report(&self) {
         if tracing::dispatcher::has_been_set() {

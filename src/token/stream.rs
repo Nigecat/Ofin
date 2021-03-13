@@ -1,6 +1,6 @@
 use super::def::TOKEN_MATCHERS;
 use super::{Token, TokenType};
-use crate::OfinError;
+use crate::Error;
 use std::ops::Deref;
 
 #[derive(Debug)]
@@ -11,7 +11,7 @@ pub struct TokenStream {
 impl TokenStream {
     #[allow(mutable_borrow_reservation_conflict)] // TODO: Refactor in a way that avoids this
     #[trace::trace]
-    pub fn lex(mut source: String) -> Result<Self, OfinError> {
+    pub fn lex(mut source: String) -> Result<Self, Error> {
         let mut tokens = Vec::new();
 
         while !source.is_empty() {
@@ -32,7 +32,7 @@ impl TokenStream {
             // If we get here then none of the matchers matched
             // This means that there is a syntax error in the source
             if !set {
-                return Err(OfinError::SynaxError(
+                return Err(Error::SynaxError(
                     source.lines().next().unwrap().to_string(),
                 ));
             }
