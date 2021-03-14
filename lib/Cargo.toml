@@ -6,3 +6,5 @@ edition = "2018"
 
 [dependencies]
 rand = "0.8.3"
+thiserror = "1.0.24"
+module = { path = "function" }
