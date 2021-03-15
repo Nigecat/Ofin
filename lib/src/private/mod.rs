@@ -8,10 +8,10 @@ pub use transmute::Transmutable;
 /// ```rust
 /// call("sleep", &["time"], &[Box::new(1000)]);
 /// ```
-pub fn call<A, B, R, T>(
-    name: &str,
-    namespace: &[&str],
-    args: &[Transmutable],
+pub fn call(
+    _name: &str,
+    _namespace: &[&str],
+    _args: &[Transmutable],
 ) -> Result<Option<Transmutable>, Error> {
     unimplemented!();
 }
