@@ -7,8 +7,3 @@ pub mod prelude;
 pub mod process;
 pub mod random;
 pub mod time;
-
-#[doc(hidden)]
-pub mod private;
-#[doc(hidden)]
-pub use private as internal;

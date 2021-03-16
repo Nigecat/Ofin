@@ -278,14 +278,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ee1c47aaa256ecabcaea351eae4a9b01ef39ed810004e298d2511ed284b1525"
 
 [[package]]
-name = "module"
-version = "0.0.1"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
 name = "num-integer"
 version = "0.1.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -324,9 +316,7 @@ dependencies = [
 name = "ofin-std"
 version = "0.0.1"
 dependencies = [
- "module",
  "rand",
- "thiserror",
 ]
 
 [[package]]

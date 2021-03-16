@@ -1,10 +1,8 @@
 //! Process interaction utilities.
 
-module::export! {
-    use std::process;
+use std::process;
 
-    /// Terminate the program with the specified exit code.
-    pub fn exit(code: i32) {
-        process::exit(code);
-    }
+/// Terminate the program with the specified exit code.
+pub fn exit(code: i32) {
+    process::exit(code);
 }
