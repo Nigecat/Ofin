@@ -1,3 +1,9 @@
+mod build;
+mod cli;
+use cli::Cli;
+
 fn main() {
-    println!("Hello, World!");
+    tracing_subscriber::fmt::init();
+
+    let _cli = Cli::from_args();
 }
