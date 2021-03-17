@@ -13,8 +13,8 @@ pub fn panic_handler(panic_info: &panic::PanicInfo) {
         .map(|location| format!(" from {}:{}", location.file(), location.line()))
         .unwrap_or_default();
 
-    let repo = env!("CARGO_PKG_REPOSITORY");
-    let version = env!("CARGO_PKG_VERSION");
+    let repo = build::PKG_REPOSITORY;
+    let version = build::PKG_VERSION;
     let date = build::BUILT_TIME_UTC;
     let hash = build::GIT_COMMIT_HASH.unwrap_or("");
     let target = build::TARGET;
