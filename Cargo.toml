@@ -15,7 +15,6 @@ structopt = "0.3.21"
 thiserror = "1.0.24"
 lazy_static = "1.4.0"
 
-trace = { path = "trace" }
 tracing-subscriber = "0.2.16"
 tracing = { version = "0.1.25", features = ["log"] }
 
