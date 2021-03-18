@@ -10,10 +10,6 @@ enum Regex {
 pub struct Rule(Regex);
 
 impl Rule {
-    fn new(r: Regex) -> Self {
-        Rule(r)
-    }
-
     /// Find the rule in the supplied text, returns the (start, end) indexe of the match
     pub fn find(&self, text: &str) -> Option<(usize, usize)> {
         match &self.0 {
@@ -33,10 +29,10 @@ macro_rules! regex {
     ($t: expr, $re: literal) => {{
         let expr = format!("^{}", $re);
         if let Ok(r) = regex::Regex::new(&expr) {
-            (Rule::new(Regex::Primary(r)), $t)
+            (Rule(Regex::Primary(r)), $t)
         } else {
             let r = fancy_regex::Regex::new(&expr).unwrap();
-            (Rule::new(Regex::Fallback(r)), $t)
+            (Rule(Regex::Fallback(r)), $t)
         }
     }};
 }
