@@ -1,5 +1,5 @@
 use crate::error::ParseError;
-use crate::language::SYNTAX;
+use crate::language::syntax::SYNTAX;
 use std::fmt;
 
 #[deny(dead_code)]

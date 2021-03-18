@@ -37,6 +37,9 @@ macro_rules! regex {
     }};
 }
 
+/// Token types which don't mean anything and can be safetly removed
+pub static SYNTAX_CLEAN: &[TokenType] = &[TokenType::Comment, TokenType::Space, TokenType::Control];
+
 lazy_static! {
     /// The syntax rules for ofin.
     ///

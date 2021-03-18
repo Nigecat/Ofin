@@ -1,4 +1,5 @@
 use super::{ParseError, Token, TokenType};
+use crate::language::syntax::SYNTAX_CLEAN;
 use std::ops::{Deref, DerefMut};
 
 #[derive(Debug)]
@@ -20,6 +21,9 @@ impl TokenStream {
         if !source.is_empty() {
             return Err(ParseError::Syntax);
         }
+
+        // Remove the useless tokens
+        tokens.retain(|token| !SYNTAX_CLEAN.contains(&token.t));
 
         let stream = TokenStream { tokens };
         debug!("Parsed tokens: {:#?}", stream);
