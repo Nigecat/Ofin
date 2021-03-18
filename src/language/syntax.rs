@@ -10,7 +10,7 @@ enum Regex {
 pub struct Rule(Regex);
 
 impl Rule {
-    /// Find the rule in the supplied text, returns the (start, end) indexe of the match
+    /// Find the rule in the supplied text, returns the (start, end) index of the match
     pub fn find(&self, text: &str) -> Option<(usize, usize)> {
         match &self.0 {
             Regex::Primary(r) => {
