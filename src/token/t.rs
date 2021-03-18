@@ -1,11 +1,13 @@
 use crate::error::ParseError;
 use crate::language::SYNTAX;
+use std::fmt;
 
 #[deny(dead_code)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum TokenType {
     // ----- Keywords -----
     Import,
+    Using,
 
     // ----- Characters -----
     Space,
@@ -30,6 +32,13 @@ impl TokenType {
                 return Some((*t, re.end()));
             }
         }
+
         None
+    }
+}
+
+impl fmt::Display for TokenType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", self)
     }
 }

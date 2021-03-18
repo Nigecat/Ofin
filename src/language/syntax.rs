@@ -19,5 +19,6 @@ lazy_static! {
 
         regex!(TokenType::Target, "<.*?>"),
         regex!(TokenType::Import, "import"),
+        regex!(TokenType::Using, "using"),
     ];
 }

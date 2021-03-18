@@ -1,18 +1,13 @@
+use crate::token::TokenStream;
 use crate::Error;
-use std::str::FromStr;
 
 pub struct Program {}
 
 impl Program {
-    pub fn parse(source: &str) -> Result<Self, Error> {
+    pub fn parse(source: String) -> Result<Self, Error> {
+        let tokens = TokenStream::parse(source)?;
+        trace!("Parsed tokens: {:#?}", tokens);
+
         Ok(Program {})
-    }
-}
-
-impl FromStr for Program {
-    type Err = Error;
-
-    fn from_str(source: &str) -> Result<Self, Self::Err> {
-        Program::parse(source)
     }
 }

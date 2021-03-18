@@ -1,7 +1,7 @@
 use super::{ParseError, Token, TokenType};
-use std::convert::TryFrom;
-use std::str::FromStr;
+use std::ops::{Deref, DerefMut};
 
+#[derive(Debug)]
 pub struct TokenStream {
     tokens: Vec<Token>,
 }
@@ -25,18 +25,16 @@ impl TokenStream {
     }
 }
 
-impl TryFrom<String> for TokenStream {
-    type Error = ParseError;
+impl Deref for TokenStream {
+    type Target = Vec<Token>;
 
-    fn try_from(source: String) -> Result<Self, Self::Error> {
-        TokenStream::parse(source)
+    fn deref(&self) -> &Self::Target {
+        &self.tokens
     }
 }
 
-impl FromStr for TokenStream {
-    type Err = ParseError;
-
-    fn from_str(source: &str) -> Result<Self, Self::Err> {
-        TokenStream::parse(source.to_string())
+impl DerefMut for TokenStream {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.tokens
     }
 }

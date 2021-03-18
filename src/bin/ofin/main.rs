@@ -2,6 +2,8 @@ mod build;
 mod cli;
 mod panic;
 use cli::Cli;
+use ofin::Program;
+use tracing::error;
 
 fn main() {
     panic::set_handler();
@@ -10,5 +12,10 @@ fn main() {
 
     let _cli = Cli::from_args();
 
-    assert_eq!(1, 2);
+    let program = Program::parse("using <time>;".to_string());
+
+    match program {
+        Ok(_) => (),
+        Err(e) => error!("{}", e),
+    }
 }
