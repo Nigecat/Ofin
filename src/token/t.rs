@@ -5,12 +5,17 @@ use std::fmt;
 #[deny(dead_code)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum TokenType {
+    Ident,
+    Number,
+
     // ----- Keywords -----
     Import,
     Using,
 
     // ----- Characters -----
     Space,
+    LBracket,
+    RBracket,
 
     // ----- Special Characters -----
     Eol,
@@ -18,6 +23,7 @@ pub enum TokenType {
 
     // ----- Blocks -----
     Target,
+    Comment,
 }
 
 impl TokenType {

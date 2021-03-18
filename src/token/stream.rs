@@ -22,7 +22,7 @@ impl TokenStream {
         }
 
         let stream = TokenStream { tokens };
-        trace!("Parsed tokens: {:#?}", stream);
+        debug!("Parsed tokens: {:#?}", stream);
 
         Ok(stream)
     }

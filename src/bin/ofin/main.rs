@@ -10,9 +10,9 @@ fn main() {
 
     tracing_subscriber::fmt::init();
 
-    let _cli = Cli::from_args();
+    let cli = Cli::from_args();
 
-    let program = Program::parse("using <time>;".to_string());
+    let program = Program::from_file(cli.file);
 
     match program {
         Ok(_) => (),

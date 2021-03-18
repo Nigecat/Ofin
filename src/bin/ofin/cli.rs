@@ -7,7 +7,7 @@ use structopt::StructOpt;
 pub struct Cli {
     /// Input file
     #[structopt(parse(from_os_str))]
-    pub input: PathBuf,
+    pub file: PathBuf,
 }
 
 impl Cli {

@@ -10,6 +10,8 @@ repository = "https://github.com/Nigecat/Ofin"
 ofin-std = { path = "lib" }
 
 regex = "1.4.3"
+fancy-regex = "0.5.0"
+
 colored = "2.0.0"
 structopt = "0.3.21"
 thiserror = "1.0.24"
