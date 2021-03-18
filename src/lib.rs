@@ -1,3 +1,4 @@
+mod directive;
 mod error;
 mod language;
 mod program;
