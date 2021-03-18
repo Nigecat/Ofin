@@ -21,7 +21,10 @@ impl TokenStream {
             return Err(ParseError::Syntax);
         }
 
-        Ok(TokenStream { tokens })
+        let stream = TokenStream { tokens };
+        trace!("Parsed tokens: {:#?}", stream);
+
+        Ok(stream)
     }
 }
 
