@@ -7,7 +7,7 @@ pub use t::TokenType;
 
 pub struct Token {
     pub t: TokenType,
-    pub literal: String,   // TODO: Add unicode support
+    pub literal: String, // TODO: Add unicode support
 }
 
 impl Token {

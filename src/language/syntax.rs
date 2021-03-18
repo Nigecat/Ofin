@@ -14,33 +14,38 @@ impl Rule {
         Rule(r)
     }
 
-    pub fn find(&self, text: &str) -> (usize, usize) {
-        match self.0 {
-            Regex::Primary(r) => r.find(text),
-            Regex::Fallback(r) => r.find(text).unwrap(),
+    /// Find the rule in the supplied text, returns the (start, end) indexe of the match
+    pub fn find(&self, text: &str) -> Option<(usize, usize)> {
+        match &self.0 {
+            Regex::Primary(r) => {
+                let re = r.find(text)?;
+                Some((re.start(), re.end()))
+            }
+            Regex::Fallback(r) => {
+                let re = r.find(text).unwrap()?;
+                Some((re.start(), re.end()))
+            }
         }
     }
 }
 
 macro_rules! regex {
-    ($t: expr, $re: literal) => {
-        {
-            let expr = format!("^{}", $re);
-            if let Ok(r) = regex::Regex::new(&expr) {
-                (Regex::Primary(r), $t)
-            } else {
-                let r = fancy_regex::Regex::new(&expr).unwrap();
-                (Regex::Fallback(r), $t)
-            }
+    ($t: expr, $re: literal) => {{
+        let expr = format!("^{}", $re);
+        if let Ok(r) = regex::Regex::new(&expr) {
+            (Rule::new(Regex::Primary(r)), $t)
+        } else {
+            let r = fancy_regex::Regex::new(&expr).unwrap();
+            (Rule::new(Regex::Fallback(r)), $t)
         }
-    };
+    }};
 }
 
 lazy_static! {
     /// The syntax rules for ofin.
     ///
     /// Note that these should be checked in their original order.
-    pub static ref SYNTAX: Vec<(Regex, TokenType)> = vec![
+    pub static ref SYNTAX: Vec<(Rule, TokenType)> = vec![
         regex!(TokenType::Space, " "),
         regex!(TokenType::Eol, ";"),
         regex!(TokenType::Control, "[\r\n\t]"),
