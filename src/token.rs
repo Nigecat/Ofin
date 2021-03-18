@@ -1,4 +1,4 @@
-use crate::error::ParseError;
+use crate::error::SyntaxError;
 use crate::language::syntax::{SYNTAX, SYNTAX_CLEAN};
 use std::fmt;
 
@@ -31,10 +31,7 @@ impl TokenType {
     pub(super) fn identify(s: &str) -> Option<(Self, usize)> {
         for rule in SYNTAX.iter() {
             let (rule, t) = rule;
-            if let Some((start, end)) = rule.find(s) {
-                // The rule should only match the start of the string
-                assert_eq!(start, 0, "{}", ParseError::InvalidRule(*t));
-
+            if let Some((_, end)) = rule.find(s) {
                 return Some((*t, end));
             }
         }
@@ -60,7 +57,7 @@ impl Token {
     }
 
     /// Convert a string into a vector of tokens
-    pub fn parse(mut source: String) -> Result<Vec<Token>, ParseError> {
+    pub fn parse(mut source: String) -> Result<Vec<Self>, SyntaxError> {
         let mut tokens = Vec::new();
 
         // Iterate over the tokens until we run out
@@ -71,7 +68,7 @@ impl Token {
 
         // If we have any characters left then there is a syntax error
         if !source.is_empty() {
-            return Err(ParseError::Syntax);
+            return Err(SyntaxError());
         }
 
         // Remove the useless tokens

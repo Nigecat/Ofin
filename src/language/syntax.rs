@@ -27,6 +27,7 @@ impl Rule {
 
 macro_rules! regex {
     ($t: expr, $re: literal) => {{
+        // FIXME Add unit tests to ensure all regular expressions only match the start of strings
         let expr = format!("^{}", $re);
         if let Ok(r) = regex::Regex::new(&expr) {
             (Rule(Regex::Primary(r)), $t)
