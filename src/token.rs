@@ -23,6 +23,7 @@ pub enum TokenType {
     Target,
     Comment,
     Expression,
+    Block,
 }
 
 impl TokenType {
@@ -45,6 +46,7 @@ impl fmt::Display for TokenType {
     }
 }
 
+#[derive(Clone)]
 pub struct Token {
     pub t: TokenType,
     pub literal: String, // TODO: Add unicode support

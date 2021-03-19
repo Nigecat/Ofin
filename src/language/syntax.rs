@@ -55,6 +55,7 @@ lazy_static! {
 
         regex!(TokenType::Comment, "//.*?(?=(\r?\n|$))"),
         regex!(TokenType::Expression, r#"\(.*?\)"#),
+        regex!(TokenType::Block, "{.*?}"),
 
         regex!(TokenType::Target, "<.*?>"),
         regex!(TokenType::Import, "import"),
