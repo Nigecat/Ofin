@@ -49,16 +49,16 @@ lazy_static! {
         regex!(TokenType::Space, " "),
         regex!(TokenType::Eol, ";"),
         regex!(TokenType::Control, "[\r\n\t]"),
-        regex!(TokenType::Comment, "//.*?(?=(\r?\n|$))"),
 
-        regex!(TokenType::LBracket, r#"\("#),
-        regex!(TokenType::RBracket, r#"\)"#),
+        regex!(TokenType::Ident, r#"\w+"#),
+        regex!(TokenType::Number, r#"\d+"#),
+
+        regex!(TokenType::Comment, "//.*?(?=(\r?\n|$))"),
+        regex!(TokenType::Expression, r#"\(.*?\)"#),
 
         regex!(TokenType::Target, "<.*?>"),
         regex!(TokenType::Import, "import"),
         regex!(TokenType::Using, "using"),
 
-        regex!(TokenType::Number, r#"\d+"#),
-        regex!(TokenType::Ident, r#"\w+"#),
     ];
 }

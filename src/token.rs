@@ -14,8 +14,6 @@ pub enum TokenType {
 
     // ----- Characters -----
     Space,
-    LBracket,
-    RBracket,
 
     // ----- Special Characters -----
     Eol,
@@ -24,6 +22,7 @@ pub enum TokenType {
     // ----- Blocks -----
     Target,
     Comment,
+    Expression,
 }
 
 impl TokenType {
@@ -77,6 +76,12 @@ impl Token {
         debug!("Parsed tokens: {:#?}", tokens);
 
         Ok(tokens)
+    }
+}
+
+impl PartialEq<TokenType> for Token {
+    fn eq(&self, other: &TokenType) -> bool {
+        self.t == *other
     }
 }
 
