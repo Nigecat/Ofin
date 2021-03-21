@@ -43,7 +43,20 @@ pub struct TokenStream {
 }
 
 impl TokenStream {
-    pub fn lex(source: String) -> Result<Self, SyntaxError> {
-        unimplemented!();
+    pub fn lex(mut source: String) -> Result<Self, SyntaxError> {
+        let mut tokens = Vec::new();
+        while !source.is_empty() {
+            for rule in RULES.iter() {
+                if let Some(index) = rule.find(&source) {
+                    let literal = source.drain(0..index).collect();
+                    tokens.push(Token {
+                        t: rule.t(),
+                        literal,
+                    });
+                }
+            }
+        }
+
+        Ok(TokenStream { tokens })
     }
 }
