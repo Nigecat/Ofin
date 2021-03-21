@@ -13,6 +13,8 @@ use token::TokenStream;
 
 #[macro_use]
 extern crate tracing;
+#[macro_use]
+extern crate lazy_static;
 
 /// Run an ofin program from the supplied source.
 #[tracing::instrument]
