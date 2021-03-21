@@ -9,7 +9,7 @@ pub use ofin_std as std;
 pub use source::Source;
 
 use ::std::convert::TryInto;
-use token::TokenStream;
+use token::{TokenStream, TokenType};
 
 #[macro_use]
 extern crate tracing;
@@ -19,8 +19,10 @@ extern crate lazy_static;
 /// Run an ofin program from the supplied source.
 #[tracing::instrument]
 pub fn run(source: Source) -> Result<(), Error> {
-    debug!("");
     let contents: String = source.try_into()?;
-    let tokens = TokenStream::lex(contents);
+    let mut tokens = TokenStream::lex(contents)?;
+    tokens.filter(&[TokenType::Comment, TokenType::Control, TokenType::Space]);
+    debug!("Tokens: \n{:#?}", tokens);
+
     Ok(())
 }
