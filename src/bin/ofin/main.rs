@@ -2,7 +2,6 @@ mod build;
 mod cli;
 mod panic;
 use cli::Cli;
-use ofin::Program;
 use tracing::error;
 
 fn main() {
@@ -12,9 +11,9 @@ fn main() {
 
     let cli = Cli::from_args();
 
-    let program = Program::from_file(cli.file);
+    let result = ofin::run(cli.file);
 
-    match program {
+    match result {
         Ok(_) => (),
         Err(e) => error!("{}", e),
     }
