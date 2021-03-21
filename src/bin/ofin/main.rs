@@ -11,7 +11,7 @@ fn main() {
 
     let cli = Cli::from_args();
 
-    let result = ofin::run(cli.file);
+    let result = ofin::run(cli.file.into());
 
     match result {
         Ok(_) => (),

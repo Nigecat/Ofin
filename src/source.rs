@@ -1,22 +1,35 @@
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-    #[error(transparent)]
-    Io(#[from] std::io::Error),
+use std::convert::TryFrom;
+use std::path::PathBuf;
+use std::{fs, io};
+
+#[derive(Debug)]
+pub enum SourceType {
+    String(String),
+    File(PathBuf),
 }
 
-/// A possible source input for an ofin program.
-pub trait Source: Sized {
-    fn source(self) -> Result<String, Error>;
-}
+#[derive(Debug)]
+pub struct Source(SourceType);
 
-impl Source for String {
-    fn source(self) -> Result<String, Error> {
-        Ok(self)
+impl From<String> for Source {
+    fn from(s: String) -> Self {
+        Source(SourceType::String(s))
     }
 }
 
-impl Source for std::path::PathBuf {
-    fn source(self) -> Result<String, Error> {
-        Ok(std::fs::read_to_string(self)?)
+impl From<PathBuf> for Source {
+    fn from(path: PathBuf) -> Self {
+        Source(SourceType::File(path))
+    }
+}
+
+impl TryFrom<Source> for String {
+    type Error = io::Error;
+
+    fn try_from(source: Source) -> Result<Self, Self::Error> {
+        match source.0 {
+            SourceType::String(s) => Ok(s),
+            SourceType::File(path) => fs::read_to_string(path),
+        }
     }
 }
