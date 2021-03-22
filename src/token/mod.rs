@@ -61,14 +61,20 @@ impl Token {
         self.t
     }
 
-    pub fn literal(&self) -> &str {
-        &self.literal
+    pub fn literal(self) -> String {
+        self.literal
     }
 }
 
 impl fmt::Debug for Token {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}({:?})", self.t, self.literal)
+    }
+}
+
+impl PartialEq<TokenType> for Token {
+    fn eq(&self, other: &TokenType) -> bool {
+        self.t == *other
     }
 }
 
@@ -108,6 +114,10 @@ impl TokenStream {
     /// Filter out the supplied tokens from the tokestream
     pub fn filter(&mut self, tokens: &[TokenType]) {
         self.tokens.retain(|t| !tokens.contains(t));
+    }
+
+    pub fn tokens(self) -> Vec<Token> {
+        self.tokens
     }
 }
 

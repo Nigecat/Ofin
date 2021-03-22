@@ -1,5 +1,8 @@
-mod directive;
+#![allow(incomplete_features)]
+#![feature(const_generics)]
+
 mod error;
+mod expression;
 mod source;
 mod token;
 mod vm;
