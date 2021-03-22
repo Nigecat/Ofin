@@ -2,6 +2,7 @@ mod rule;
 use rule::Rule;
 
 use crate::error::SyntaxError;
+use crate::expression::Expression;
 use std::fmt;
 use std::ops::Deref;
 
@@ -57,6 +58,8 @@ lazy_static! {
 pub struct Token {
     t: TokenType,
     literal: String,
+    /// The expression bound to this token, this is guaranteed to be `Some` if `self.t == TokenType::Expression`
+    expression: Option<Expression>,
 }
 
 impl Token {
@@ -66,6 +69,10 @@ impl Token {
 
     pub fn literal(self) -> String {
         self.literal
+    }
+
+    pub fn expression(self) -> Option<Expression> {
+        self.expression
     }
 }
 
@@ -106,9 +113,17 @@ impl TokenStream {
                         chars.next_back();
                         literal = chars.collect();
                     }
+
+                    let expression = if rule.t() == TokenType::Expression {
+                        Some(Expression::parse(literal.clone()).ok_or_else(SyntaxError::new)?)
+                    } else {
+                        None
+                    };
+
                     tokens.push(Token {
                         t: rule.t(),
                         literal,
+                        expression,
                     });
                     continue 'source;
                 }
