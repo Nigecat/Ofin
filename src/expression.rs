@@ -4,6 +4,6 @@ pub struct Expression {}
 
 impl Expression {
     pub fn parse(source: String) -> Option<Self> {
-        None
+        Some(Expression {})
     }
 }

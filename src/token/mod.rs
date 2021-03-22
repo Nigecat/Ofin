@@ -24,10 +24,10 @@ pub enum TokenType {
     Control,
 
     // ----- Blocks -----
-    Target,
-    Comment,
-    Expression,
-    Block,
+    Target,     // <>
+    Comment,    //
+    Expression, // ()
+    Block,      // {}
 }
 
 macro_rules! rule {
@@ -40,18 +40,23 @@ macro_rules! rule {
 }
 
 lazy_static! {
+    #[rustfmt::skip]
     static ref RULES: Vec<Rule> = vec![
         rule!(TokenType::Space, " "),
         rule!(TokenType::Eol, ";"),
         rule!(TokenType::Control, "[\r\n\t]"),
-        rule!(TokenType::Ident, r#"\w+"#),
+
         rule!(TokenType::Number, r#"\d+"#),
         rule!(TokenType::Comment, "//.*?(?=(\r?\n|$))"),
+
         rule!(TokenType::Expression, r#"\(.*?\)"#, true),
         rule!(TokenType::Block, "{.*?}", true),
         rule!(TokenType::Target, "<.*?>", true),
+
         rule!(TokenType::Import, "import"),
         rule!(TokenType::Using, "using"),
+
+        rule!(TokenType::Ident, r#"\w+"#),
     ];
 }
 
