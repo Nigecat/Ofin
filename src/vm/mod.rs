@@ -1,2 +1,3 @@
+mod instruction;
 mod instructions;
-pub use instructions::Instruction;
+pub use instruction::Instruction;
