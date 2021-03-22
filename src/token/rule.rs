@@ -6,11 +6,12 @@ enum RuleType {
     FancyRegex(fancy_regex::Regex),
 }
 
-pub struct Rule(RuleType, TokenType);
+pub struct Rule(RuleType, TokenType, bool);
 
 impl Rule {
+    /// firstlast: Whether to remove the first and last characters of the source after matching
     #[allow(const_item_mutation)]
-    pub fn new(t: TokenType, s: &'static str) -> Self {
+    pub fn new(t: TokenType, s: &'static str, firstlast: bool) -> Self {
         lazy_static! {
             static ref CHARS: Vec<char> =
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -30,7 +31,7 @@ impl Rule {
             }
         };
 
-        Rule(rule, t)
+        Rule(rule, t, firstlast)
     }
 
     /// Given a string and a rule find the position from 0..<usize> that the rule covers
@@ -50,5 +51,9 @@ impl Rule {
 
     pub fn t(&self) -> TokenType {
         self.1
+    }
+
+    pub fn firstlast(&self) -> bool {
+        self.2
     }
 }

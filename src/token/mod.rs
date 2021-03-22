@@ -31,7 +31,10 @@ pub enum TokenType {
 
 macro_rules! rule {
     ($t: expr, $re: literal) => {
-        Rule::new($t, $re)
+        Rule::new($t, $re, false)
+    };
+    ($t: expr, $re: literal, $firstlast: literal) => {
+        Rule::new($t, $re, $firstlast)
     };
 }
 
@@ -43,9 +46,9 @@ lazy_static! {
         rule!(TokenType::Ident, r#"\w+"#),
         rule!(TokenType::Number, r#"\d+"#),
         rule!(TokenType::Comment, "//.*?(?=(\r?\n|$))"),
-        rule!(TokenType::Expression, r#"\(.*?\)"#),
-        rule!(TokenType::Block, "{.*?}"),
-        rule!(TokenType::Target, "<.*?>"),
+        rule!(TokenType::Expression, r#"\(.*?\)"#, true),
+        rule!(TokenType::Block, "{.*?}", true),
+        rule!(TokenType::Target, "<.*?>", true),
         rule!(TokenType::Import, "import"),
         rule!(TokenType::Using, "using"),
     ];
@@ -96,7 +99,13 @@ impl TokenStream {
         'source: while !source.is_empty() {
             for rule in RULES.iter() {
                 if let Some(index) = rule.find(&source) {
-                    let literal = source.drain(0..index).collect();
+                    let mut literal: String = source.drain(0..index).collect();
+                    if rule.firstlast() {
+                        let mut chars = literal.chars();
+                        chars.next();
+                        chars.next_back();
+                        literal = chars.collect();
+                    }
                     tokens.push(Token {
                         t: rule.t(),
                         literal,
