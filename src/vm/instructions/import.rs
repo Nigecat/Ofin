@@ -11,3 +11,5 @@ impl Instruction<2> for Import {
         Import(target.literal())
     }
 }
+
+impl Runnable for Import {}

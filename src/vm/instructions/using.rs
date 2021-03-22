@@ -11,3 +11,5 @@ impl Instruction<2> for Using {
         Using(target.literal())
     }
 }
+
+impl Runnable for Using {}

@@ -18,3 +18,5 @@ impl Instruction<2> for Call {
         Call { function, args }
     }
 }
+
+impl Runnable for Call {}
