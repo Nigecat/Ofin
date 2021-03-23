@@ -18,4 +18,3 @@ fn main() {
         Err(e) => error!("{}", e),
     }
 }
-

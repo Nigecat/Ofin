@@ -12,4 +12,8 @@ impl Instruction<2> for Import {
     }
 }
 
-impl Runnable for Import {}
+impl Runnable for Import {
+    fn run(&self, state: &mut State) -> RunResult<()> {
+        Ok(())
+    }
+}

@@ -19,4 +19,8 @@ impl Instruction<2> for Call {
     }
 }
 
-impl Runnable for Call {}
+impl Runnable for Call {
+    fn run(&self, state: &mut State) -> RunResult<()> {
+        Ok(())
+    }
+}

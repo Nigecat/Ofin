@@ -8,7 +8,7 @@ use import::Import;
 use using::Using;
 
 mod prelude {
-    pub use super::super::Runnable;
+    pub use super::super::{RunResult, Runnable, State};
     pub use super::Instruction;
     pub use crate::token::{Token, TokenType};
 }

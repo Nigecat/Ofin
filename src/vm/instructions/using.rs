@@ -12,4 +12,8 @@ impl Instruction<2> for Using {
     }
 }
 
-impl Runnable for Using {}
+impl Runnable for Using {
+    fn run(&self, state: &mut State) -> RunResult<()> {
+        Ok(())
+    }
+}
