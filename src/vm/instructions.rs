@@ -1,3 +1,5 @@
+#![deny(dead_code)]
+
 mod call;
 mod import;
 mod using;
@@ -23,6 +25,26 @@ pub trait Instruction<const LENGTH: usize>: Runnable {
     }
 
     fn parse(tokens: [Token; LENGTH]) -> Self;
+}
+
+macro_rules! register {
+    ($potential: ident, $length: literal, [$( $instruction: ident ),*]) => {
+        {
+            let tokens: [Token; $length] = $potential.try_into().unwrap();
+            // Null if statement to allow us to use `else if` in the repititions
+            if false {
+                None
+            }
+            $(
+                else if <$instruction>::check(&tokens) {
+                    Some(Some(Box::new(<$instruction>::parse(tokens))))
+                }
+            )*
+            else {
+                None
+            }
+        }
+    };
 }
 
 pub fn parse_instructions(tokens: Vec<Token>) -> Result<Vec<Box<dyn Runnable>>, SyntaxError> {
@@ -52,18 +74,7 @@ pub fn parse_instructions(tokens: Vec<Token>) -> Result<Vec<Box<dyn Runnable>>, 
         let instruction: Option<Option<Box<dyn Runnable>>>;
         instruction = match potential.len() {
             0 => None, // Ignore zero length instructions, this is from two semicolons in a row (;;) and is effectively a nop
-            2 => {
-                let tokens: [Token; 2] = potential.try_into().unwrap();
-                if Call::check(&tokens) {
-                    Some(Some(Box::new(Call::parse(tokens))))
-                } else if Using::check(&tokens) {
-                    Some(Some(Box::new(Using::parse(tokens))))
-                } else if Import::check(&tokens) {
-                    Some(Some(Box::new(Import::parse(tokens))))
-                } else {
-                    Some(None)
-                }
-            }
+            2 => register!(potential, 2, [Call, Using, Import]),
             _ => panic!("unimplemented instruction length"),
         };
 
