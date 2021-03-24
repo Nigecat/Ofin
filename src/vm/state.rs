@@ -10,7 +10,9 @@ impl State {
         Default::default()
     }
 
+    /// Run an instruction
     pub fn exec(&mut self, instruction: Box<dyn Runnable>) -> Result<(), RuntimeError> {
+        instruction.run(self)?;
         Ok(())
     }
 }
