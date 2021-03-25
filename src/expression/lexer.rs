@@ -6,7 +6,7 @@ use std::rc::Rc;
 /// An S-expression
 pub enum S {
     Atom(char),
-    Cons(char, [Rc<S>; 2]),
+    Cons(char, (Option<Rc<S>>, Option<Rc<S>>)),
 }
 
 impl fmt::Display for S {
@@ -15,8 +15,11 @@ impl fmt::Display for S {
             S::Atom(i) => write!(f, "{}", i),
             S::Cons(head, rest) => {
                 write!(f, "({}", head)?;
-                for s in rest {
-                    write!(f, " {}", s)?
+                if let Some(l) = &rest.0 {
+                    write!(f, " {}", l)?
+                }
+                if let Some(r) = &rest.1 {
+                    write!(f, " {}", r)?
                 }
                 write!(f, ")")
             }
@@ -60,9 +63,20 @@ impl ExpressionLexer {
 
         // Note that this can never return `None` (unless the input is empty)
         // Because of the check inside the loop
-        let mut lhs = match self.next() {
-            Some(Token::Atom(it)) => S::Atom(it),
-            t => panic!("bad token: {:?}", t),
+        let mut lhs = match self.next().unwrap() {
+            Token::Atom(it) => S::Atom(it),
+            Token::Operator('(') => {
+                // If we have an opening ( parse until we reach a closing )
+                let lhs = self.s(Some(0));
+                // Double check the next character is the closing bracket
+                assert_eq!(self.next(), Some(Token::Operator(')')));
+                lhs
+            }
+            Token::Operator(op) => {
+                let ((), r_bp) = binding::prefix(op);
+                let rhs = self.s(Some(r_bp));
+                S::Cons(op, (Some(Rc::new(rhs)), None))
+            }
         };
 
         loop {
@@ -71,14 +85,29 @@ impl ExpressionLexer {
                 None => break, // Stop parsing when we run out of tokens
                 t => panic!("bad token: {:?}", t),
             };
-            let (l_bp, r_bp) = binding::infix(op);
-            if l_bp < min_bp {
-                break;
+
+            if let Some((l_bp, ())) = binding::postfix(op) {
+                if l_bp < min_bp {
+                    break;
+                }
+                self.next();
+
+                lhs = S::Cons(op, (Some(Rc::new(lhs)), None));
+                continue;
             }
 
-            self.next();
-            let rhs = self.s(Some(r_bp));
-            lhs = S::Cons(op, [Rc::new(lhs), Rc::new(rhs)]);
+            if let Some((l_bp, r_bp)) = binding::infix(op) {
+                if l_bp < min_bp {
+                    break;
+                }
+
+                self.next();
+                let rhs = self.s(Some(r_bp));
+                lhs = S::Cons(op, (Some(Rc::new(lhs)), Some(Rc::new(rhs))));
+                continue;
+            }
+
+            break;
         }
 
         lhs
