@@ -20,7 +20,7 @@ pub fn run(source: Source) -> Result<(), Error> {
     let _contents: String = source.try_into()?;
 
     let expr = Expression::parse("1+2*3");
-    println!("{:?}", expr);
+    println!("{}", expr);
 
     Ok(())
 }
