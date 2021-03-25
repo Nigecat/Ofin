@@ -1,6 +1,7 @@
 mod binding;
 mod evaluator;
 mod lexer;
+mod math;
 
 use lexer::ExpressionLexer;
 use std::fmt;
@@ -20,5 +21,10 @@ impl Expression {
     /// Parse the given input to an expression
     pub fn parse<S: AsRef<str>>(input: S) -> Self {
         ExpressionLexer::lex(input)
+    }
+
+    /// Evaluate this expression
+    pub fn evaluate(self) -> f32 {
+        evaluator::evaluate(self)
     }
 }

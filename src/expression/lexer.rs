@@ -9,6 +9,12 @@ pub enum S {
     Cons(char, (Option<Rc<S>>, Option<Rc<S>>)),
 }
 
+impl fmt::Debug for S {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self)
+    }
+}
+
 impl fmt::Display for S {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {

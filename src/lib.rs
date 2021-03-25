@@ -19,8 +19,14 @@ use expression::Expression;
 pub fn run(source: Source) -> Result<(), Error> {
     let _contents: String = source.try_into()?;
 
-    let expr = Expression::parse("(-1+2)*3!");
-    println!("{}", expr);
+    // let input = "(-1+2)*3!";
+    let input = "(-1+2)*3";
+    // let input = "(-1+2)*3";
+    print!("{} = ", input);
+    let expr = Expression::parse(input);
+    print!("{} = ", expr);
+    let result = expr.evaluate();
+    print!("{}", result);
 
     Ok(())
 }
