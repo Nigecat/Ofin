@@ -1,5 +1,6 @@
 mod runtime;
 mod syntax;
+// pub use crate::parser::ParseError;
 pub use runtime::RuntimeError;
 pub use syntax::SyntaxError;
 
@@ -9,6 +10,8 @@ pub enum Error {
     Syntax(#[from] SyntaxError),
     #[error(transparent)]
     Runtime(#[from] RuntimeError),
+    // #[error(transparent)]
+    // Parse(#[from] ParseError),
     #[error(transparent)]
     Io(#[from] std::io::Error),
 }
