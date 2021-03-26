@@ -9,24 +9,24 @@ pub use source::Source;
 use ::std::convert::TryInto;
 use expression::Expression;
 
+#[macro_use]
+extern crate trace;
 // #[macro_use]
 // extern crate tracing;
 // #[macro_use]
 // extern crate lazy_static;
 
 /// Run an ofin program from the supplied source.
-#[tracing::instrument]
 pub fn run(source: Source) -> Result<(), Error> {
     let _contents: String = source.try_into()?;
 
     // let input = "(-1+2)*3!";
-    let input = "(-1+2)*3";
+    let input = "2+2";
     // let input = "(-1+2)*3";
-    print!("{} = ", input);
+    // let input = "(-1+2)*3";
     let expr = Expression::parse(input);
-    print!("{} = ", expr);
-    let result = expr.evaluate();
-    print!("{}", result);
+    let result = expr.clone().evaluate();
+    print!("{} = {} = {}", input, expr, result);
 
     Ok(())
 }

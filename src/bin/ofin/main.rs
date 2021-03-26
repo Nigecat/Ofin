@@ -7,7 +7,10 @@ use tracing::error;
 fn main() {
     panic::set_handler();
 
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::fmt()
+        .without_time()
+        .with_max_level(tracing::Level::TRACE)
+        .init();
 
     let cli = Cli::from_args();
 
