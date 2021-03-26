@@ -1,6 +1,8 @@
 mod binding;
 mod evaluator;
 mod lexer;
+#[cfg(test)]
+mod tests;
 
 use lexer::ExpressionLexer;
 use std::fmt;
