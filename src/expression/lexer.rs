@@ -1,12 +1,11 @@
 use super::{binding, Expression};
 use std::fmt;
-use std::rc::Rc;
 
 #[derive(Clone, PartialEq, Eq)]
 /// An S-expression
 pub enum S {
     Atom(char),
-    Cons(char, (Option<Rc<S>>, Option<Rc<S>>)),
+    Cons(char, (Option<Box<S>>, Option<Box<S>>)),
 }
 
 impl fmt::Debug for S {
@@ -81,7 +80,7 @@ impl ExpressionLexer {
             Token::Operator(op) => {
                 let ((), r_bp) = binding::prefix(op);
                 let rhs = self.s(Some(r_bp));
-                S::Cons(op, (Some(Rc::new(rhs)), None))
+                S::Cons(op, (Some(Box::new(rhs)), None))
             }
         };
 
@@ -98,7 +97,7 @@ impl ExpressionLexer {
                 }
                 self.next();
 
-                lhs = S::Cons(op, (Some(Rc::new(lhs)), None));
+                lhs = S::Cons(op, (Some(Box::new(lhs)), None));
                 continue;
             }
 
@@ -109,7 +108,7 @@ impl ExpressionLexer {
 
                 self.next();
                 let rhs = self.s(Some(r_bp));
-                lhs = S::Cons(op, (Some(Rc::new(lhs)), Some(Rc::new(rhs))));
+                lhs = S::Cons(op, (Some(Box::new(lhs)), Some(Box::new(rhs))));
                 continue;
             }
 

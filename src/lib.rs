@@ -21,9 +21,7 @@ pub fn run(source: Source) -> Result<(), Error> {
     let _contents: String = source.try_into()?;
 
     // let input = "(-1+2)*3!";
-    let input = "2+2";
-    // let input = "(-1+2)*3";
-    // let input = "(-1+2)*3";
+    let input = "(-1+2)*3";
     let expr = Expression::parse(input);
     let result = expr.clone().evaluate();
     print!("{} = {} = {}", input, expr, result);

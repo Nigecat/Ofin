@@ -1,6 +1,5 @@
 use super::lexer::S;
 use super::{math, Expression};
-use std::rc::Rc;
 use std::str::FromStr;
 
 // Convert a char to an f32 and panic if it doesn't fit
@@ -16,19 +15,19 @@ fn solve(s: S) -> f32 {
     match s {
         S::Atom(c) => tof32(c),
         S::Cons(head, (left, right)) => {
-            let left = match Rc::try_unwrap(left.expect("unexpected empty expression")).unwrap() {
+            let left = match *left.expect("unexpected empty expression") {
                 S::Atom(c) => tof32(c),
                 s => solve(s),
             };
             let right = match right {
-                Some(s) => match Rc::try_unwrap(s).unwrap() {
+                Some(s) => match *s {
                     S::Atom(c) => tof32(c),
                     s => solve(s),
                 },
-                None => evaluate_single(head, left),
+                None => tracefn!(evaluate_single(head, left)),
             };
 
-            evaluate_equation(left, head, right)
+            tracefn!(evaluate_equation(left, head, right))
         }
     }
 }
