@@ -1,7 +1,6 @@
 mod binding;
 mod evaluator;
 mod lexer;
-mod math;
 
 use lexer::ExpressionLexer;
 use std::fmt;

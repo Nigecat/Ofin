@@ -11,8 +11,8 @@ use expression::Expression;
 
 #[macro_use]
 extern crate trace;
-// #[macro_use]
-// extern crate tracing;
+#[macro_use]
+extern crate tracing;
 // #[macro_use]
 // extern crate lazy_static;
 
@@ -21,7 +21,8 @@ pub fn run(source: Source) -> Result<(), Error> {
     let _contents: String = source.try_into()?;
 
     // let input = "(-1+2)*3!";
-    let input = "(-1+2)*3";
+    let input = "-(1+2)*6/2";
+    // let input = "-(1+2)*7";
     let expr = Expression::parse(input);
     let result = expr.clone().evaluate();
     print!("{} = {} = {}", input, expr, result);

@@ -1,5 +1,5 @@
 use super::lexer::S;
-use super::{math, Expression};
+use super::Expression;
 use std::str::FromStr;
 
 // Convert a char to an f32 and panic if it doesn't fit
@@ -12,6 +12,8 @@ pub fn evaluate(expression: Expression) -> f32 {
 }
 
 fn solve(s: S) -> f32 {
+    let _guard = span!(tracing::Level::TRACE, "solve", "{:?}", s).entered();
+
     match s {
         S::Atom(c) => tof32(c),
         S::Cons(head, (left, right)) => {
@@ -24,10 +26,10 @@ fn solve(s: S) -> f32 {
                     S::Atom(c) => tof32(c),
                     s => solve(s),
                 },
-                None => tracefn!(evaluate_single(head, left)),
+                None => evaluate_single(head, left),
             };
 
-            tracefn!(evaluate_equation(left, head, right))
+            evaluate_equation(left, head, right)
         }
     }
 }
@@ -45,7 +47,6 @@ fn evaluate_equation(left: f32, operator: char, right: f32) -> f32 {
 
 fn evaluate_single(operator: char, value: f32) -> f32 {
     match operator {
-        '!' => math::factorial(value as usize) as f32,
         '-' => value * -1f32,
         t => panic!("unknown singular operator: {:?}", t),
     }

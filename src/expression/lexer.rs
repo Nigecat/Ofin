@@ -91,16 +91,6 @@ impl ExpressionLexer {
                 t => panic!("bad token: {:?}", t),
             };
 
-            if let Some((l_bp, ())) = binding::postfix(op) {
-                if l_bp < min_bp {
-                    break;
-                }
-                self.next();
-
-                lhs = S::Cons(op, (Some(Box::new(lhs)), None));
-                continue;
-            }
-
             if let Some((l_bp, r_bp)) = binding::infix(op) {
                 if l_bp < min_bp {
                     break;

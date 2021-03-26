@@ -13,11 +13,3 @@ pub fn infix(op: char) -> Option<(u8, u8)> {
     };
     Some(res)
 }
-
-pub fn postfix(op: char) -> Option<(u8, ())> {
-    let res = match op {
-        '!' => (6, ()),
-        _ => return None,
-    };
-    Some(res)
-}
