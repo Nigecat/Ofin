@@ -20,8 +20,8 @@ extern crate tracing;
 pub fn run(source: Source) -> Result<(), Error> {
     let _contents: String = source.try_into()?;
 
-    let n = std::Number::from(3.00122);
-    println!("{:?}", n);
+    // let n = std::Integer::from(3);
+    // println!("{:?}", n);
 
     // let input = "(-1+2)*3!";
     // let input = "-(1+2)*6/2";
