@@ -1,29 +1,39 @@
 use super::Integer;
 use derive_more::Display;
-
-#[derive(Display, Debug, Hash, Eq, PartialEq, Clone)]
-enum ValueType {
-    Integer(Integer),
-}
+use std::convert::TryFrom;
 
 /// A generic value.
 ///
 /// This could be any of the standard library types.
 #[derive(Display, Debug, Hash, Eq, PartialEq, Clone)]
-pub struct Value(ValueType);
-
-impl Value {
-    /// Convert this value into an integer
-    pub fn into_integer(self) -> Option<Integer> {
-        match self.0 {
-            ValueType::Integer(i) => Some(i),
-            // _ => None,
-        }
-    }
+pub enum Value {
+    /// An integer
+    Integer(Integer),
 }
+
+// impl Value {
+//     /// Check if this value is an integer
+//     pub fn is_integer(&self) -> bool {
+//         match self {
+//             Value::Integer(_) => true,
+//             // _ => false,
+//         }
+//     }
+// }
 
 impl From<Integer> for Value {
     fn from(num: Integer) -> Self {
-        Value(ValueType::Integer(num))
+        Value::Integer(num)
+    }
+}
+
+impl TryFrom<Value> for Integer {
+    type Error = ();
+
+    fn try_from(val: Value) -> Result<Self, Self::Error> {
+        match val {
+            Value::Integer(i) => Ok(i),
+            // _ => Err(()),
+        }
     }
 }
