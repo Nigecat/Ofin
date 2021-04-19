@@ -2,6 +2,7 @@ mod build;
 mod cli;
 mod panic;
 use cli::Cli;
+use ofin::Program;
 use tracing::error;
 
 fn main() {
@@ -14,7 +15,8 @@ fn main() {
 
     let cli = Cli::from_args();
 
-    let result = ofin::run(cli.file.into());
+    let mut program = Program::from(cli.file);
+    let result = program.run();
 
     match result {
         Ok(_) => (),
