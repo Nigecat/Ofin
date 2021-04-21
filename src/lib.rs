@@ -1,6 +1,5 @@
 mod error;
 mod program;
-mod statements;
 mod token;
 mod utils;
 
@@ -10,5 +9,3 @@ pub use program::Program;
 
 // #[macro_use]
 // extern crate tracing;
-// #[macro_use]
-// extern crate lazy_static;

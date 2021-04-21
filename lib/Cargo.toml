@@ -11,8 +11,8 @@ edition = "2018"
 # [dependencies]
 # rand = "0.8.3"
 # tracing = "0.1.25"
-# thiserror = "1.0.24"
-# lazy_static = "1.4.0"
+thiserror = "1.0.24"
+lazy_static = "1.4.0"
 # iui = { version = "0.3.0", optional = true }
 
 # [dependencies.derive_more]

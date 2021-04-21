@@ -52,6 +52,8 @@ error: The following required arguments were not provided:
 
 USAGE:
     {program} <file>
+
+Run with --help for more information
             ",
                 program = program
             );

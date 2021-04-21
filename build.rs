@@ -1,5 +1,3 @@
-use std::env;
-use std::ffi::OsStr;
 use std::process::Command;
 
 fn main() {

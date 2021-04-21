@@ -42,14 +42,20 @@ pub struct Token {
 /// ```
 ///
 /// ## Start/End Tokens
-/// This methods should be used on tokens which have a defined start and end point.
+/// This method should be used on tokens which have a defined start and end point.
 /// `include` states whether to include the beginning and end in the matched token.
 /// ```rust
 /// register!(source, tokens, [ TokenType::Target => ("<"..">" | include = false) ]);
 /// ```
 /// (this example matches `<.*>` and removes the `<>` from the token output)
+///
+/// ## Duration Tokens
+/// This method should be used on tokens which have a range of characters which all match the same predicate
+/// ```rust
+/// register!(source, tokens, [ Ident => |c: char| c.is_ascii_alphabetic() ]);
+/// ```
 macro_rules! register {
-    ($source: ident, [ $($c: literal),*, ]) => {
+    ($source: ident, [ $($c: literal),* $(,)? ]) => {
         $(
             if $source.starts_with($c) {
                 $source.drain(0..$c.len());
@@ -58,7 +64,7 @@ macro_rules! register {
         )*
     };
 
-    ($source: ident, $tokens: ident, [ $($t: tt => $s: literal),*, ]) => {
+    ($source: ident, $tokens: ident, [ $($t: tt => $s: literal),* $(,)? ]) => {
         $(
             if $source.starts_with($s) {
                 $source.drain(0..$s.len());
@@ -71,7 +77,7 @@ macro_rules! register {
         )*
     };
 
-    ($source: ident, $tokens: ident, [ $($t: tt => ($start: literal..$end: literal | include = $include: expr)),*, ]) => {
+    ($source: ident, $tokens: ident, [ $($t: tt => ($start: literal..$end: literal | include = $include: expr)),* $(,)? ]) => {
         $(
             if $source.starts_with($start) {
                 if let Some(end) = find_end_at(&$source, $start.len(), $end) {
@@ -93,6 +99,23 @@ macro_rules! register {
             }
         )*
     };
+
+    ($source: ident, $tokens: ident, [ $($t: tt => $predicate: expr),* $(,)? ]) => {
+        $(
+            if $source.chars().next().map($predicate) == Some(true) {
+                let s = $source.find(|c: char| !($predicate)(c)).unwrap_or_else(|| $source.len());
+                let potential = $source[0..s].to_string();
+
+                $tokens.push(Token {
+                    t: $t,
+                    s: potential.to_string(),
+                });
+
+                $source.drain(0..potential.len());
+                continue;
+            }
+        )*
+    };
 }
 
 /// A stream of tokens
@@ -108,7 +131,7 @@ impl TokenStream {
         let mut tokens = Vec::new();
 
         while !source.is_empty() {
-            register!(source, [" ",]);
+            register!(source, [" ", "\r", "\n", "\t"]);
 
             register!(source, tokens, [
                 Semicolon => ";",
@@ -119,26 +142,15 @@ impl TokenStream {
 
             register!(source, tokens, [
                 Target => ("<"..">" | include = false),
+
+                String => ("\"".."\"" | include = false),
+                String => ("'".."'" | include = false),
             ]);
 
-            // Check for identifiers: a collection of [ascii] alphabetical characters
-            if source.chars().next().map(|c| c.is_ascii_alphabetic()) == Some(true) {
-                if let Some(s) = source.find(|c: char| !c.is_ascii_alphabetic()) {
-                    let potential = source[0..s].to_string();
-
-                    tokens.push(Token {
-                        t: Ident,
-                        s: potential.to_string(),
-                    });
-
-                    source.drain(0..potential.len());
-                    continue;
-                }
-            }
-
-            // Check for integers: a collection of 0-9 characters
-
-            // Check for strings: a collection of text between two quotes
+            register!(source, tokens, [
+                Ident => |c: char| c.is_ascii_alphabetic(),
+                Integer => |c: char| c.is_ascii_digit(),
+            ]);
 
             // If we make it this far then we could not match the token
             panic!("invalid token");
