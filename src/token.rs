@@ -1,7 +1,8 @@
 use crate::utils::find_end_at;
 use std::fmt;
 
-// #[deny(dead_code)]
+/// The type of a token
+#[deny(dead_code)]
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum TokenType {
     // ---------- Literals ----------
@@ -11,6 +12,7 @@ pub enum TokenType {
     Using,
 }
 
+/// A token which contains both the type of the token (`t`) and the literal value of the token (`s`)
 #[derive(Debug)]
 pub struct Token {
     t: TokenType,
@@ -23,6 +25,27 @@ impl Token {
     }
 }
 
+/// Register token rules
+///
+/// ## Token Removal
+/// This method should be used on literals that bear no meaning and can be safely removed.
+/// ```rust
+/// register!(source, tokens, [ "\n" ]);
+/// ```
+///
+/// ## Literal Tokens
+/// This method should be used on tokens which have a static literal meaning (primarily keywords).
+/// ```rust
+/// register!(source, tokens, [ TokenType::Using => "using" ]);
+/// ```
+///
+/// ## Start/End Tokens
+/// This methods should be used on tokens which have a defined start and end point.
+/// `include` states whether to include the beginning and end in the matched token.
+/// ```rust
+/// register!(source, tokens, [ TokenType::Target => ("<"..">" | include = false) ]);
+/// ```
+/// (this example matches `<.*>` and removes the `<>` from the token output)
 macro_rules! register {
     ($source: ident, [ $($c: literal),*, ]) => {
         $(
@@ -70,6 +93,9 @@ macro_rules! register {
     };
 }
 
+/// A stream of tokens
+///
+/// This is a wrapper around `Vec<Token>`.
 #[derive(Debug)]
 pub struct TokenStream(Vec<Token>);
 
