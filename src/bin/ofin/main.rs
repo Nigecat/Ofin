@@ -1,4 +1,3 @@
-mod build;
 mod cli;
 mod panic;
 use cli::Cli;
