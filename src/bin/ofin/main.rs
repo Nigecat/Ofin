@@ -15,8 +15,10 @@ fn main() {
 
     let cli = Cli::from_args();
 
-    let mut program = Program::from(cli.file);
-    let result = program.run();
+    let result = match Program::new(cli.file) {
+        Ok(mut program) => program.run(),
+        Err(e) => Err(e),
+    };
 
     match result {
         Ok(_) => (),

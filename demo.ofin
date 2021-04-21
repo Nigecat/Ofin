@@ -1,12 +1,1 @@
-// Bring anything from std::time into the current namespace
-using <time>;
-
-// Autocomplete extension [.ofin] if exists
-// So this would import `demo2.ofin`
-import <demo2>;
-
-// Call time::sleep, this should resolve by checking the `using` statements
-sleep(2000);
-
-// Call a function imported from `demo2.ofin`
-hello();
+using <time>
