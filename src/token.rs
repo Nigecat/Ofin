@@ -122,7 +122,7 @@ impl TokenStream {
             ]);
 
             // Check for identifiers: a collection of [ascii] alphabetical characters
-            if source.chars().nth(0).map(|c| c.is_ascii_alphabetic()) == Some(true) {
+            if source.chars().next().map(|c| c.is_ascii_alphabetic()) == Some(true) {
                 if let Some(s) = source.find(|c: char| !c.is_ascii_alphabetic()) {
                     let potential = source[0..s].to_string();
 
