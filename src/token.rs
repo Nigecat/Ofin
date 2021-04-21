@@ -1,15 +1,23 @@
 use crate::utils::find_end_at;
-use std::fmt;
 
 /// The type of a token
-#[deny(dead_code)]
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum TokenType {
     // ---------- Literals ----------
+    Ident,
     Target,
+
+    String,
+    Integer,
+
+    // ---------- Operators ----------
+    Equals,
 
     // ---------- Keywords ----------
     Using,
+
+    // ---------- Other ----------
+    Semicolon,
 }
 
 /// A token which contains both the type of the token (`t`) and the literal value of the token (`s`)
@@ -17,12 +25,6 @@ pub enum TokenType {
 pub struct Token {
     t: TokenType,
     s: String,
-}
-
-impl Token {
-    fn new(t: TokenType, s: String) -> Self {
-        Token { t, s }
-    }
 }
 
 /// Register token rules
@@ -53,7 +55,7 @@ macro_rules! register {
                 $source.drain(0..$c.len());
                 continue;
             }
-        ),*
+        )*
     };
 
     ($source: ident, $tokens: ident, [ $($t: tt => $s: literal),*, ]) => {
@@ -62,11 +64,11 @@ macro_rules! register {
                 $source.drain(0..$s.len());
                 $tokens.push(Token {
                     t: $t,
-                    s: String::from($s),
+                    s: ::std::string::String::from($s),
                 });
                 continue;
             }
-        ),*
+        )*
     };
 
     ($source: ident, $tokens: ident, [ $($t: tt => ($start: literal..$end: literal | include = $include: expr)),*, ]) => {
@@ -89,7 +91,7 @@ macro_rules! register {
                     continue;
                 }
             }
-        ),*
+        )*
     };
 }
 
@@ -109,12 +111,34 @@ impl TokenStream {
             register!(source, [" ",]);
 
             register!(source, tokens, [
+                Semicolon => ";",
+                Equals => "=",
+
                 Using => "using",
             ]);
 
             register!(source, tokens, [
                 Target => ("<"..">" | include = false),
             ]);
+
+            // Check for identifiers: a collection of [ascii] alphabetical characters
+            if source.chars().nth(0).map(|c| c.is_ascii_alphabetic()) == Some(true) {
+                if let Some(s) = source.find(|c: char| !c.is_ascii_alphabetic()) {
+                    let potential = source[0..s].to_string();
+
+                    tokens.push(Token {
+                        t: Ident,
+                        s: potential.to_string(),
+                    });
+
+                    source.drain(0..potential.len());
+                    continue;
+                }
+            }
+
+            // Check for integers: a collection of 0-9 characters
+
+            // Check for strings: a collection of text between two quotes
 
             // If we make it this far then we could not match the token
             panic!("invalid token");

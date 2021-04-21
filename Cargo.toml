@@ -9,7 +9,6 @@ repository = "https://github.com/Nigecat/Ofin"
 [dependencies]
 ofin-std = { path = "lib" }
 
-colored = "2.0.0"
 structopt = "0.3.21"
 thiserror = "1.0.24"
 lazy_static = "1.4.0"
