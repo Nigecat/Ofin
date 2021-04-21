@@ -10,6 +10,3 @@ repository = "https://github.com/Nigecat/Ofin"
 ofin-std = { path = "lib" }
 
 thiserror = "1.0.24"
-
-tracing = "0.1.25"
-tracing-subscriber = "0.2.16"

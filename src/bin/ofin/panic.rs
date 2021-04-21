@@ -34,9 +34,5 @@ trace{location}:
         location = location,
     );
 
-    if tracing::dispatcher::has_been_set() {
-        tracing::error!("{}", msg);
-    } else {
-        println!("error: {}", msg);
-    }
+    println!("error: {}", msg);
 }
