@@ -3,7 +3,7 @@ mod program;
 mod statements;
 mod token;
 mod utils;
-mod value;
+mod vm;
 
 pub use error::{Error, SyntaxError};
 pub use ofin_std as std;

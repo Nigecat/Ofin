@@ -1,4 +1,5 @@
 /// An ofin value
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum Value {
     String(String),
     PosInteger(usize),

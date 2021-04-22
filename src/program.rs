@@ -12,6 +12,8 @@ impl Program {
     pub fn new<P: Into<PathBuf>>(source: P) -> Result<Self, Error> {
         let source = source.into();
         let source_string = fs::read_to_string(&source)?;
+
+        // Parse the source into a tokenstream
         let tokens = TokenStream::lex(source_string.clone());
         if let Err(pos) = tokens {
             let line = source_string[..pos].lines().count();
@@ -26,6 +28,9 @@ impl Program {
         }
         let tokens = tokens.unwrap();
         println!("{:#?}", tokens);
+
+        // Parse the tokenstream into a set of statements
+        
 
         Ok(Program { source })
     }

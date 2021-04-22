@@ -135,6 +135,10 @@ macro_rules! register {
 pub struct TokenStream(Vec<Token>);
 
 impl TokenStream {
+    // pub fn slice<const LOWER: usize, const UPPER: usize>(&self) -> &[Token] {
+        
+    // }
+
     pub fn lex(mut source: String) -> Result<Self, usize> {
         use TokenType::*;
 

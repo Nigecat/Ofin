@@ -10,3 +10,9 @@ impl Statement<3> for Assign {
         unimplemented!();
     }
 }
+
+impl Runnable for Assign {
+    fn run(&self, program: &mut Program) -> Result<(), Error> {
+        unimplemented!();
+    }
+}
