@@ -12,6 +12,10 @@ pub enum TokenType {
 
     // ---------- Operators ----------
     Equals,
+    Sub,
+    Add,
+    Mul,
+    Div,
 
     // ---------- Keywords ----------
     Using,
@@ -143,6 +147,10 @@ impl TokenStream {
             register!(source, tokens, [
                 Semicolon => ";",
                 Equals => "=",
+                Add => "+",
+                Sub => "-",
+                Div => "/",
+                Mul => "*",
 
                 Using => "using",
             ]);
@@ -162,6 +170,19 @@ impl TokenStream {
             // If we make it this far then we could not match the token
             // We then return the byte index that we are currently up to so the caller knows where the parsing failed
             return Err(original_length - source.len());
+        }
+
+        // Combine any negative symbols before numbers ([TokenType::Sub, TokenType::Integer] -> -TokenType::Integer)
+        let mut removed = 0;
+        for mut i in 0..tokens.len() - 1 {
+            i -= removed;
+            if tokens[i] == Sub && tokens[i + 1] == Integer {
+                removed += 1;
+                tokens[i] = Token {
+                    t: Integer,
+                    s: format!("-{}", tokens[i + 1].s),
+                }
+            }
         }
 
         Ok(TokenStream(tokens))

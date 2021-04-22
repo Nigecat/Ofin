@@ -3,6 +3,7 @@ pub use assign::Assign;
 
 mod prelude {
     pub use super::Statement;
+    pub use crate::token::TokenType::*;
     pub use crate::token::{Token, TokenType};
     pub use std::fmt;
 }
