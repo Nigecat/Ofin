@@ -1,5 +1,5 @@
 use crate::token::TokenStream;
-use crate::Error;
+use crate::{Error, SyntaxError};
 use std::fs;
 use std::path::PathBuf;
 
@@ -11,7 +11,20 @@ pub struct Program {
 impl Program {
     pub fn new<P: Into<PathBuf>>(source: P) -> Result<Self, Error> {
         let source = source.into();
-        let tokens = TokenStream::lex(fs::read_to_string(&source)?);
+        let source_string = fs::read_to_string(&source)?;
+        let tokens = TokenStream::lex(source_string.clone());
+        if let Err(pos) = tokens {
+            let line = source_string[..pos].lines().count();
+            let ctx = source_string[pos..].lines().next().unwrap().to_string();
+            return Err(SyntaxError {
+                file: source,
+                t: "token",
+                line,
+                ctx,
+            }
+            .into());
+        }
+        let tokens = tokens.unwrap();
         println!("{:#?}", tokens);
 
         Ok(Program { source })

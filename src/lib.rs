@@ -3,7 +3,7 @@ mod program;
 mod token;
 mod utils;
 
-pub use error::Error;
+pub use error::{Error, SyntaxError};
 pub use ofin_std as std;
 pub use program::Program;
 

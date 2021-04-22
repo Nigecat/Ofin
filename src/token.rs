@@ -125,9 +125,10 @@ macro_rules! register {
 pub struct TokenStream(Vec<Token>);
 
 impl TokenStream {
-    pub fn lex(mut source: String) -> Self {
+    pub fn lex(mut source: String) -> Result<Self, usize> {
         use TokenType::*;
 
+        let original_length = source.len();
         let mut tokens = Vec::new();
 
         while !source.is_empty() {
@@ -153,9 +154,10 @@ impl TokenStream {
             ]);
 
             // If we make it this far then we could not match the token
-            panic!("invalid token");
+            // We then return the byte index that we are currently up to so the caller knows where the parsing failed
+            return Err(original_length - source.len());
         }
 
-        TokenStream(tokens)
+        Ok(TokenStream(tokens))
     }
 }
