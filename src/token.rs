@@ -27,6 +27,12 @@ pub struct Token {
     s: String,
 }
 
+impl PartialEq<TokenType> for Token {
+    fn eq(&self, other: &TokenType) -> bool {
+        &self.t == other
+    }
+}
+
 /// Register token rules
 ///
 /// ## Token Removal
