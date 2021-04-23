@@ -7,9 +7,12 @@ mod prelude {
     pub use crate::error::Error;
     pub use crate::token::Token;
     pub use crate::token::TokenType::{self, *};
-    pub use crate::vm::{Runnable, Value, State};
+    pub use crate::vm::{Runnable, State, Value};
     pub use crate::Program;
     pub use std::fmt;
+    pub mod rust {
+        pub use String;
+    }
 }
 use self::prelude::*;
 use crate::token::TokenStream;

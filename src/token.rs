@@ -28,8 +28,8 @@ pub enum TokenType {
 /// A token which contains both the type of the token (`t`) and the literal value of the token (`s`)
 #[derive(Debug)]
 pub struct Token {
-    t: TokenType,
-    s: String,
+    pub t: TokenType,
+    pub s: String,
 }
 
 impl PartialEq<TokenType> for Token {
@@ -207,10 +207,11 @@ impl TokenStream {
             i -= removed;
             if tokens[i] == Sub && tokens[i + 1] == Integer {
                 removed += 1;
-                tokens[i] = Token {
+                tokens[i + 1] = Token {
                     t: Integer,
                     s: format!("-{}", tokens[i + 1].s),
-                }
+                };
+                tokens.remove(i);
             }
         }
 

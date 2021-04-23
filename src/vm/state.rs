@@ -1,7 +1,8 @@
-pub struct State {}
+use super::{Function, Value};
+use std::collections::HashMap;
 
-impl State {
-    pub fn new() -> Self {
-        State {}
-    }
+#[derive(Default, Debug)]
+pub struct State {
+    pub variables: HashMap<String, Value>,
+    pub functions: HashMap<String, Function>,
 }
