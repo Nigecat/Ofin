@@ -148,9 +148,9 @@ impl TokenStream {
         self.0.drain(range).collect()
     }
 
-    // pub fn chunk(self, sep: TokenType) -> Vec<TokenStream> {
-    //     todo!();
-    // }
+    pub fn get(&self, index: usize) -> &Token {
+        &self.0[index]
+    }
 
     pub fn remove(&mut self, index: usize) -> Token {
         self.0.remove(index)

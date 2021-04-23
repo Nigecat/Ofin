@@ -1,5 +1,6 @@
 use crate::statements;
 use crate::token::TokenStream;
+use crate::token::TokenType::Semicolon;
 use crate::{Error, SyntaxError};
 use std::fs;
 use std::path::PathBuf;
@@ -22,6 +23,7 @@ impl Program {
             return Err(SyntaxError {
                 file: source,
                 t: "token",
+                v: "unexpected",
                 line,
                 ctx,
             }
@@ -30,10 +32,29 @@ impl Program {
         let tokens = tokens.unwrap();
         println!("{:#?}", tokens);
 
+        // Ensure we have an ending colon
+        if tokens.get(tokens.len() - 1) != &Semicolon {
+            return Err(SyntaxError {
+                file: source,
+                t: "semicolon",
+                v: "expected",
+                line: source_string.lines().count(),
+                ctx: String::from("<no semicolon>"),
+            }
+            .into());
+        }
+
         // Parse the tokenstream into a set of statements
         let statements = statements::parse(tokens);
         if let Err(pos) = statements {
-            todo!();
+            return Err(SyntaxError {
+                file: source,
+                t: "statement",
+                v: "unrecognized",
+                line: 0,                        // TODO
+                ctx: String::from("good luck"), // TODO
+            }
+            .into());
         }
         let statements = statements.unwrap();
         println!("{:#?}", statements);
