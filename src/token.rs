@@ -1,4 +1,5 @@
 use crate::utils::find_end_at;
+use std::ops::{Range, RangeBounds};
 
 /// The type of a token
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
@@ -135,9 +136,33 @@ macro_rules! register {
 pub struct TokenStream(Vec<Token>);
 
 impl TokenStream {
-    // pub fn slice<const LOWER: usize, const UPPER: usize>(&self) -> &[Token] {
-        
+    pub fn position(&self, token: TokenType) -> Option<usize> {
+        self.0.iter().position(|t| t == &token)
+    }
+
+    pub fn slice(&self, range: Range<usize>) -> &[Token] {
+        &self.0[range]
+    }
+
+    pub fn rem<R: RangeBounds<usize>>(&mut self, range: R) -> Vec<Token> {
+        self.0.drain(range).collect()
+    }
+
+    // pub fn chunk(self, sep: TokenType) -> Vec<TokenStream> {
+    //     todo!();
     // }
+
+    pub fn remove(&mut self, index: usize) -> Token {
+        self.0.remove(index)
+    }
+
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
 
     pub fn lex(mut source: String) -> Result<Self, usize> {
         use TokenType::*;

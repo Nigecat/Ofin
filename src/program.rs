@@ -1,3 +1,4 @@
+use crate::statements;
 use crate::token::TokenStream;
 use crate::{Error, SyntaxError};
 use std::fs;
@@ -30,7 +31,12 @@ impl Program {
         println!("{:#?}", tokens);
 
         // Parse the tokenstream into a set of statements
-        
+        let statements = statements::parse(tokens);
+        if let Err(pos) = statements {
+            todo!();
+        }
+        let statements = statements.unwrap();
+        println!("{:#?}", statements);
 
         Ok(Program { source })
     }
