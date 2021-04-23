@@ -14,7 +14,7 @@ impl Statement for Assign {
 }
 
 impl Runnable for Assign {
-    fn run(&self, program: &mut Program) -> Result<(), Error> {
+    fn run(&self, program: &mut State) -> Result<(), Error> {
         unimplemented!();
     }
 }

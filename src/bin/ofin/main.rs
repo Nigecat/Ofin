@@ -9,7 +9,7 @@ fn main() {
     let cli = Cli::from_args();
 
     let result = match Program::new(cli.file) {
-        Ok(mut program) => program.run(),
+        Ok(program) => program.run(),
         Err(e) => Err(e),
     };
 

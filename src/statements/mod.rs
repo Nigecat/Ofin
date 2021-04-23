@@ -7,7 +7,7 @@ mod prelude {
     pub use crate::error::Error;
     pub use crate::token::Token;
     pub use crate::token::TokenType::{self, *};
-    pub use crate::vm::{Runnable, Value};
+    pub use crate::vm::{Runnable, Value, State};
     pub use crate::Program;
     pub use std::fmt;
 }

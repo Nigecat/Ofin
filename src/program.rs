@@ -1,6 +1,6 @@
-use crate::statements;
 use crate::token::TokenStream;
 use crate::token::TokenType::Semicolon;
+use crate::{statements, vm};
 use crate::{Error, SyntaxError};
 use std::fs;
 use std::path::PathBuf;
@@ -8,6 +8,7 @@ use std::path::PathBuf;
 /// A high level representation of an ofin program
 pub struct Program {
     source: PathBuf,
+    statements: Vec<Box<dyn vm::Runnable>>,
 }
 
 impl Program {
@@ -59,11 +60,10 @@ impl Program {
         let statements = statements.unwrap();
         println!("{:#?}", statements);
 
-        Ok(Program { source })
+        Ok(Program { source, statements })
     }
 
-    pub fn run(&mut self) -> Result<(), Error> {
-        // unimplemented!();
-        Ok(())
+    pub fn run(self) -> Result<(), Error> {
+        vm::run(self.statements)
     }
 }
