@@ -7,6 +7,7 @@ pub enum TokenType {
     // ---------- Literals ----------
     Ident,
     Target,
+    Expression,
 
     String,
     Integer,
@@ -189,6 +190,8 @@ impl TokenStream {
 
                 String => ("\"".."\"" | include = false),
                 String => ("'".."'" | include = false),
+
+                Expression => ("("..")" | include = false),
             ]);
 
             register!(source, tokens, [

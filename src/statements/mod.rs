@@ -1,15 +1,18 @@
 mod assign;
+mod call;
 
 use assign::Assign;
+use call::Call;
 
 mod prelude {
     pub use super::Statement;
     pub use crate::error::Error;
     pub use crate::token::Token;
     pub use crate::token::TokenType::{self, *};
-    pub use crate::vm::{Runnable, State, Value};
+    pub use crate::vm::{self, Expression, Function, Runnable, State, Value};
     pub use crate::Program;
     pub use std::fmt;
+    pub type Target = &'static [&'static [TokenType]];
     pub mod rust {
         pub use String;
     }
