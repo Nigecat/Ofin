@@ -1,6 +1,10 @@
 use crate::error::{Error, SyntaxError};
 use crate::Source;
 use std::convert::TryInto;
+use std::fmt;
+
+// An array of the token types which do not have any inherit syntactic meaning and can be safely discarded
+pub const MEANINGLESS: [TokenType; 3] = [TokenType::Space, TokenType::Tab, TokenType::Newline];
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub enum TokenType {
@@ -143,4 +147,52 @@ pub fn lex(source: Source) -> Result<Vec<Token>, Error> {
     });
 
     Ok(tokens)
+}
+
+pub fn rend(tokens: &[Token]) -> impl fmt::Display + fmt::Debug {
+    // Find the longest lexeme in the tokenstream
+    let max = tokens
+        .iter()
+        .fold(0, |acc, token| match token.lexeme.len() > acc {
+            true => token.lexeme.len(),
+            false => acc,
+        });
+
+    // Create a vector of strings representing the tokens
+    // With each element of the format <lexeme> {pad} <type>
+    // Where {pad} is the length of the longest lexeme
+    // (basically we want to align the two columns)
+    let mut pairs = Vec::new();
+    for token in tokens {
+        pairs.push(format!(
+            "{:width$} {:?}\n",
+            token.lexeme,
+            token.t,
+            width = max
+        ));
+    }
+
+    // Find the longest token type by taking each pair and
+    // checking the length of the stringified version of the token type by subtracting the padding
+    let max = pairs
+        .iter()
+        .fold(0, |acc, pair| match pair.len() - max > acc {
+            true => pair.len() - max,
+            false => acc,
+        });
+
+    // Re-format the columns in the correct order with the new padding
+    let mut output = String::new();
+    for token in tokens {
+        output.push_str(&format!(
+            "{:width$} {}\n",
+            // for whatever reason this won't work unless we do this,
+            // both implementing fmt::Display on TokenType and using `{:width?$}` fail to pad correctly
+            format!("{:?}", token.t),
+            token.lexeme,
+            width = max
+        ));
+    }
+
+    output
 }
