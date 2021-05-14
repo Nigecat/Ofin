@@ -1,20 +1,15 @@
 mod cli;
 mod panic;
 use cli::Cli;
-use ofin::Program;
 
 fn main() {
     panic::set_handler();
 
     let cli = Cli::from_args();
 
-    let result = match Program::new(cli.file) {
-        Ok(program) => program.run(),
-        Err(e) => Err(e),
-    };
-
-    match result {
-        Ok(_) => (),
-        Err(e) => println!("error: {}", e),
+    let res = ofin::run(cli.file);
+    match res {
+        Ok(()) => println!("Program exited with error code 0"),
+        Err(e) => println!("{}", e),
     }
 }

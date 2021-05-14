@@ -1,13 +1,28 @@
 mod error;
-mod program;
-mod statements;
+mod source;
 mod token;
-mod utils;
-pub(crate) mod vm;
 
-pub use error::{Error, SyntaxError};
-pub use ofin_std as std;
-pub use program::Program;
+pub use error::Error;
+pub use source::Source;
 
-// #[macro_use]
-// extern crate tracing;
+use crate::token::TokenType;
+use token::lex;
+
+pub fn run<S: Into<Source>>(source: S) -> Result<(), Error> {
+    let source = source.into();
+
+    let mut tokens = lex(source)?;
+    // Remove tokens that don't have any syntactical meaning
+    tokens.retain(|token| {
+        !vec![
+            TokenType::Space,
+            TokenType::Newline,
+            TokenType::Tab,
+            TokenType::Eof, // FIXME: Remove this line when allowing multi-file imports
+        ]
+        .contains(&token.t)
+    });
+    println!("{:#?}", tokens);
+
+    Ok(())
+}

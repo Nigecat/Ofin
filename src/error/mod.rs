@@ -1,10 +1,10 @@
 mod syntax;
 pub use syntax::SyntaxError;
 
-#[derive(Debug, thiserror::Error)]
+#[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error(transparent)]
-    Io(#[from] std::io::Error),
-    #[error(transparent)]
+    #[error("{0}")]
+    Io(#[from] ::std::io::Error),
+    #[error("{0}")]
     Syntax(#[from] SyntaxError),
 }
